@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KaamJodo - Local Services</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    header {
+      background: #0b6bcb;
+      color: white;
+      padding: 22px 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 30px;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .welcome {
+      background: white;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .welcome h2 {
+      margin-bottom: 8px;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .service {
+      background: white;
+      border: 0;
+      border-radius: 14px;
+      padding: 18px 10px;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .service span {
+      display: block;
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .service:active {
+      transform: scale(.97);
+    }
+
+    .request-box {
+      display: none;
+      background: white;
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .request-box h2 {
+      margin-bottom: 15px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 12px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 9px;
+      background: #0b6bcb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn.secondary {
+      background: #555;
+      margin-top: 8px;
+    }
+
+    .success {
+      display: none;
+      background: #e9f8ee;
+      color: #176b32;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 10px;
+      color: #777;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🔧 KaamJodo</h1>
+    <p>Kaam bhi, Karigar bhi — ek jagah</p>
+  </header>
+
+  <main class="container">
+
+    <div class="welcome">
+      <h2>Namaste 👋</h2>
+      <p>Apne area mein trusted service ke liye neeche service select karein.</p>
+    </div>
+
+    <div class="services">
+
+      <button class="service" onclick="selectService('Plumber')">
+        <span>🔧</span>
+        Plumber
+      </button>
+
+      <button class="service" onclick="selectService('Electrician')">
+        <span>⚡</span>
+        Electrician
+      </button>
+
+      <button class="service" onclick="selectService('Painter')">
+        <span>🎨</span>
+        Painter
+      </button>
+
+      <button class="service" onclick="selectService('Cleaning')">
+        <span>🧹</span>
+        Cleaning
+      </button>
+
+      <button class="service" onclick="selectService('AC / Fridge Repair')">
+        <span>❄️</span>
+        AC / Fridge
+      </button>
+
+      <button class="service" onclick="selectService('Mechanic')">
+        <span>🏍️</span>
+        Mechanic
+      </button>
+
+      <button class="service" onclick="selectService('Carpenter')">
+        <span>🪚</span>
+        Carpenter
+      </button>
+
+      <button class="service" onclick="selectService('Other')">
+        <span>🛠️</span>
+        Other
+      </button>
+
+    </div>
+
+    <div class="request-box" id="requestBox">
+
+      <h2>📋 Service Request</h2>
+
+      <input
+        type="text"
+        id="name"
+        placeholder="Aapka naam"
+      >
+
+      <input
+        type="tel"
+        id="phone"
+        placeholder="Mobile number"
+      >
+
+      <input
+        type="text"
+        id="location"
+        placeholder="Area / Mohalla"
+      >
+
+      <input
+        type="text"
+        id="service"
+        readonly
+      >
+
+      <textarea
+        id="details"
+        placeholder="Kaam ke baare mein thoda batayein..."
+      ></textarea>
+
+      <button class="btn" onclick="submitRequest()">
+        Request Bhejein
+      </button>
+
+      <button class="btn secondary" onclick="closeRequest()">
+        Cancel
+      </button>
+
+      <div class="success" id="success">
+        ✅ Aapki request receive ho gayi hai!<br><br>
+        KaamJodo team aapki request ko service provider tak pahunchane ke liye process karegi.
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    © 2026 KaamJodo · Local Services Platform
+  </footer>
+
+  <script>
+
+    function selectService(serviceName) {
+
+      document.getElementById("requestBox").style.display = "block";
+
+      document.getElementById("service").value = serviceName;
+
+      document.getElementById("success").style.display = "none";
+
+      document.getElementById("requestBox")
+        .scrollIntoView({ behavior: "smooth" });
+    }
+
+    function closeRequest() {
+      document.getElementById("requestBox").style.display = "none";
+    }
+
+    function submitRequest() {
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const service = document.getElementById("service").value;
+      const details = document.getElementById("details").value.trim();
+
+      if (!name || !phone || !location || !service) {
+        alert("Please naam, mobile number aur area zaroor bharein.");
+        return;
+      }
+
+      const request = {
+        id: Date.now(),
+        name: name,
+        phone: phone,
+        location: location,
+        service: service,
+        details: details,
+        status: "New",
+        createdAt: new Date().toISOString()
+      };
+
+      let requests =
+        JSON.parse(localStorage.getItem("kaamjodo_requests") || "[]");
+
+      requests.push(request);
+
+      localStorage.setItem(
+        "kaamjodo_requests",
+        JSON.stringify(requests)
+      );
+
+      document.getElementById("success").style.display = "block";
+
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+      document.getElementById("location").value = "";
+      document.getElementById("details").value = "";
+
+      document.getElementById("success")
+        .scrollIntoView({ behavior: "smooth" });
+    }
+
+  </script>
+
+</body>
+  </html>
