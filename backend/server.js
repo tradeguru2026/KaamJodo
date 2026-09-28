@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -8,13 +9,19 @@ app.use(cors());
 app.use(express.json());
 
 // ===============================
+// FRONTEND
+// ===============================
+
+// Main folder ke index.html ko serve karega
+app.use(express.static(path.join(__dirname, "..")));
+
+// ===============================
 // HEY KARIGAR DATA
 // ===============================
 
 let requests = [];
 let nextRequestId = 1;
 
-// All service categories
 const categories = [
   { id: 1, name: "Gardener / Mali", icon: "🌱" },
   { id: 2, name: "Plumber", icon: "🚰" },
@@ -35,16 +42,11 @@ const categories = [
 ];
 
 // ===============================
-// HOME / HEALTH CHECK
+// HOME
 // ===============================
 
 app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    app: "Hey Karigar",
-    message: "Hey Karigar backend is running",
-    version: "1.0.0"
-  });
+  res.sendFile(path.join(__dirname, "..", "index.html"));
 });
 
 // ===============================
@@ -66,7 +68,7 @@ app.get("/api", (req, res) => {
 });
 
 // ===============================
-// GET ALL CATEGORIES
+// CATEGORIES
 // ===============================
 
 app.get("/api/categories", (req, res) => {
@@ -78,7 +80,7 @@ app.get("/api/categories", (req, res) => {
 });
 
 // ===============================
-// GET ALL SERVICE REQUESTS
+// GET REQUESTS
 // ===============================
 
 app.get("/api/requests", (req, res) => {
@@ -90,7 +92,7 @@ app.get("/api/requests", (req, res) => {
 });
 
 // ===============================
-// CREATE SERVICE REQUEST
+// CREATE REQUEST
 // ===============================
 
 app.post("/api/requests", (req, res) => {
@@ -152,7 +154,7 @@ app.get("/api/requests/:id", (req, res) => {
 });
 
 // ===============================
-// UPDATE REQUEST STATUS
+// UPDATE STATUS
 // ===============================
 
 app.patch("/api/requests/:id/status", (req, res) => {
@@ -193,20 +195,20 @@ app.patch("/api/requests/:id/status", (req, res) => {
 });
 
 // ===============================
-// 404 HANDLER
+// 404
 // ===============================
 
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: "Hey Karigar API route not found."
+    message: "Hey Karigar route not found."
   });
 });
 
 // ===============================
-// START SERVER
+// START
 // ===============================
 
 app.listen(PORT, () => {
-  console.log(`Hey Karigar backend running on port ${PORT}`);
+  console.log(`Hey Karigar running on port ${PORT}`);
 });
