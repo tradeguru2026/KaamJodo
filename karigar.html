@@ -89,7 +89,7 @@
 
     .status {
       display: inline-block;
-      padding: 6px 10px;
+      padding: 7px 12px;
       border-radius: 20px;
       background: #fff3cd;
       color: #856404;
@@ -98,14 +98,36 @@
       margin-top: 5px;
     }
 
+    .status.Accepted {
+      background: #d7f5e5;
+      color: #176b3a;
+    }
+
+    .status.Assigned {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .status.Completed {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.Cancelled {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
     .buttons {
       display: flex;
       gap: 10px;
       margin-top: 15px;
+      flex-wrap: wrap;
     }
 
     .btn {
       flex: 1;
+      min-width: 130px;
       padding: 13px;
       border: 0;
       border-radius: 10px;
@@ -120,6 +142,14 @@
 
     .reject {
       background: #d64545;
+    }
+
+    .assign {
+      background: #2563eb;
+    }
+
+    .complete {
+      background: #16a34a;
     }
 
     .empty {
@@ -225,6 +255,80 @@ async function loadRequests() {
 
         card.className = "request";
 
+        let actionButtons = "";
+
+        // NEW REQUEST
+        if (request.status === "New") {
+
+          actionButtons = `
+            <div class="buttons">
+
+              <button
+                class="btn accept"
+                onclick="updateStatus(${request.id}, 'Accepted')"
+              >
+                ✅ Accept
+              </button>
+
+              <button
+                class="btn reject"
+                onclick="updateStatus(${request.id}, 'Cancelled')"
+              >
+                ❌ Reject
+              </button>
+
+            </div>
+          `;
+        }
+
+        // ACCEPTED REQUEST
+        else if (request.status === "Accepted") {
+
+          actionButtons = `
+            <div class="buttons">
+
+              <button
+                class="btn assign"
+                onclick="updateStatus(${request.id}, 'Assigned')"
+              >
+                👷 Assign / Kaam Start
+              </button>
+
+              <button
+                class="btn reject"
+                onclick="updateStatus(${request.id}, 'Cancelled')"
+              >
+                ❌ Cancel
+              </button>
+
+            </div>
+          `;
+        }
+
+        // ASSIGNED REQUEST
+        else if (request.status === "Assigned") {
+
+          actionButtons = `
+            <div class="buttons">
+
+              <button
+                class="btn complete"
+                onclick="updateStatus(${request.id}, 'Completed')"
+              >
+                ✅ Kaam Complete
+              </button>
+
+              <button
+                class="btn reject"
+                onclick="updateStatus(${request.id}, 'Cancelled')"
+              >
+                ❌ Cancel
+              </button>
+
+            </div>
+          `;
+        }
+
         card.innerHTML = `
           <h3>🛠️ ${escapeHtml(request.service)}</h3>
 
@@ -250,34 +354,14 @@ async function loadRequests() {
 
           <div class="row">
             <span class="label">Status:</span><br>
-            <span class="status">
+
+            <span class="status ${escapeHtml(request.status)}">
+              ${getStatusIcon(request.status)}
               ${escapeHtml(request.status)}
             </span>
           </div>
 
-          ${
-            request.status === "New"
-            ? `
-              <div class="buttons">
-
-                <button
-                  class="btn accept"
-                  onclick="updateStatus(${request.id}, 'Accepted')"
-                >
-                  ✅ Accept
-                </button>
-
-                <button
-                  class="btn reject"
-                  onclick="updateStatus(${request.id}, 'Cancelled')"
-                >
-                  ❌ Reject
-                </button>
-
-              </div>
-            `
-            : ""
-          }
+          ${actionButtons}
         `;
 
         container.appendChild(card);
@@ -295,6 +379,7 @@ async function loadRequests() {
     `;
   }
 }
+
 
 async function updateStatus(id, status) {
 
@@ -318,16 +403,31 @@ async function updateStatus(id, status) {
     const data = await response.json();
 
     if (!response.ok || !data.success) {
+
       throw new Error(
         data.message || "Status update failed"
       );
     }
 
-    showMessage(
-      status === "Accepted"
-        ? "✅ Request accept ho gayi!"
-        : "❌ Request reject ho gayi!"
-    );
+    let message = "";
+
+    if (status === "Accepted") {
+      message = "✅ Request accept ho gayi!";
+    }
+
+    else if (status === "Assigned") {
+      message = "👷 Request assigned ho gayi!";
+    }
+
+    else if (status === "Completed") {
+      message = "🎉 Kaam completed mark ho gaya!";
+    }
+
+    else if (status === "Cancelled") {
+      message = "❌ Request cancel ho gayi!";
+    }
+
+    showMessage(message);
 
     loadRequests();
 
@@ -338,6 +438,33 @@ async function updateStatus(id, status) {
     );
   }
 }
+
+
+function getStatusIcon(status) {
+
+  if (status === "New") {
+    return "🆕";
+  }
+
+  if (status === "Accepted") {
+    return "✅";
+  }
+
+  if (status === "Assigned") {
+    return "👷";
+  }
+
+  if (status === "Completed") {
+    return "🎉";
+  }
+
+  if (status === "Cancelled") {
+    return "❌";
+  }
+
+  return "📌";
+}
+
 
 function showMessage(text) {
 
@@ -352,6 +479,7 @@ function showMessage(text) {
   }, 3000);
 }
 
+
 function escapeHtml(value) {
 
   return String(value || "")
@@ -361,6 +489,7 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
 
 loadRequests();
 
