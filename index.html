@@ -42,7 +42,8 @@
     }
 
     .welcome,
-    .request-box {
+    .request-box,
+    .tracking-box {
       background: white;
       padding: 20px;
       border-radius: 18px;
@@ -50,8 +51,10 @@
       box-shadow: 0 3px 14px rgba(0,0,0,.07);
     }
 
-    .welcome h2 {
-      margin-bottom: 8px;
+    .welcome h2,
+    .request-box h2,
+    .tracking-box h2 {
+      margin-bottom: 10px;
     }
 
     .search,
@@ -105,10 +108,6 @@
       margin-top: 20px;
     }
 
-    .request-box h2 {
-      margin-bottom: 15px;
-    }
-
     input,
     textarea {
       margin-bottom: 12px;
@@ -128,6 +127,12 @@
       color: white;
       font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
     }
 
     .cancel {
@@ -144,12 +149,59 @@
       margin-top: 15px;
     }
 
+    .tracking-box {
+      display: none;
+    }
+
+    .tracking-card {
+      background: #f1f8f5;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      background: #fff3cd;
+      color: #856404;
+      font-weight: bold;
+    }
+
+    .status.accepted {
+      background: #dff7e8;
+      color: #176b3a;
+    }
+
+    .status.assigned {
+      background: #e1efff;
+      color: #145ea8;
+    }
+
+    .status.completed {
+      background: #dff7e8;
+      color: #176b3a;
+    }
+
+    .status.cancelled {
+      background: #ffe3e3;
+      color: #b42318;
+    }
+
     .empty {
       display: none;
       background: white;
       padding: 18px;
       border-radius: 14px;
       text-align: center;
+      color: #777;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 15px;
       color: #777;
     }
 
@@ -196,28 +248,53 @@
     Is naam ki service abhi nahi mili.
   </div>
 
+  <!-- REQUEST FORM -->
+
   <div class="request-box" id="requestBox">
 
     <h2>📋 Karigar Request</h2>
 
-    <input id="name" type="text" placeholder="Aapka naam">
+    <input
+      id="name"
+      type="text"
+      placeholder="Aapka naam"
+    >
 
-    <input id="phone" type="tel" placeholder="Mobile number">
+    <input
+      id="phone"
+      type="tel"
+      placeholder="Mobile number"
+    >
 
-    <input id="location" type="text" placeholder="Area / Mohalla">
+    <input
+      id="location"
+      type="text"
+      placeholder="Area / Mohalla"
+    >
 
-    <input id="service" type="text" readonly>
+    <input
+      id="service"
+      type="text"
+      readonly
+    >
 
     <textarea
       id="details"
       placeholder="Kaam ke baare mein thoda batayein..."
     ></textarea>
 
-    <button class="btn" onclick="submitRequest()">
+    <button
+      class="btn"
+      id="submitButton"
+      onclick="submitRequest()"
+    >
       📲 Request Bhejein
     </button>
 
-    <button class="btn cancel" onclick="closeRequest()">
+    <button
+      class="btn cancel"
+      onclick="closeRequest()"
+    >
       Cancel
     </button>
 
@@ -225,7 +302,31 @@
       ✅ Aapki request receive ho gayi hai!
       <br><br>
       Hey Karigar aapki request ko process karega.
+      <br><br>
+      <strong>📋 Neeche apni request ka status dekh sakte hain.</strong>
     </div>
+
+  </div>
+
+  <!-- CUSTOMER REQUEST TRACKING -->
+
+  <div class="tracking-box" id="trackingBox">
+
+    <h2>📍 Meri Request</h2>
+
+    <div id="trackingContent">
+      <div class="loading">
+        ⏳ Request status load ho raha hai...
+      </div>
+    </div>
+
+    <button
+      class="btn"
+      style="margin-top:12px;"
+      onclick="checkRequestStatus()"
+    >
+      🔄 Status Check Karein
+    </button>
 
   </div>
 
@@ -240,6 +341,10 @@
 const API_BASE = window.location.origin;
 
 let categories = [];
+
+/* ===============================
+   DEFAULT CATEGORIES
+================================ */
 
 const defaultCategories = [
   {id:1,name:"Gardener / Mali",icon:"🌱"},
@@ -260,6 +365,10 @@ const defaultCategories = [
   {id:16,name:"Mehndi Artist",icon:"🌿"}
 ];
 
+/* ===============================
+   LOAD CATEGORIES
+================================ */
+
 async function loadCategories() {
 
   try {
@@ -270,7 +379,10 @@ async function loadCategories() {
 
     const data = await response.json();
 
-    if (data.success && Array.isArray(data.categories)) {
+    if (
+      data.success &&
+      Array.isArray(data.categories)
+    ) {
       categories = data.categories;
     } else {
       categories = defaultCategories;
@@ -284,6 +396,10 @@ async function loadCategories() {
 
   displayServices(categories);
 }
+
+/* ===============================
+   DISPLAY SERVICES
+================================ */
 
 function displayServices(list) {
 
@@ -306,7 +422,7 @@ function displayServices(list) {
       <span class="service-icon">
         ${category.icon}
       </span>
-      ${category.name}
+      ${escapeHtml(category.name)}
     `;
 
     button.onclick = function() {
@@ -318,6 +434,10 @@ function displayServices(list) {
   });
 }
 
+/* ===============================
+   SEARCH
+================================ */
+
 function filterServices() {
 
   const text =
@@ -328,11 +448,17 @@ function filterServices() {
 
   const filtered =
     categories.filter(category =>
-      category.name.toLowerCase().includes(text)
+      category.name
+        .toLowerCase()
+        .includes(text)
     );
 
   displayServices(filtered);
 }
+
+/* ===============================
+   SELECT SERVICE
+================================ */
 
 function selectService(serviceName) {
 
@@ -351,30 +477,52 @@ function selectService(serviceName) {
     });
 }
 
+/* ===============================
+   CLOSE REQUEST
+================================ */
+
 function closeRequest() {
 
   document.getElementById("requestBox")
     .style.display = "none";
 }
 
+/* ===============================
+   SUBMIT REQUEST
+================================ */
+
 async function submitRequest() {
 
   const name =
-    document.getElementById("name").value.trim();
+    document.getElementById("name")
+      .value
+      .trim();
 
   const phone =
-    document.getElementById("phone").value.trim();
+    document.getElementById("phone")
+      .value
+      .trim();
 
   const location =
-    document.getElementById("location").value.trim();
+    document.getElementById("location")
+      .value
+      .trim();
 
   const service =
-    document.getElementById("service").value;
+    document.getElementById("service")
+      .value;
 
   const details =
-    document.getElementById("details").value.trim();
+    document.getElementById("details")
+      .value
+      .trim();
 
-  if (!name || !phone || !location || !service) {
+  if (
+    !name ||
+    !phone ||
+    !location ||
+    !service
+  ) {
 
     alert(
       "Naam, mobile number, area aur service zaroor bharein."
@@ -384,9 +532,10 @@ async function submitRequest() {
   }
 
   const button =
-    document.querySelector(".request-box .btn");
+    document.getElementById("submitButton");
 
   button.disabled = true;
+
   button.innerText =
     "⏳ Request bheji ja rahi hai...";
 
@@ -411,21 +560,63 @@ async function submitRequest() {
       }
     );
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
-    if (!response.ok || !data.success) {
+    if (
+      !response.ok ||
+      !data.success
+    ) {
+
       throw new Error(
-        data.message || "Request failed"
+        data.message ||
+        "Request failed"
       );
+    }
+
+    /*
+      IMPORTANT:
+      Backend se milne wali request ID
+      phone mein save nahi hoti.
+      Browser ke localStorage mein save hogi.
+    */
+
+    if (
+      data.request &&
+      data.request.id
+    ) {
+
+      localStorage.setItem(
+        "heyKarigarRequestId",
+        String(data.request.id)
+      );
+
     }
 
     document.getElementById("success")
       .style.display = "block";
 
-    document.getElementById("name").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("location").value = "";
-    document.getElementById("details").value = "";
+    document.getElementById("trackingBox")
+      .style.display = "block";
+
+    document.getElementById("name")
+      .value = "";
+
+    document.getElementById("phone")
+      .value = "";
+
+    document.getElementById("location")
+      .value = "";
+
+    document.getElementById("details")
+      .value = "";
+
+    await checkRequestStatus();
+
+    document.getElementById("trackingBox")
+      .scrollIntoView({
+        behavior: "smooth"
+      });
 
   } catch (error) {
 
@@ -436,14 +627,219 @@ async function submitRequest() {
   } finally {
 
     button.disabled = false;
-    button.innerText = "📲 Request Bhejein";
+
+    button.innerText =
+      "📲 Request Bhejein";
 
   }
 }
 
+/* ===============================
+   CHECK REQUEST STATUS
+================================ */
+
+async function checkRequestStatus() {
+
+  const requestId =
+    localStorage.getItem(
+      "heyKarigarRequestId"
+    );
+
+  const trackingBox =
+    document.getElementById(
+      "trackingBox"
+    );
+
+  const trackingContent =
+    document.getElementById(
+      "trackingContent"
+    );
+
+  if (!requestId) {
+
+    trackingBox.style.display = "none";
+
+    return;
+  }
+
+  trackingBox.style.display = "block";
+
+  trackingContent.innerHTML = `
+    <div class="loading">
+      ⏳ Status check ho raha hai...
+    </div>
+  `;
+
+  try {
+
+    const response = await fetch(
+      API_BASE +
+      "/api/requests/" +
+      encodeURIComponent(requestId)
+    );
+
+    const data =
+      await response.json();
+
+    if (
+      !response.ok ||
+      !data.success ||
+      !data.request
+    ) {
+
+      throw new Error(
+        data.message ||
+        "Request not found"
+      );
+    }
+
+    const request =
+      data.request;
+
+    const status =
+      String(request.status || "New");
+
+    let statusClass = "";
+
+    if (status === "Accepted") {
+      statusClass = "accepted";
+    }
+
+    if (status === "Assigned") {
+      statusClass = "assigned";
+    }
+
+    if (status === "Completed") {
+      statusClass = "completed";
+    }
+
+    if (status === "Cancelled") {
+      statusClass = "cancelled";
+    }
+
+    let statusMessage =
+      "Aapki request receive ho gayi hai.";
+
+    if (status === "Accepted") {
+      statusMessage =
+        "🎉 Karigar ne aapki request accept kar li hai.";
+    }
+
+    if (status === "Assigned") {
+      statusMessage =
+        "👨‍🔧 Aapki request ek Karigar ko assign ho gayi hai.";
+    }
+
+    if (status === "Completed") {
+      statusMessage =
+        "✅ Aapka kaam completed mark kar diya gaya hai.";
+    }
+
+    if (status === "Cancelled") {
+      statusMessage =
+        "❌ Ye request cancel kar di gayi hai.";
+    }
+
+    trackingContent.innerHTML = `
+
+      <div class="tracking-card">
+
+        <p>
+          <strong>Request ID:</strong>
+          #${escapeHtml(request.id)}
+        </p>
+
+        <p style="margin-top:8px;">
+          <strong>Service:</strong>
+          ${escapeHtml(request.service)}
+        </p>
+
+        <p style="margin-top:8px;">
+          <strong>Problem:</strong>
+          ${escapeHtml(
+            request.details ||
+            "Details nahi di gayi"
+          )}
+        </p>
+
+        <p style="margin-top:12px;">
+          <strong>Status:</strong>
+        </p>
+
+        <span class="status ${statusClass}">
+          ${escapeHtml(status)}
+        </span>
+
+        <p style="margin-top:12px;">
+          ${statusMessage}
+        </p>
+
+      </div>
+    `;
+
+  } catch (error) {
+
+    trackingContent.innerHTML = `
+
+      <div class="tracking-card">
+
+        ❌ Request status load nahi ho saka.
+
+        <br><br>
+
+        Please dobara
+        <strong>Status Check Karein</strong>
+        dabayein.
+
+      </div>
+    `;
+
+  }
+}
+
+/* ===============================
+   HTML SAFETY
+================================ */
+
+function escapeHtml(value) {
+
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/* ===============================
+   PAGE LOAD
+================================ */
+
 loadCategories();
+
+/*
+  Agar browser mein pehle se
+  request ID saved hai,
+  to status automatically dikhega.
+*/
+
+window.addEventListener(
+  "load",
+  function() {
+
+    const requestId =
+      localStorage.getItem(
+        "heyKarigarRequestId"
+      );
+
+    if (requestId) {
+      checkRequestStatus();
+    }
+
+  }
+);
 
 </script>
 
 </body>
-</html>
+  </html>
