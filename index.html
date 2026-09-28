@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Hey Karigar - Local Services</title>
+  <title>Hey Karigar</title>
 
   <style>
     * {
@@ -22,7 +22,7 @@
     header {
       background: #087f5b;
       color: white;
-      padding: 22px 18px;
+      padding: 22px 16px;
       text-align: center;
     }
 
@@ -33,7 +33,6 @@
 
     header p {
       font-size: 14px;
-      opacity: .95;
     }
 
     .container {
@@ -42,7 +41,8 @@
       padding: 16px;
     }
 
-    .welcome {
+    .welcome,
+    .request-box {
       background: white;
       padding: 20px;
       border-radius: 18px;
@@ -52,22 +52,25 @@
 
     .welcome h2 {
       margin-bottom: 8px;
-      font-size: 22px;
+    }
+
+    .search,
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 11px;
+      font-size: 16px;
+      outline: none;
     }
 
     .search {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 16px;
       margin-top: 15px;
-      outline: none;
     }
 
     .section-title {
       margin: 20px 2px 12px;
-      font-size: 21px;
     }
 
     .services {
@@ -85,8 +88,6 @@
       font-size: 15px;
       cursor: pointer;
       box-shadow: 0 3px 12px rgba(0,0,0,.07);
-      color: #17221c;
-      transition: .15s;
     }
 
     .service:active {
@@ -96,16 +97,12 @@
     .service-icon {
       display: block;
       font-size: 32px;
-      margin-bottom: 9px;
+      margin-bottom: 8px;
     }
 
     .request-box {
       display: none;
-      background: white;
       margin-top: 20px;
-      padding: 20px;
-      border-radius: 18px;
-      box-shadow: 0 3px 14px rgba(0,0,0,.08);
     }
 
     .request-box h2 {
@@ -114,13 +111,7 @@
 
     input,
     textarea {
-      width: 100%;
-      padding: 14px;
       margin-bottom: 12px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
     }
 
     textarea {
@@ -137,10 +128,9 @@
       color: white;
       font-size: 16px;
       font-weight: bold;
-      cursor: pointer;
     }
 
-    .btn.secondary {
+    .cancel {
       background: #555;
       margin-top: 9px;
     }
@@ -152,7 +142,6 @@
       padding: 15px;
       border-radius: 10px;
       margin-top: 15px;
-      line-height: 1.5;
     }
 
     .empty {
@@ -166,4 +155,295 @@
 
     footer {
       text-align: center;
-      padding: 28px 10px
+      padding: 28px 10px;
+      color: #777;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🛠️ Hey Karigar</h1>
+  <p>Apne ghar ke har kaam ke liye karigar ek jagah</p>
+</header>
+
+<main class="container">
+
+  <div class="welcome">
+    <h2>Namaste 👋</h2>
+
+    <p>
+      Apne area mein jis kaam ke liye karigar chahiye,
+      neeche category select karein.
+    </p>
+
+    <input
+      class="search"
+      id="search"
+      type="search"
+      placeholder="🔎 Karigar ya service search karein..."
+      oninput="filterServices()"
+    >
+  </div>
+
+  <h2 class="section-title">🧰 Services</h2>
+
+  <div class="services" id="services"></div>
+
+  <div class="empty" id="empty">
+    Is naam ki service abhi nahi mili.
+  </div>
+
+  <div class="request-box" id="requestBox">
+
+    <h2>📋 Karigar Request</h2>
+
+    <input id="name" type="text" placeholder="Aapka naam">
+
+    <input id="phone" type="tel" placeholder="Mobile number">
+
+    <input id="location" type="text" placeholder="Area / Mohalla">
+
+    <input id="service" type="text" readonly>
+
+    <textarea
+      id="details"
+      placeholder="Kaam ke baare mein thoda batayein..."
+    ></textarea>
+
+    <button class="btn" onclick="submitRequest()">
+      📲 Request Bhejein
+    </button>
+
+    <button class="btn cancel" onclick="closeRequest()">
+      Cancel
+    </button>
+
+    <div class="success" id="success">
+      ✅ Aapki request receive ho gayi hai!
+      <br><br>
+      Hey Karigar aapki request ko process karega.
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  © 2026 Hey Karigar · Local Services Platform
+</footer>
+
+<script>
+
+const API_BASE = window.location.origin;
+
+let categories = [];
+
+const defaultCategories = [
+  {id:1,name:"Gardener / Mali",icon:"🌱"},
+  {id:2,name:"Plumber",icon:"🚰"},
+  {id:3,name:"Electrician",icon:"💡"},
+  {id:4,name:"Carpenter",icon:"🔨"},
+  {id:5,name:"Painter",icon:"🎨"},
+  {id:6,name:"AC Repair",icon:"❄️"},
+  {id:7,name:"Washing Machine Repair",icon:"🧺"},
+  {id:8,name:"TV Repair",icon:"📺"},
+  {id:9,name:"Gutter Cleaning",icon:"🧹"},
+  {id:10,name:"Home Cleaning",icon:"🧼"},
+  {id:11,name:"Carpet Cleaning",icon:"🧽"},
+  {id:12,name:"Generator Mechanic",icon:"🔧"},
+  {id:13,name:"Puncture / Tyre Replacement",icon:"🛞"},
+  {id:14,name:"Barber",icon:"💈"},
+  {id:15,name:"Physiotherapist",icon:"🧑‍⚕️"},
+  {id:16,name:"Mehndi Artist",icon:"🌿"}
+];
+
+async function loadCategories() {
+
+  try {
+
+    const response = await fetch(
+      API_BASE + "/api/categories"
+    );
+
+    const data = await response.json();
+
+    if (data.success && Array.isArray(data.categories)) {
+      categories = data.categories;
+    } else {
+      categories = defaultCategories;
+    }
+
+  } catch (error) {
+
+    categories = defaultCategories;
+
+  }
+
+  displayServices(categories);
+}
+
+function displayServices(list) {
+
+  const services =
+    document.getElementById("services");
+
+  services.innerHTML = "";
+
+  document.getElementById("empty").style.display =
+    list.length === 0 ? "block" : "none";
+
+  list.forEach(category => {
+
+    const button =
+      document.createElement("button");
+
+    button.className = "service";
+
+    button.innerHTML = `
+      <span class="service-icon">
+        ${category.icon}
+      </span>
+      ${category.name}
+    `;
+
+    button.onclick = function() {
+      selectService(category.name);
+    };
+
+    services.appendChild(button);
+
+  });
+}
+
+function filterServices() {
+
+  const text =
+    document.getElementById("search")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const filtered =
+    categories.filter(category =>
+      category.name.toLowerCase().includes(text)
+    );
+
+  displayServices(filtered);
+}
+
+function selectService(serviceName) {
+
+  document.getElementById("requestBox")
+    .style.display = "block";
+
+  document.getElementById("service")
+    .value = serviceName;
+
+  document.getElementById("success")
+    .style.display = "none";
+
+  document.getElementById("requestBox")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+}
+
+function closeRequest() {
+
+  document.getElementById("requestBox")
+    .style.display = "none";
+}
+
+async function submitRequest() {
+
+  const name =
+    document.getElementById("name").value.trim();
+
+  const phone =
+    document.getElementById("phone").value.trim();
+
+  const location =
+    document.getElementById("location").value.trim();
+
+  const service =
+    document.getElementById("service").value;
+
+  const details =
+    document.getElementById("details").value.trim();
+
+  if (!name || !phone || !location || !service) {
+
+    alert(
+      "Naam, mobile number, area aur service zaroor bharein."
+    );
+
+    return;
+  }
+
+  const button =
+    document.querySelector(".request-box .btn");
+
+  button.disabled = true;
+  button.innerText =
+    "⏳ Request bheji ja rahi hai...";
+
+  try {
+
+    const response = await fetch(
+      API_BASE + "/api/requests",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          name,
+          phone,
+          location,
+          service,
+          details
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message || "Request failed"
+      );
+    }
+
+    document.getElementById("success")
+      .style.display = "block";
+
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("details").value = "";
+
+  } catch (error) {
+
+    alert(
+      "Request bhejne mein problem hui. Dobara try karein."
+    );
+
+  } finally {
+
+    button.disabled = false;
+    button.innerText = "📲 Request Bhejein";
+
+  }
+}
+
+loadCategories();
+
+</script>
+
+</body>
+</html>
