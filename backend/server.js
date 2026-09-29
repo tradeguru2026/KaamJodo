@@ -9,18 +9,62 @@ app.use(cors());
 app.use(express.json());
 
 // ===============================
+// SUPABASE
+// ===============================
+
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+async function supabaseRequest(endpoint, options = {}) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    throw new Error("Supabase environment variables are missing.");
+  }
+
+  const response = await fetch(
+    `${SUPABASE_URL}/rest/v1/${endpoint}`,
+    {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Prefer": options.method === "POST"
+          ? "return=representation"
+          : "return=representation",
+        ...(options.headers || {})
+      }
+    }
+  );
+
+  const text = await response.text();
+
+  let data;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    data = text;
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      typeof data === "string"
+        ? data
+        : JSON.stringify(data)
+    );
+  }
+
+  return data;
+}
+
+// ===============================
 // FRONTEND
 // ===============================
 
-// Main folder ke index.html ko serve karega
 app.use(express.static(path.join(__dirname, "..")));
 
 // ===============================
 // HEY KARIGAR DATA
 // ===============================
-
-let requests = [];
-let nextRequestId = 1;
 
 const categories = [
   { id: 1, name: "Gardener / Mali", icon: "🌱" },
@@ -58,6 +102,7 @@ app.get("/api", (req, res) => {
     success: true,
     app: "Hey Karigar",
     message: "API is working",
+    database: SUPABASE_URL ? "Supabase connected" : "Supabase not configured",
     endpoints: [
       "/api/categories",
       "/api/requests",
@@ -80,118 +125,220 @@ app.get("/api/categories", (req, res) => {
 });
 
 // ===============================
-// GET REQUESTS
+// GET REQUESTS FROM SUPABASE
 // ===============================
 
-app.get("/api/requests", (req, res) => {
-  res.json({
-    success: true,
-    count: requests.length,
-    requests
-  });
+app.get("/api/requests", async (req, res) => {
+  try {
+    const data = await supabaseRequest(
+      "service_requests?select=*&order=id.desc"
+    );
+
+    const requests = data.map(item => ({
+      id: item.id,
+      name: item.customer_name,
+      phone: item.phone,
+      location: item.address,
+      service: item.service,
+      details: item.description,
+      status: item.status
+    }));
+
+    res.json({
+      success: true,
+      count: requests.length,
+      requests
+    });
+
+  } catch (error) {
+    console.error("GET REQUESTS ERROR:", error.message);
+
+    res.status(500).json({
+      success: false,
+      message: "Could not load service requests.",
+      error: error.message
+    });
+  }
 });
 
 // ===============================
-// CREATE REQUEST
+// CREATE REQUEST IN SUPABASE
 // ===============================
 
-app.post("/api/requests", (req, res) => {
-  const {
-    name,
-    phone,
-    location,
-    service,
-    details
-  } = req.body;
+app.post("/api/requests", async (req, res) => {
+  try {
+    const {
+      name,
+      phone,
+      location,
+      service,
+      details
+    } = req.body;
 
-  if (!name || !phone || !location || !service) {
-    return res.status(400).json({
+    if (!name || !phone || !location || !service) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, phone, location and service are required."
+      });
+    }
+
+    const newRequestData = {
+      customer_name: String(name).trim(),
+      phone: String(phone).trim(),
+      service: String(service).trim(),
+      address: String(location).trim(),
+      description: String(details || "").trim(),
+      status: "New"
+    };
+
+    const data = await supabaseRequest(
+      "service_requests",
+      {
+        method: "POST",
+        body: JSON.stringify(newRequestData)
+      }
+    );
+
+    const saved = data[0];
+
+    const request = {
+      id: saved.id,
+      name: saved.customer_name,
+      phone: saved.phone,
+      location: saved.address,
+      service: saved.service,
+      details: saved.description,
+      status: saved.status
+    };
+
+    res.status(201).json({
+      success: true,
+      message: "Service request created successfully.",
+      request
+    });
+
+  } catch (error) {
+    console.error("CREATE REQUEST ERROR:", error.message);
+
+    res.status(500).json({
       success: false,
-      message: "Name, phone, location and service are required."
+      message: "Could not create service request.",
+      error: error.message
     });
   }
-
-  const newRequest = {
-    id: nextRequestId++,
-    name: String(name).trim(),
-    phone: String(phone).trim(),
-    location: String(location).trim(),
-    service: String(service).trim(),
-    details: String(details || "").trim(),
-    status: "New",
-    createdAt: new Date().toISOString()
-  };
-
-  requests.push(newRequest);
-
-  res.status(201).json({
-    success: true,
-    message: "Service request created successfully.",
-    request: newRequest
-  });
 });
 
 // ===============================
 // GET ONE REQUEST
 // ===============================
 
-app.get("/api/requests/:id", (req, res) => {
-  const id = Number(req.params.id);
+app.get("/api/requests/:id", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
 
-  const request = requests.find(item => item.id === id);
+    const data = await supabaseRequest(
+      `service_requests?id=eq.${id}&select=*`
+    );
 
-  if (!request) {
-    return res.status(404).json({
+    if (!data.length) {
+      return res.status(404).json({
+        success: false,
+        message: "Request not found."
+      });
+    }
+
+    const item = data[0];
+
+    res.json({
+      success: true,
+      request: {
+        id: item.id,
+        name: item.customer_name,
+        phone: item.phone,
+        location: item.address,
+        service: item.service,
+        details: item.description,
+        status: item.status
+      }
+    });
+
+  } catch (error) {
+    console.error("GET ONE REQUEST ERROR:", error.message);
+
+    res.status(500).json({
       success: false,
-      message: "Request not found."
+      message: "Could not load request.",
+      error: error.message
     });
   }
-
-  res.json({
-    success: true,
-    request
-  });
 });
 
 // ===============================
 // UPDATE STATUS
 // ===============================
 
-app.patch("/api/requests/:id/status", (req, res) => {
-  const id = Number(req.params.id);
-  const { status } = req.body;
+app.patch("/api/requests/:id/status", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { status } = req.body;
 
-  const allowedStatuses = [
-    "New",
-    "Accepted",
-    "Assigned",
-    "Completed",
-    "Cancelled"
-  ];
+    const allowedStatuses = [
+      "New",
+      "Accepted",
+      "Assigned",
+      "Completed",
+      "Cancelled"
+    ];
 
-  if (!allowedStatuses.includes(status)) {
-    return res.status(400).json({
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status."
+      });
+    }
+
+    const data = await supabaseRequest(
+      `service_requests?id=eq.${id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          status
+        })
+      }
+    );
+
+    if (!data.length) {
+      return res.status(404).json({
+        success: false,
+        message: "Request not found."
+      });
+    }
+
+    const item = data[0];
+
+    res.json({
+      success: true,
+      message: "Request status updated.",
+      request: {
+        id: item.id,
+        name: item.customer_name,
+        phone: item.phone,
+        location: item.address,
+        service: item.service,
+        details: item.description,
+        status: item.status
+      }
+    });
+
+  } catch (error) {
+    console.error("UPDATE STATUS ERROR:", error.message);
+
+    res.status(500).json({
       success: false,
-      message: "Invalid status."
+      message: "Could not update request status.",
+      error: error.message
     });
   }
-
-  const request = requests.find(item => item.id === id);
-
-  if (!request) {
-    return res.status(404).json({
-      success: false,
-      message: "Request not found."
-    });
-  }
-
-  request.status = status;
-
-  res.json({
-    success: true,
-    message: "Request status updated.",
-    request
-  });
 });
 
 // ===============================
