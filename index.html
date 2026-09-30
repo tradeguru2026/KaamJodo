@@ -7,115 +7,260 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f4f7f6;color:#17221c}
-header{background:#087f5b;color:white;padding:22px 16px;text-align:center}
-header h1{font-size:30px;margin-bottom:6px}
-header p{font-size:14px}
-.container{max-width:700px;margin:auto;padding:16px}
+
+body{
+  background:#f4f7f6;
+  color:#17221c
+}
+
+header{
+  background:#087f5b;
+  color:white;
+  padding:22px 16px;
+  text-align:center
+}
+
+header h1{
+  font-size:30px;
+  margin-bottom:6px
+}
+
+header p{
+  font-size:14px
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:16px
+}
 
 .box,.welcome,.request-box,.tracking-box,.profile-box,.dashboard-box{
-  background:white;padding:20px;border-radius:18px;
-  margin-bottom:18px;box-shadow:0 3px 14px rgba(0,0,0,.07)
+  background:white;
+  padding:20px;
+  border-radius:18px;
+  margin-bottom:18px;
+  box-shadow:0 3px 14px rgba(0,0,0,.07)
 }
 
 input,textarea,select{
- width:100%;padding:14px;border:1px solid #ddd;
- border-radius:11px;font-size:16px;outline:none;
- margin-bottom:12px;background:white
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:11px;
+  font-size:16px;
+  outline:none;
+  margin-bottom:12px;
+  background:white
 }
 
-textarea{min-height:90px;resize:vertical}
+textarea{
+  min-height:90px;
+  resize:vertical
+}
 
 .btn{
- width:100%;padding:14px;border:0;border-radius:10px;
- background:#087f5b;color:white;font-size:16px;
- font-weight:bold;cursor:pointer
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  background:#087f5b;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer
 }
 
-.btn:disabled{opacity:.6}
-.secondary{background:#145ea8;margin-top:10px}
-.cancel{background:#555;margin-top:9px}
-.logout{background:#b42318;margin-top:10px}
-.refresh{background:#145ea8;margin-top:10px}
+.btn:disabled{
+  opacity:.6
+}
+
+.secondary{
+  background:#145ea8;
+  margin-top:10px
+}
+
+.cancel{
+  background:#555;
+  margin-top:9px
+}
+
+.logout{
+  background:#b42318;
+  margin-top:10px
+}
+
+.refresh{
+  background:#145ea8;
+  margin-top:10px
+}
 
 .switch-btn{
- background:none;border:0;color:#087f5b;font-weight:bold;
- cursor:pointer;margin-top:12px;font-size:14px
+  background:none;
+  border:0;
+  color:#087f5b;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+  font-size:14px
 }
 
 .role-buttons{
- display:grid;grid-template-columns:1fr 1fr;
- gap:10px;margin:15px 0
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:15px 0
 }
 
 .role-btn{
- padding:13px;border:2px solid #ddd;border-radius:11px;
- background:white;font-size:15px;font-weight:bold
+  padding:13px;
+  border:2px solid #ddd;
+  border-radius:11px;
+  background:white;
+  font-size:15px;
+  font-weight:bold
 }
 
 .role-btn.active{
- border-color:#087f5b;background:#e7f8ef;color:#087f5b
+  border-color:#087f5b;
+  background:#e7f8ef;
+  color:#087f5b
 }
 
 .services{
- display:grid;grid-template-columns:repeat(2,1fr);gap:12px
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px
 }
 
 .service{
- background:white;border:0;border-radius:16px;padding:18px 8px;
- text-align:center;font-size:15px;cursor:pointer;
- box-shadow:0 3px 12px rgba(0,0,0,.07)
+  background:white;
+  border:0;
+  border-radius:16px;
+  padding:18px 8px;
+  text-align:center;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 3px 12px rgba(0,0,0,.07)
 }
 
 .service-icon{
- display:block;font-size:32px;margin-bottom:8px
+  display:block;
+  font-size:32px;
+  margin-bottom:8px
 }
 
-.request-box,.tracking-box,.profile-box,.dashboard-box{
- display:none
+.request-box,
+.tracking-box,
+.profile-box,
+.dashboard-box{
+  display:none
 }
 
 .success{
- display:none;background:#e7f8ef;color:#176b3a;
- padding:15px;border-radius:10px;margin-top:15px
+  display:none;
+  background:#e7f8ef;
+  color:#176b3a;
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px
 }
 
 .error{
- display:none;background:#ffe3e3;color:#b42318;
- padding:15px;border-radius:10px;margin-top:15px
+  display:none;
+  background:#ffe3e3;
+  color:#b42318;
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px
 }
 
 .status{
- display:inline-block;margin-top:10px;padding:8px 14px;
- border-radius:20px;background:#fff3cd;color:#856404;
- font-weight:bold
+  display:inline-block;
+  margin-top:10px;
+  padding:8px 14px;
+  border-radius:20px;
+  background:#fff3cd;
+  color:#856404;
+  font-weight:bold
 }
 
-.status.accepted{background:#dff7e8;color:#176b3a}
-.status.assigned{background:#e1efff;color:#145ea8}
-.status.completed{background:#dff7e8;color:#176b3a}
-.status.cancelled{background:#ffe3e3;color:#b42318}
+.status.accepted{
+  background:#dff7e8;
+  color:#176b3a
+}
+
+.status.assigned{
+  background:#e1efff;
+  color:#145ea8
+}
+
+.status.completed{
+  background:#dff7e8;
+  color:#176b3a
+}
+
+.status.cancelled{
+  background:#ffe3e3;
+  color:#b42318
+}
+
+.status.inprogress{
+  background:#fff0d6;
+  color:#b35c00
+}
 
 .request-card{
- background:#f8faf9;border:1px solid #e1e7e4;
- padding:16px;border-radius:14px;margin-top:12px
+  background:#f8faf9;
+  border:1px solid #e1e7e4;
+  padding:16px;
+  border-radius:14px;
+  margin-top:12px
 }
 
-.request-card p{margin:7px 0;line-height:1.45}
+.request-card h3{
+  margin-bottom:10px
+}
 
-.loading{text-align:center;padding:18px;color:#777}
+.request-card p{
+  margin:7px 0;
+  line-height:1.45
+}
+
+.loading{
+  text-align:center;
+  padding:18px;
+  color:#777
+}
 
 .empty{
- background:white;padding:18px;border-radius:14px;
- text-align:center;color:#777
+  background:white;
+  padding:18px;
+  border-radius:14px;
+  text-align:center;
+  color:#777
 }
 
 .user-info{
- background:#e7f8ef;padding:12px;border-radius:10px;
- margin-bottom:12px;color:#176b3a
+  background:#e7f8ef;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:12px;
+  color:#176b3a
 }
 
-footer{text-align:center;padding:28px 10px;color:#777;font-size:13px}
+footer{
+  text-align:center;
+  padding:28px 10px;
+  color:#777;
+  font-size:13px
+}
+
+.request-list-title{
+  margin-top:20px;
+  margin-bottom:10px;
+  color:#087f5b
+}
 </style>
 </head>
 
@@ -140,15 +285,26 @@ Apne Hey Karigar account mein login karein.
 
 <div id="loginForm">
 
-<input id="loginEmail" type="email" placeholder="Email">
+<input
+id="loginEmail"
+type="email"
+placeholder="Email">
 
-<input id="loginPassword" type="password" placeholder="Password">
+<input
+id="loginPassword"
+type="password"
+placeholder="Password">
 
-<button class="btn" id="loginButton" onclick="loginUser()">
+<button
+class="btn"
+id="loginButton"
+onclick="loginUser()">
 🔐 Login
 </button>
 
-<button class="switch-btn" onclick="showSignup()">
+<button
+class="switch-btn"
+onclick="showSignup()">
 Naya account hai? Signup karein
 </button>
 
@@ -157,13 +313,24 @@ Naya account hai? Signup karein
 
 <div id="signupForm" style="display:none">
 
-<input id="signupName" type="text" placeholder="Aapka poora naam">
+<input
+id="signupName"
+type="text"
+placeholder="Aapka poora naam">
 
-<input id="signupPhone" type="tel" placeholder="Mobile number">
+<input
+id="signupPhone"
+type="tel"
+placeholder="Mobile number">
 
-<input id="signupEmail" type="email" placeholder="Email">
+<input
+id="signupEmail"
+type="email"
+placeholder="Email">
 
-<input id="signupPassword" type="password"
+<input
+id="signupPassword"
+type="password"
 placeholder="Password (minimum 6 characters)">
 
 <p style="margin-bottom:8px;font-weight:bold">
@@ -172,13 +339,15 @@ Aap kaun hain?
 
 <div class="role-buttons">
 
-<button class="role-btn active"
+<button
+class="role-btn active"
 id="customerRoleBtn"
 onclick="selectRole('customer')">
 👤 Customer
 </button>
 
-<button class="role-btn"
+<button
+class="role-btn"
 id="karigarRoleBtn"
 onclick="selectRole('karigar')">
 🔧 Karigar
@@ -212,7 +381,8 @@ onclick="selectRole('karigar')">
 
 </select>
 
-<input id="signupLocation"
+<input
+id="signupLocation"
 type="text"
 placeholder="Aapka area / mohalla">
 
@@ -221,20 +391,24 @@ placeholder="Aapka area / mohalla">
 
 <div id="customerLocationField">
 
-<input id="customerLocation"
+<input
+id="customerLocation"
 type="text"
 placeholder="Aapka area / mohalla">
 
 </div>
 
 
-<button class="btn"
+<button
+class="btn"
 id="signupButton"
 onclick="signupUser()">
 📝 Account Banayein
 </button>
 
-<button class="switch-btn" onclick="showLogin()">
+<button
+class="switch-btn"
+onclick="showLogin()">
 Pehle se account hai? Login karein
 </button>
 
@@ -252,9 +426,14 @@ Pehle se account hai? Login karein
 
 <h2>👤 My Account</h2>
 
-<div class="user-info" id="userInfo"></div>
+<div
+class="user-info"
+id="userInfo">
+</div>
 
-<button class="btn logout" onclick="logoutUser()">
+<button
+class="btn logout"
+onclick="logoutUser()">
 🚪 Logout
 </button>
 
@@ -288,56 +467,94 @@ oninput="filterServices()">
 🧰 Services
 </h2>
 
-<div class="services" id="services"></div>
+<div
+class="services"
+id="services">
+</div>
 
-<div class="empty" id="empty">
+<div
+class="empty"
+id="empty">
 Is naam ki service abhi nahi mili.
 </div>
 
 
 <!-- ================= REQUEST ================= -->
 
-<div class="request-box" id="requestBox">
+<div
+class="request-box"
+id="requestBox">
 
 <h2>📋 Karigar Request</h2>
 
-<input id="name" type="text" placeholder="Aapka naam">
+<input
+id="name"
+type="text"
+placeholder="Aapka naam">
 
-<input id="phone" type="tel" placeholder="Mobile number">
+<input
+id="phone"
+type="tel"
+placeholder="Mobile number">
 
-<input id="location" type="text" placeholder="Area / Mohalla">
+<input
+id="location"
+type="text"
+placeholder="Area / Mohalla">
 
-<input id="service" type="text" readonly>
+<input
+id="service"
+type="text"
+readonly>
 
-<textarea id="details"
+<textarea
+id="details"
 placeholder="Kaam ke baare mein thoda batayein..."></textarea>
 
-<button class="btn"
+<button
+class="btn"
 id="submitButton"
 onclick="submitRequest()">
 📲 Request Bhejein
 </button>
 
-<button class="btn cancel" onclick="closeRequest()">
+<button
+class="btn cancel"
+onclick="closeRequest()">
 Cancel
 </button>
 
-<div class="success" id="success"></div>
+<div
+class="success"
+id="success">
+</div>
 
-<div class="error" id="requestError"></div>
+<div
+class="error"
+id="requestError">
+</div>
 
 </div>
 
 
 <!-- ================= TRACKING ================= -->
 
-<div class="tracking-box" id="trackingBox">
+<div
+class="tracking-box"
+id="trackingBox">
 
-<h2>📍 Meri Request</h2>
+<h2>📍 Meri Requests</h2>
 
-<div id="trackingContent"></div>
+<p style="margin-top:8px;color:#666">
+Aapki sabhi requests yahan dikhengi.
+</p>
 
-<button class="btn refresh"
+<div
+id="trackingContent">
+</div>
+
+<button
+class="btn refresh"
 onclick="checkRequestStatus()">
 🔄 Status Check Karein
 </button>
@@ -349,11 +566,16 @@ onclick="checkRequestStatus()">
 
 <!-- ================= KARIGAR DASHBOARD ================= -->
 
-<div class="dashboard-box" id="karigarDashboard">
+<div
+class="dashboard-box"
+id="karigarDashboard">
 
 <h2>🔧 Karigar Dashboard</h2>
 
-<div class="user-info" id="karigarInfo"></div>
+<div
+class="user-info"
+id="karigarInfo">
+</div>
 
 <p style="margin-bottom:12px">
 📋 <strong>Aapki Service Requests</strong>
@@ -367,7 +589,8 @@ onclick="checkRequestStatus()">
 
 </div>
 
-<button class="btn refresh"
+<button
+class="btn refresh"
 onclick="loadKarigarRequests()">
 🔄 Refresh Requests
 </button>
@@ -375,6 +598,7 @@ onclick="loadKarigarRequests()">
 </div>
 
 </main>
+
 
 <footer>
 © 2026 Hey Karigar · Local Services Platform
@@ -392,6 +616,7 @@ let selectedRole = "customer";
 /* ================= CATEGORIES ================= */
 
 const defaultCategories = [
+
 {id:1,name:"Gardener / Mali",icon:"🌱"},
 {id:2,name:"Plumber",icon:"🚰"},
 {id:3,name:"Electrician",icon:"💡"},
@@ -408,6 +633,7 @@ const defaultCategories = [
 {id:14,name:"Barber",icon:"💈"},
 {id:15,name:"Physiotherapist",icon:"🧑‍⚕️"},
 {id:16,name:"Mehndi Artist",icon:"🌿"}
+
 ];
 
 
@@ -416,6 +642,7 @@ const defaultCategories = [
 function showSignup(){
 
 document.getElementById("loginForm").style.display="none";
+
 document.getElementById("signupForm").style.display="block";
 
 document.getElementById("authTitle").innerText="📝 Signup";
@@ -424,12 +651,14 @@ document.getElementById("authSubtitle").innerText=
 "Hey Karigar par apna account banayein.";
 
 hideAuthMessages();
+
 }
 
 
 function showLogin(){
 
 document.getElementById("signupForm").style.display="none";
+
 document.getElementById("loginForm").style.display="block";
 
 document.getElementById("authTitle").innerText="🔐 Login";
@@ -438,6 +667,7 @@ document.getElementById("authSubtitle").innerText=
 "Apne Hey Karigar account mein login karein.";
 
 hideAuthMessages();
+
 }
 
 
@@ -460,18 +690,23 @@ const customerLocationField=
 document.getElementById("customerLocationField");
 
 customerBtn.classList.remove("active");
+
 karigarBtn.classList.remove("active");
 
 if(role==="customer"){
 
 customerBtn.classList.add("active");
+
 karigarFields.style.display="none";
+
 customerLocationField.style.display="block";
 
 }else{
 
 karigarBtn.classList.add("active");
+
 karigarFields.style.display="block";
+
 customerLocationField.style.display="none";
 
 }
@@ -522,6 +757,7 @@ showAuthError(
 );
 
 return;
+
 }
 
 if(password.length<6){
@@ -531,6 +767,7 @@ showAuthError(
 );
 
 return;
+
 }
 
 if(selectedRole==="karigar" && !service){
@@ -540,12 +777,14 @@ showAuthError(
 );
 
 return;
+
 }
 
 const button=
 document.getElementById("signupButton");
 
 button.disabled=true;
+
 button.innerText="⏳ Account ban raha hai...";
 
 try{
@@ -574,12 +813,16 @@ const text=await response.text();
 let data={};
 
 try{
+
 data=text ? JSON.parse(text) : {};
+
 }catch{
+
 data={
 success:false,
 message:text || "Invalid server response"
 };
+
 }
 
 if(!response.ok || !data.success){
@@ -618,6 +861,7 @@ error.message || "Signup mein problem hui."
 }finally{
 
 button.disabled=false;
+
 button.innerText="📝 Account Banayein";
 
 }
@@ -644,12 +888,14 @@ showAuthError(
 );
 
 return;
+
 }
 
 const button=
 document.getElementById("loginButton");
 
 button.disabled=true;
+
 button.innerText="⏳ Login ho raha hai...";
 
 try{
@@ -673,12 +919,16 @@ const text=await response.text();
 let data={};
 
 try{
+
 data=text ? JSON.parse(text) : {};
+
 }catch{
+
 data={
 success:false,
 message:text || "Invalid server response"
 };
+
 }
 
 if(!response.ok || !data.success){
@@ -689,7 +939,8 @@ data.message || "Login failed"
 
 }
 
-if(!data.session || !data.session.access_token){
+if(!data.session ||
+!data.session.access_token){
 
 throw new Error(
 "Login hua lekin session nahi mila."
@@ -725,6 +976,7 @@ error.message || "Login mein problem hui."
 }finally{
 
 button.disabled=false;
+
 button.innerText="🔐 Login";
 
 }
@@ -743,9 +995,13 @@ document.getElementById("profileBox").style.display="block";
 document.getElementById("userInfo").innerHTML=`
 
 <strong>${escapeHtml(profile.full_name)}</strong>
+
 <br>
+
 📱 ${escapeHtml(profile.phone || "Phone not added")}
+
 <br>
+
 👤 Role: ${escapeHtml(profile.role)}
 
 `;
@@ -759,10 +1015,14 @@ document.getElementById("karigarDashboard").style.display="block";
 document.getElementById("karigarInfo").innerHTML=`
 
 <strong>${escapeHtml(profile.full_name)}</strong>
+
 <br>
+
 🔧 Service:
 <strong>${escapeHtml(profile.service || "")}</strong>
+
 <br>
+
 📍 Area:
 ${escapeHtml(profile.location || "")}
 
@@ -784,6 +1044,8 @@ document.getElementById("phone").value=profile.phone;
 
 if(profile.location)
 document.getElementById("location").value=profile.location;
+
+checkRequestStatus();
 
 }
 
@@ -808,17 +1070,21 @@ profile=JSON.parse(profileText);
 }catch{
 
 return;
+
 }
 
-if(!profile || profile.role!=="karigar")return;
+if(!profile || profile.role!=="karigar")
+return;
 
 const container=
 document.getElementById("karigarRequests");
 
 container.innerHTML=`
+
 <div class="loading">
 ⏳ Requests load ho rahi hain...
 </div>
+
 `;
 
 try{
@@ -832,12 +1098,16 @@ const text=await response.text();
 let data={};
 
 try{
+
 data=text ? JSON.parse(text) : {};
+
 }catch{
+
 data={
 success:false,
 message:text || "Invalid server response"
 };
+
 }
 
 if(!response.ok || !data.success){
@@ -858,7 +1128,8 @@ String(profile.service || "")
 .trim()
 .toLowerCase();
 
-const filtered=requests.filter(request=>{
+const filtered=
+requests.filter(request=>{
 
 const requestService=
 String(request.service || "")
@@ -874,14 +1145,17 @@ if(filtered.length===0){
 container.innerHTML=`
 
 <div class="empty">
+
 📭 Abhi
 <strong>${escapeHtml(profile.service)}</strong>
 ki koi request nahi hai.
+
 </div>
 
 `;
 
 return;
+
 }
 
 container.innerHTML="";
@@ -892,10 +1166,16 @@ const status=
 String(request.status || "New");
 
 const statusClass=
-status==="Accepted"?"accepted":
-status==="Assigned"?"assigned":
-status==="Completed"?"completed":
-status==="Cancelled"?"cancelled":"";
+status==="Accepted"
+?"accepted":
+status==="Assigned"
+?"assigned":
+status==="Completed"
+?"completed":
+status==="In Progress"
+?"inprogress":
+status==="Cancelled"
+?"cancelled":"";
 
 const customerName=
 request.name ||
@@ -947,10 +1227,13 @@ ${escapeHtml(description)}
 </p>
 
 <p>
+
 📌 <strong>Status:</strong><br>
+
 <span class="status ${statusClass}">
 ${escapeHtml(status)}
 </span>
+
 </p>
 
 <div style="margin-top:12px">
@@ -959,8 +1242,12 @@ ${
 status==="New"
 ?
 `
-<button class="btn"
-onclick="updateRequestStatus(${Number(request.id)},'Accepted')">
+<button
+class="btn"
+onclick="updateRequestStatus(
+${Number(request.id)},
+'Accepted'
+)">
 ✅ Accept Request
 </button>
 `
@@ -971,8 +1258,12 @@ ${
 status==="Accepted"
 ?
 `
-<button class="btn secondary"
-onclick="updateRequestStatus(${Number(request.id)},'Completed')">
+<button
+class="btn secondary"
+onclick="updateRequestStatus(
+${Number(request.id)},
+'Completed'
+)">
 ✅ Mark Completed
 </button>
 `
@@ -989,14 +1280,23 @@ container.appendChild(card);
 
 }catch(error){
 
-console.error("KARIGAR REQUEST ERROR:",error);
+console.error(
+"KARIGAR REQUEST ERROR:",
+error
+);
 
 container.innerHTML=`
 
-<div class="error" style="display:block">
+<div
+class="error"
+style="display:block">
+
 ❌ Requests load nahi ho saki.
+
 <br><br>
+
 ${escapeHtml(error.message)}
+
 </div>
 
 `;
@@ -1033,12 +1333,16 @@ const text=await response.text();
 let data={};
 
 try{
+
 data=text ? JSON.parse(text) : {};
+
 }catch{
+
 data={
 success:false,
 message:text || "Invalid server response"
 };
+
 }
 
 if(!response.ok || !data.success){
@@ -1049,13 +1353,18 @@ data.message || "Status update failed"
 
 }
 
-alert("✅ Request status update ho gaya.");
+alert(
+"✅ Request status update ho gaya."
+);
 
 await loadKarigarRequests();
 
 }catch(error){
 
-console.error("STATUS ERROR:",error);
+console.error(
+"STATUS ERROR:",
+error
+);
 
 alert(
 "❌ Status update nahi ho saka:\n"+
@@ -1071,14 +1380,33 @@ alert(
 
 function logoutUser(){
 
-localStorage.removeItem("heyKarigarAccessToken");
-localStorage.removeItem("heyKarigarRefreshToken");
-localStorage.removeItem("heyKarigarProfile");
+localStorage.removeItem(
+"heyKarigarAccessToken"
+);
 
-document.getElementById("profileBox").style.display="none";
-document.getElementById("karigarDashboard").style.display="none";
-document.getElementById("authBox").style.display="block";
-document.getElementById("customerArea").style.display="block";
+localStorage.removeItem(
+"heyKarigarRefreshToken"
+);
+
+localStorage.removeItem(
+"heyKarigarProfile"
+);
+
+document.getElementById(
+"profileBox"
+).style.display="none";
+
+document.getElementById(
+"karigarDashboard"
+).style.display="none";
+
+document.getElementById(
+"authBox"
+).style.display="block";
+
+document.getElementById(
+"customerArea"
+).style.display="block";
 
 showLogin();
 
@@ -1089,32 +1417,47 @@ showLogin();
 
 function showAuthSuccess(message){
 
-const box=document.getElementById("authSuccess");
+const box=
+document.getElementById("authSuccess");
 
-box.innerHTML=escapeHtml(message);
+box.innerHTML=
+escapeHtml(message);
+
 box.style.display="block";
 
-document.getElementById("authError").style.display="none";
+document.getElementById(
+"authError"
+).style.display="none";
 
 }
 
 
 function showAuthError(message){
 
-const box=document.getElementById("authError");
+const box=
+document.getElementById("authError");
 
-box.innerHTML="❌ "+escapeHtml(message);
+box.innerHTML=
+"❌ "+escapeHtml(message);
+
 box.style.display="block";
 
-document.getElementById("authSuccess").style.display="none";
+document.getElementById(
+"authSuccess"
+).style.display="none";
 
 }
 
 
 function hideAuthMessages(){
 
-document.getElementById("authSuccess").style.display="none";
-document.getElementById("authError").style.display="none";
+document.getElementById(
+"authSuccess"
+).style.display="none";
+
+document.getElementById(
+"authError"
+).style.display="none";
 
 }
 
@@ -1134,9 +1477,13 @@ const text=await response.text();
 let data={};
 
 try{
+
 data=text ? JSON.parse(text) : {};
+
 }catch{
+
 data={};
+
 }
 
 if(
@@ -1171,7 +1518,9 @@ document.getElementById("services");
 services.innerHTML="";
 
 document.getElementById("empty").style.display=
-list.length===0?"block":"none";
+list.length===0
+?"block"
+:"none";
 
 list.forEach(category=>{
 
@@ -1183,7 +1532,11 @@ button.className="service";
 button.innerHTML=`
 
 <span class="service-icon">
-${escapeHtml(category.icon || "🔧")}
+
+${escapeHtml(
+category.icon || "🔧"
+)}
+
 </span>
 
 ${escapeHtml(category.name)}
@@ -1191,7 +1544,9 @@ ${escapeHtml(category.name)}
 `;
 
 button.onclick=()=>{
+
 selectService(category.name);
+
 };
 
 services.appendChild(button);
@@ -1211,9 +1566,11 @@ document.getElementById("search")
 
 const filtered=
 categories.filter(category=>
+
 String(category.name || "")
 .toLowerCase()
 .includes(text)
+
 );
 
 displayServices(filtered);
@@ -1223,15 +1580,25 @@ displayServices(filtered);
 
 function selectService(serviceName){
 
-document.getElementById("requestBox").style.display="block";
+document.getElementById(
+"requestBox"
+).style.display="block";
 
-document.getElementById("service").value=serviceName;
+document.getElementById(
+"service"
+).value=serviceName;
 
-document.getElementById("success").style.display="none";
+document.getElementById(
+"success"
+).style.display="none";
 
-document.getElementById("requestError").style.display="none";
+document.getElementById(
+"requestError"
+).style.display="none";
 
-document.getElementById("requestBox").scrollIntoView({
+document.getElementById(
+"requestBox"
+).scrollIntoView({
 behavior:"smooth"
 });
 
@@ -1240,7 +1607,9 @@ behavior:"smooth"
 
 function closeRequest(){
 
-document.getElementById("requestBox").style.display="none";
+document.getElementById(
+"requestBox"
+).style.display="none";
 
 }
 
@@ -1250,19 +1619,24 @@ document.getElementById("requestBox").style.display="none";
 async function submitRequest(){
 
 const name=
-document.getElementById("name").value.trim();
+document.getElementById("name")
+.value.trim();
 
 const phone=
-document.getElementById("phone").value.trim();
+document.getElementById("phone")
+.value.trim();
 
 const location=
-document.getElementById("location").value.trim();
+document.getElementById("location")
+.value.trim();
 
 const service=
-document.getElementById("service").value.trim();
+document.getElementById("service")
+.value.trim();
 
 const details=
-document.getElementById("details").value.trim();
+document.getElementById("details")
+.value.trim();
 
 const errorBox=
 document.getElementById("requestError");
@@ -1271,9 +1645,15 @@ const successBox=
 document.getElementById("success");
 
 errorBox.style.display="none";
+
 successBox.style.display="none";
 
-if(!name || !phone || !location || !service){
+if(
+!name ||
+!phone ||
+!location ||
+!service
+){
 
 errorBox.innerHTML=
 "❌ Naam, mobile number, area aur service zaroor bharein.";
@@ -1285,10 +1665,14 @@ return;
 }
 
 const button=
-document.getElementById("submitButton");
+document.getElementById(
+"submitButton"
+);
 
 button.disabled=true;
-button.innerText="⏳ Request bheji ja rahi hai...";
+
+button.innerText=
+"⏳ Request bheji ja rahi hai...";
 
 try{
 
@@ -1309,41 +1693,101 @@ details:details
 }
 );
 
-const text=await response.text();
+const text=
+await response.text();
 
 let data={};
 
 try{
 
-data=text ? JSON.parse(text) : {};
+data=
+text ? JSON.parse(text) : {};
 
 }catch{
 
 data={
 success:false,
-message:text || "Server ne valid response nahi diya."
+message:
+text ||
+"Server ne valid response nahi diya."
 };
 
 }
 
-console.log("REQUEST RESPONSE:",data);
+console.log(
+"REQUEST RESPONSE:",
+data
+);
 
-if(!response.ok || !data.success){
+if(
+!response.ok ||
+!data.success
+){
 
 throw new Error(
-data.message || "Request save nahi hui."
+data.message ||
+"Request save nahi hui."
 );
 
 }
 
-if(data.request && data.request.id){
+
+/*
+  IMPORTANT:
+  Ab ek hi Request ID save nahi hoti.
+  Har nayi request ki ID list mein add hoti hai.
+*/
+
+if(
+data.request &&
+data.request.id
+){
+
+let requestIds=[];
+
+try{
+
+requestIds=JSON.parse(
+localStorage.getItem(
+"heyKarigarRequestIds"
+) || "[]"
+);
+
+if(!Array.isArray(requestIds)){
+
+requestIds=[];
+
+}
+
+}catch{
+
+requestIds=[];
+
+}
+
+const newId=
+String(data.request.id);
+
+if(!requestIds.includes(newId)){
+
+requestIds.push(newId);
+
+}
 
 localStorage.setItem(
-"heyKarigarRequestId",
-String(data.request.id)
+"heyKarigarRequestIds",
+JSON.stringify(requestIds)
+);
+
+/*
+  Purane single-ID system ko remove
+*/
+localStorage.removeItem(
+"heyKarigarRequestId"
 );
 
 }
+
 
 successBox.innerHTML=`
 
@@ -1352,45 +1796,63 @@ successBox.innerHTML=`
 <br><br>
 
 <strong>
-Request ID: #${escapeHtml(data.request?.id || "")}
+Request ID:
+#${escapeHtml(
+data.request?.id || ""
+)}
 </strong>
+
+<br><br>
+
+📋 Aapki sabhi requests neeche dikhengi.
 
 `;
 
 successBox.style.display="block";
 
-document.getElementById("details").value="";
+document.getElementById(
+"details"
+).value="";
 
-if(data.request){
 
-showTrackingRequest(data.request);
-
-}else{
+/*
+  Ab latest request nahi,
+  balki ALL requests load hongi.
+*/
 
 await checkRequestStatus();
 
-}
 
-document.getElementById("trackingBox").scrollIntoView({
+document.getElementById(
+"trackingBox"
+).scrollIntoView({
 behavior:"smooth"
 });
 
 }catch(error){
 
-console.error("REQUEST ERROR:",error);
+console.error(
+"REQUEST ERROR:",
+error
+);
 
 errorBox.innerHTML=`
 
-❌ <strong>Request bhejne mein problem hui.</strong>
+❌ <strong>
+Request bhejne mein problem hui.
+</strong>
 
 <br><br>
 
-<strong>Actual Error:</strong>
+<strong>
+Actual Error:
+</strong>
 
 <br>
 
 ${escapeHtml(
-error.message || "Unknown error"
+error.message ||
+"Unknown error"
 )}
 
 `;
@@ -1400,26 +1862,33 @@ errorBox.style.display="block";
 }finally{
 
 button.disabled=false;
-button.innerText="📲 Request Bhejein";
+
+button.innerText=
+"📲 Request Bhejein";
 
 }
 
 }
 
 
-/* ================= SHOW TRACKING ================= */
+/* ================= SHOW ONE TRACKING ================= */
 
 function showTrackingRequest(request){
 
 const trackingBox=
-document.getElementById("trackingBox");
+document.getElementById(
+"trackingBox"
+);
 
 const trackingContent=
-document.getElementById("trackingContent");
+document.getElementById(
+"trackingContent"
+);
 
 if(!request){
 
 trackingBox.style.display="none";
+
 return;
 
 }
@@ -1427,13 +1896,21 @@ return;
 trackingBox.style.display="block";
 
 const status=
-String(request.status || "New");
+String(
+request.status || "New"
+);
 
 const statusClass=
-status==="Accepted"?"accepted":
-status==="Assigned"?"assigned":
-status==="Completed"?"completed":
-status==="Cancelled"?"cancelled":"";
+status==="Accepted"
+?"accepted":
+status==="Assigned"
+?"assigned":
+status==="Completed"
+?"completed":
+status==="In Progress"
+?"inprogress":
+status==="Cancelled"
+?"cancelled":"";
 
 const customerName=
 request.name ||
@@ -1454,10 +1931,9 @@ trackingContent.innerHTML=`
 
 <div class="request-card">
 
-<p>
-<strong>Request ID:</strong>
-#${escapeHtml(request.id)}
-</p>
+<h3>
+📋 Request #${escapeHtml(request.id)}
+</h3>
 
 <p>
 <strong>Customer:</strong>
@@ -1466,7 +1942,10 @@ ${escapeHtml(customerName)}
 
 <p>
 <strong>Phone:</strong>
-${escapeHtml(request.phone || "Phone nahi mila")}
+${escapeHtml(
+request.phone ||
+"Phone nahi mila"
+)}
 </p>
 
 <p>
@@ -1476,7 +1955,9 @@ ${escapeHtml(address)}
 
 <p>
 <strong>Service:</strong>
-${escapeHtml(request.service || "")}
+${escapeHtml(
+request.service || ""
+)}
 </p>
 
 <p>
@@ -1485,6 +1966,7 @@ ${escapeHtml(description)}
 </p>
 
 <p>
+
 <strong>Status:</strong><br>
 
 <span class="status ${statusClass}">
@@ -1500,22 +1982,88 @@ ${escapeHtml(status)}
 }
 
 
-/* ================= CUSTOMER STATUS ================= */
+/* ================= CUSTOMER STATUS - ALL REQUESTS ================= */
 
 async function checkRequestStatus(){
 
-const requestId=
-localStorage.getItem("heyKarigarRequestId");
+let requestIds=[];
+
+/*
+  New multi-request system
+*/
+
+try{
+
+requestIds=JSON.parse(
+localStorage.getItem(
+"heyKarigarRequestIds"
+) || "[]"
+);
+
+if(!Array.isArray(requestIds)){
+
+requestIds=[];
+
+}
+
+}catch{
+
+requestIds=[];
+
+}
+
+
+/*
+  Old single-request system se migration.
+  Agar purani ID bachi hui hai to usko bhi list mein daal denge.
+*/
+
+const oldRequestId=
+localStorage.getItem(
+"heyKarigarRequestId"
+);
+
+if(
+oldRequestId &&
+!requestIds.includes(
+String(oldRequestId)
+)
+){
+
+requestIds.push(
+String(oldRequestId)
+);
+
+localStorage.setItem(
+"heyKarigarRequestIds",
+JSON.stringify(requestIds)
+);
+
+localStorage.removeItem(
+"heyKarigarRequestId"
+);
+
+}
+
+
+/*
+  Agar koi request ID nahi hai
+*/
 
 const trackingBox=
-document.getElementById("trackingBox");
+document.getElementById(
+"trackingBox"
+);
 
 const trackingContent=
-document.getElementById("trackingContent");
+document.getElementById(
+"trackingContent"
+);
 
-if(!requestId){
+if(requestIds.length===0){
 
 trackingBox.style.display="none";
+
 return;
 
 }
@@ -1525,32 +2073,54 @@ trackingBox.style.display="block";
 trackingContent.innerHTML=`
 
 <div class="loading">
-⏳ Status check ho raha hai...
+
+⏳ Aapki sabhi requests load ho rahi hain...
+
 </div>
 
 `;
 
+
 try{
 
-const response=await fetch(
+/*
+  Sabhi request IDs ko ek saath check karna.
+*/
+
+const results=
+await Promise.all(
+
+requestIds.map(
+async id=>{
+
+try{
+
+const response=
+await fetch(
 API_BASE+
 "/api/requests/"+
-encodeURIComponent(requestId)
+encodeURIComponent(id)
 );
 
-const text=await response.text();
+const text=
+await response.text();
 
 let data={};
 
 try{
 
-data=text ? JSON.parse(text) : {};
+data=
+text
+?JSON.parse(text)
+:{};
 
 }catch{
 
 data={
 success:false,
-message:text || "Invalid server response"
+message:
+text ||
+"Invalid response"
 };
 
 }
@@ -1561,33 +2131,181 @@ if(
 !data.request
 ){
 
-throw new Error(
-data.message || "Request not found"
-);
+return null;
 
 }
 
-showTrackingRequest(data.request);
+return data.request;
 
 }catch(error){
 
-console.error("TRACKING ERROR:",error);
+console.error(
+"REQUEST ID ERROR:",
+id,
+error
+);
+
+return null;
+
+}
+
+}
+)
+
+);
+
+
+/*
+  Jo requests successfully mili hain
+*/
+
+const validRequests=
+results.filter(
+request=>request!==null
+);
+
+
+if(validRequests.length===0){
+
+trackingContent.innerHTML=`
+
+<div class="empty">
+
+📭 Abhi koi request nahi mili.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+/*
+  Sabhi requests ko customer side par dikhana
+*/
+
+trackingContent.innerHTML=
+validRequests.map(
+request=>{
+
+const status=
+String(
+request.status || "New"
+);
+
+const statusClass=
+status==="Accepted"
+?"accepted":
+status==="Assigned"
+?"assigned":
+status==="Completed"
+?"completed":
+status==="In Progress"
+?"inprogress":
+status==="Cancelled"
+?"cancelled":"";
+
+const customerName=
+request.name ||
+request.customer_name ||
+"Naam nahi mila";
+
+const address=
+request.location ||
+request.address ||
+"Location nahi mili";
+
+const description=
+request.details ||
+request.description ||
+"Details nahi di gayi";
+
+return `
+
+<div class="request-card">
+
+<h3>
+📋 Request #${escapeHtml(
+request.id
+)}
+</h3>
+
+<p>
+<strong>Customer:</strong>
+${escapeHtml(customerName)}
+</p>
+
+<p>
+<strong>Phone:</strong>
+${escapeHtml(
+request.phone ||
+"Phone nahi mila"
+)}
+</p>
+
+<p>
+<strong>Location:</strong>
+${escapeHtml(address)}
+</p>
+
+<p>
+<strong>Service:</strong>
+${escapeHtml(
+request.service ||
+""
+)}
+</p>
+
+<p>
+<strong>Problem:</strong>
+${escapeHtml(description)}
+</p>
+
+<p>
+
+<strong>Status:</strong><br>
+
+<span class="status ${statusClass}">
+${escapeHtml(status)}
+</span>
+
+</p>
+
+</div>
+
+`;
+
+}
+).join("");
+
+
+}catch(error){
+
+console.error(
+"TRACKING ERROR:",
+error
+);
 
 trackingContent.innerHTML=`
 
 <div class="request-card">
 
-❌ Request status load nahi ho saka.
+❌ Requests load nahi ho saki.
 
 <br><br>
 
 ${escapeHtml(
-error.message || "Unknown error"
+error.message ||
+"Unknown error"
 )}
 
 <br><br>
 
-Please dobara Status Check karein.
+Please dobara
+<strong>Status Check Karein</strong>
+dabayein.
 
 </div>
 
@@ -1617,15 +2335,22 @@ return String(value ?? "")
 function restoreLogin(){
 
 const profileText=
-localStorage.getItem("heyKarigarProfile");
+localStorage.getItem(
+"heyKarigarProfile"
+);
 
-if(!profileText)return;
+if(!profileText)
+return;
 
 try{
 
-const profile=JSON.parse(profileText);
+const profile=
+JSON.parse(profileText);
 
-if(profile && profile.role){
+if(
+profile &&
+profile.role
+){
 
 showLoggedInUser(profile);
 
@@ -1633,7 +2358,9 @@ showLoggedInUser(profile);
 
 }catch{
 
-localStorage.removeItem("heyKarigarProfile");
+localStorage.removeItem(
+"heyKarigarProfile"
+);
 
 }
 
@@ -1644,20 +2371,38 @@ localStorage.removeItem("heyKarigarProfile");
 
 loadCategories();
 
-window.addEventListener("load",()=>{
+window.addEventListener(
+"load",
+()=>{
 
 restoreLogin();
 
-const requestId=
-localStorage.getItem("heyKarigarRequestId");
 
-if(requestId){
+/*
+  Multi-request IDs check
+*/
+
+const requestIds=
+localStorage.getItem(
+"heyKarigarRequestIds"
+);
+
+const oldRequestId=
+localStorage.getItem(
+"heyKarigarRequestId"
+);
+
+if(
+requestIds ||
+oldRequestId
+){
 
 checkRequestStatus();
 
 }
 
-});
+}
+);
 
 </script>
 
