@@ -7,9 +7,20 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+
+/* =========================
+   FRONTEND
+========================= */
+
+const FRONTEND_PATH = path.join(__dirname, "..");
+
+app.use(express.static(FRONTEND_PATH));
 
 const PORT = process.env.PORT || 5000;
+
+/* =========================
+   SUPABASE
+========================= */
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -18,20 +29,24 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
   console.error("❌ Supabase environment variables are missing");
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: {
-    persistSession: false,
-    autoRefreshToken: false,
-    detectSessionInUrl: false
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false
+    }
   }
-});
+);
 
 /* =========================
    HOME
 ========================= */
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(FRONTEND_PATH, "index.html"));
 });
 
 app.get("/api", (req, res) => {
@@ -147,6 +162,7 @@ app.post("/api/auth/signup", async (req, res) => {
         location
       }
     });
+
   } catch (error) {
     console.error("Signup error:", error);
 
@@ -172,10 +188,11 @@ app.post("/api/auth/login", async (req, res) => {
       });
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.trim().toLowerCase(),
-      password
-    });
+    const { data, error } =
+      await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password
+      });
 
     if (error) {
       return res.status(401).json({
@@ -187,7 +204,10 @@ app.post("/api/auth/login", async (req, res) => {
     const user = data.user;
     const session = data.session;
 
-    const { data: profile, error: profileError } = await supabase
+    const {
+      data: profile,
+      error: profileError
+    } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", user.id)
@@ -203,17 +223,21 @@ app.post("/api/auth/login", async (req, res) => {
     return res.json({
       success: true,
       message: "Login successful",
+
       session: {
         access_token: session.access_token,
         refresh_token: session.refresh_token,
         expires_at: session.expires_at
       },
+
       user: {
         id: user.id,
         email: user.email
       },
+
       profile
     });
+
   } catch (error) {
     console.error("Login error:", error);
 
@@ -232,11 +256,12 @@ app.get("/api/profile/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", id)
-      .single();
+    const { data, error } =
+      await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", id)
+        .single();
 
     if (error) {
       return res.status(404).json({
@@ -249,6 +274,7 @@ app.get("/api/profile/:id", async (req, res) => {
       success: true,
       profile: data
     });
+
   } catch (error) {
     console.error(error);
 
@@ -260,13 +286,12 @@ app.get("/api/profile/:id", async (req, res) => {
 });
 
 /* =========================
-   SERVICE REQUESTS
+   CREATE SERVICE REQUEST
 ========================= */
-
-/* Create request */
 
 app.post("/api/requests", async (req, res) => {
   try {
+
     const {
       name,
       phone,
@@ -278,11 +303,15 @@ app.post("/api/requests", async (req, res) => {
     if (!name || !phone || !location || !service) {
       return res.status(400).json({
         success: false,
-        message: "Name, phone, location aur service zaroori hain"
+        message:
+          "Name, phone, location aur service zaroori hain"
       });
     }
 
-    const { data, error } = await supabase
+    const {
+      data,
+      error
+    } = await supabase
       .from("service_requests")
       .insert({
         name,
@@ -308,7 +337,9 @@ app.post("/api/requests", async (req, res) => {
       success: true,
       request: data
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
@@ -318,14 +349,22 @@ app.post("/api/requests", async (req, res) => {
   }
 });
 
-/* Get all requests */
+/* =========================
+   GET ALL REQUESTS
+========================= */
 
 app.get("/api/requests", async (req, res) => {
   try {
-    const { data, error } = await supabase
+
+    const {
+      data,
+      error
+    } = await supabase
       .from("service_requests")
       .select("*")
-      .order("id", { ascending: false });
+      .order("id", {
+        ascending: false
+      });
 
     if (error) {
       console.error(error);
@@ -341,7 +380,9 @@ app.get("/api/requests", async (req, res) => {
       count: data.length,
       requests: data
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
@@ -351,13 +392,19 @@ app.get("/api/requests", async (req, res) => {
   }
 });
 
-/* Get single request */
+/* =========================
+   GET SINGLE REQUEST
+========================= */
 
 app.get("/api/requests/:id", async (req, res) => {
   try {
+
     const { id } = req.params;
 
-    const { data, error } = await supabase
+    const {
+      data,
+      error
+    } = await supabase
       .from("service_requests")
       .select("*")
       .eq("id", id)
@@ -374,7 +421,9 @@ app.get("/api/requests/:id", async (req, res) => {
       success: true,
       request: data
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
@@ -384,10 +433,13 @@ app.get("/api/requests/:id", async (req, res) => {
   }
 });
 
-/* Update request status */
+/* =========================
+   UPDATE REQUEST STATUS
+========================= */
 
 app.patch("/api/requests/:id/status", async (req, res) => {
   try {
+
     const { id } = req.params;
     const { status } = req.body;
 
@@ -407,9 +459,14 @@ app.patch("/api/requests/:id/status", async (req, res) => {
       });
     }
 
-    const { data, error } = await supabase
+    const {
+      data,
+      error
+    } = await supabase
       .from("service_requests")
-      .update({ status })
+      .update({
+        status
+      })
       .eq("id", id)
       .select()
       .single();
@@ -427,7 +484,9 @@ app.patch("/api/requests/:id/status", async (req, res) => {
       success: true,
       request: data
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
@@ -464,5 +523,7 @@ app.use("/api", (req, res) => {
 ========================= */
 
 app.listen(PORT, () => {
-  console.log(`Hey Karigar server running on port ${PORT}`);
+  console.log(
+    `Hey Karigar server running on port ${PORT}`
+  );
 });
