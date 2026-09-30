@@ -8,45 +8,42 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/* =========================
-   FRONTEND
-========================= */
-
-const FRONTEND_PATH = path.join(__dirname, "..");
-
-app.use(express.static(FRONTEND_PATH));
-
 const PORT = process.env.PORT || 5000;
 
-/* =========================
-   SUPABASE
-========================= */
-
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error("❌ Supabase environment variables are missing");
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  console.error("❌ Supabase environment variables missing");
 }
 
 const supabase = createClient(
   SUPABASE_URL,
-  SUPABASE_KEY,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-      detectSessionInUrl: false
-    }
-  }
+  SUPABASE_SERVICE_ROLE_KEY
 );
 
-/* =========================
-   HOME
-========================= */
+// Frontend
+const FRONTEND_PATH = path.join(__dirname, "..");
 
+app.use(express.static(FRONTEND_PATH));
+
+
+// =========================
+// HOME
+// =========================
 app.get("/", (req, res) => {
   res.sendFile(path.join(FRONTEND_PATH, "index.html"));
+});
+
+
+// =========================
+// API HEALTH
+// =========================
+app.get("/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "Hey Karigar API healthy"
+  });
 });
 
 app.get("/api", (req, res) => {
@@ -57,126 +54,89 @@ app.get("/api", (req, res) => {
   });
 });
 
-/* =========================
-   AUTH - SIGNUP
-========================= */
 
+// =========================
+// SIGNUP
+// =========================
 app.post("/api/auth/signup", async (req, res) => {
   try {
     const {
-      full_name,
-      phone,
+      name,
       email,
+      phone,
       password,
       role,
-      service,
-      location
+      service
     } = req.body;
 
-    if (!full_name || !email || !password || !role) {
+    if (!name || !email || !password || !role) {
       return res.status(400).json({
         success: false,
         message: "Name, email, password aur role zaroori hain"
       });
     }
 
-    if (!["customer", "karigar"].includes(role)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid role"
-      });
-    }
-
-    if (password.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: "Password kam se kam 6 characters ka hona chahiye"
-      });
-    }
-
-    if (role === "karigar" && !service) {
-      return res.status(400).json({
-        success: false,
-        message: "Karigar ke liye service zaroori hai"
-      });
-    }
-
     const { data: userData, error: userError } =
       await supabase.auth.admin.createUser({
-        email: email.trim().toLowerCase(),
+        email: String(email).trim().toLowerCase(),
         password,
-        email_confirm: true,
-        user_metadata: {
-          full_name,
-          phone: phone || "",
-          role,
-          service: service || "",
-          location: location || ""
-        }
+        email_confirm: true
       });
 
     if (userError) {
+      console.error("SIGNUP AUTH ERROR:", userError);
+
       return res.status(400).json({
         success: false,
         message: userError.message
       });
     }
 
-    const user = userData.user;
+    const userId = userData.user.id;
 
-    const { error: profileError } = await supabase
-      .from("profiles")
-      .insert({
-        id: user.id,
-        full_name,
-        phone: phone || null,
-        role,
-        service: service || null,
-        location: location || null
-      });
+    const { data: profile, error: profileError } =
+      await supabase
+        .from("profiles")
+        .insert({
+          id: userId,
+          name: String(name).trim(),
+          email: String(email).trim().toLowerCase(),
+          phone: phone ? String(phone).trim() : null,
+          role: String(role).trim(),
+          service: service ? String(service).trim() : null
+        })
+        .select()
+        .single();
 
     if (profileError) {
-      console.error("Profile error:", profileError);
+      console.error("SIGNUP PROFILE ERROR:", profileError);
 
-      await supabase.auth.admin.deleteUser(user.id);
-
-      return res.status(500).json({
+      return res.status(400).json({
         success: false,
-        message: "Profile create nahi ho saka"
+        message: profileError.message
       });
     }
 
-    return res.status(201).json({
+    res.json({
       success: true,
-      message:
-        role === "karigar"
-          ? "Karigar account successfully create ho gaya"
-          : "Customer account successfully create ho gaya",
-      user: {
-        id: user.id,
-        email: user.email,
-        full_name,
-        phone,
-        role,
-        service,
-        location
-      }
+      message: "Signup successful",
+      profile
     });
 
   } catch (error) {
-    console.error("Signup error:", error);
+    console.error("SIGNUP ERROR:", error);
 
     res.status(500).json({
       success: false,
-      message: "Signup failed"
+      message: error.message || "Signup failed"
     });
   }
 });
 
-/* =========================
-   AUTH - LOGIN
-========================= */
 
+// =========================
+// LOGIN
+// =========================
 app.post("/api/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -190,68 +150,56 @@ app.post("/api/auth/login", async (req, res) => {
 
     const { data, error } =
       await supabase.auth.signInWithPassword({
-        email: email.trim().toLowerCase(),
+        email: String(email).trim().toLowerCase(),
         password
       });
 
     if (error) {
+      console.error("LOGIN ERROR:", error);
+
       return res.status(401).json({
         success: false,
         message: "Email ya password galat hai"
       });
     }
 
-    const user = data.user;
-    const session = data.session;
-
-    const {
-      data: profile,
-      error: profileError
-    } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
+    const { data: profile, error: profileError } =
+      await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", data.user.id)
+        .single();
 
     if (profileError) {
-      return res.status(500).json({
+      console.error("LOGIN PROFILE ERROR:", profileError);
+
+      return res.status(400).json({
         success: false,
-        message: "Profile load nahi ho saka"
+        message: "Profile nahi mili"
       });
     }
 
-    return res.json({
+    res.json({
       success: true,
       message: "Login successful",
-
-      session: {
-        access_token: session.access_token,
-        refresh_token: session.refresh_token,
-        expires_at: session.expires_at
-      },
-
-      user: {
-        id: user.id,
-        email: user.email
-      },
-
+      session: data.session,
       profile
     });
 
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("LOGIN SERVER ERROR:", error);
 
     res.status(500).json({
       success: false,
-      message: "Login failed"
+      message: error.message || "Login failed"
     });
   }
 });
 
-/* =========================
-   GET PROFILE
-========================= */
 
+// =========================
+// PROFILE
+// =========================
 app.get("/api/profile/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -264,9 +212,11 @@ app.get("/api/profile/:id", async (req, res) => {
         .single();
 
     if (error) {
+      console.error("PROFILE ERROR:", error);
+
       return res.status(404).json({
         success: false,
-        message: "Profile nahi mila"
+        message: "Profile nahi mili"
       });
     }
 
@@ -276,21 +226,22 @@ app.get("/api/profile/:id", async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("PROFILE SERVER ERROR:", error);
 
     res.status(500).json({
       success: false,
-      message: "Profile load failed"
+      message: error.message
     });
   }
 });
 
-/* =========================
-   CREATE SERVICE REQUEST
-========================= */
 
+// =========================
+// CREATE SERVICE REQUEST
+// =========================
 app.post("/api/requests", async (req, res) => {
   try {
+    console.log("📥 NEW REQUEST BODY:", req.body);
 
     const {
       name,
@@ -301,77 +252,86 @@ app.post("/api/requests", async (req, res) => {
     } = req.body;
 
     if (!name || !phone || !location || !service) {
+      console.error("❌ REQUEST VALIDATION FAILED");
+
       return res.status(400).json({
         success: false,
-        message:
-          "Name, phone, location aur service zaroori hain"
+        message: "Name, phone, location aur service zaroori hain"
       });
     }
+
+    const requestData = {
+      name: String(name).trim(),
+      phone: String(phone).trim(),
+      location: String(location).trim(),
+      service: String(service).trim(),
+      details: details ? String(details).trim() : "",
+      status: "New"
+    };
+
+    console.log("📤 SAVING REQUEST:", requestData);
 
     const {
       data,
       error
     } = await supabase
       .from("service_requests")
-      .insert({
-        name,
-        phone,
-        location,
-        service,
-        details: details || "",
-        status: "New"
-      })
+      .insert([requestData])
       .select()
       .single();
 
     if (error) {
-      console.error(error);
+      console.error("❌ SUPABASE REQUEST INSERT ERROR:", error);
 
       return res.status(500).json({
         success: false,
-        message: "Request save nahi hui"
+        message: "Request save nahi hui",
+        actualError: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint
       });
     }
 
+    console.log("✅ REQUEST SAVED:", data);
+
     res.status(201).json({
       success: true,
+      message: "Request successfully created",
       request: data
     });
 
   } catch (error) {
-
-    console.error(error);
+    console.error("❌ REQUEST SERVER ERROR:", error);
 
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Request save nahi hui",
+      actualError: error.message
     });
   }
 });
 
-/* =========================
-   GET ALL REQUESTS
-========================= */
 
+// =========================
+// GET ALL REQUESTS
+// =========================
 app.get("/api/requests", async (req, res) => {
   try {
-
     const {
       data,
       error
     } = await supabase
       .from("service_requests")
       .select("*")
-      .order("id", {
-        ascending: false
-      });
+      .order("id", { ascending: false });
 
     if (error) {
-      console.error(error);
+      console.error("GET REQUESTS ERROR:", error);
 
       return res.status(500).json({
         success: false,
-        message: "Could not load service requests"
+        message: error.message
       });
     }
 
@@ -382,24 +342,22 @@ app.get("/api/requests", async (req, res) => {
     });
 
   } catch (error) {
-
-    console.error(error);
+    console.error("GET REQUESTS SERVER ERROR:", error);
 
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: error.message
     });
   }
 });
 
-/* =========================
-   GET SINGLE REQUEST
-========================= */
 
+// =========================
+// GET SINGLE REQUEST
+// =========================
 app.get("/api/requests/:id", async (req, res) => {
   try {
-
-    const { id } = req.params;
+    const id = req.params.id;
 
     const {
       data,
@@ -411,9 +369,12 @@ app.get("/api/requests/:id", async (req, res) => {
       .single();
 
     if (error) {
+      console.error("GET SINGLE REQUEST ERROR:", error);
+
       return res.status(404).json({
         success: false,
-        message: "Request nahi mili"
+        message: "Request nahi mili",
+        actualError: error.message
       });
     }
 
@@ -423,24 +384,22 @@ app.get("/api/requests/:id", async (req, res) => {
     });
 
   } catch (error) {
-
-    console.error(error);
+    console.error("GET SINGLE REQUEST SERVER ERROR:", error);
 
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: error.message
     });
   }
 });
 
-/* =========================
-   UPDATE REQUEST STATUS
-========================= */
 
+// =========================
+// UPDATE REQUEST STATUS
+// =========================
 app.patch("/api/requests/:id/status", async (req, res) => {
   try {
-
-    const { id } = req.params;
+    const id = req.params.id;
     const { status } = req.body;
 
     const allowedStatuses = [
@@ -464,53 +423,40 @@ app.patch("/api/requests/:id/status", async (req, res) => {
       error
     } = await supabase
       .from("service_requests")
-      .update({
-        status
-      })
+      .update({ status })
       .eq("id", id)
       .select()
       .single();
 
     if (error) {
-      console.error(error);
+      console.error("UPDATE STATUS ERROR:", error);
 
       return res.status(500).json({
         success: false,
-        message: "Status update nahi hua"
+        message: error.message
       });
     }
 
     res.json({
       success: true,
+      message: "Status updated",
       request: data
     });
 
   } catch (error) {
-
-    console.error(error);
+    console.error("UPDATE STATUS SERVER ERROR:", error);
 
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: error.message
     });
   }
 });
 
-/* =========================
-   HEALTH CHECK
-========================= */
 
-app.get("/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "Hey Karigar server is healthy"
-  });
-});
-
-/* =========================
-   UNKNOWN API ROUTE
-========================= */
-
+// =========================
+// 404 API
+// =========================
 app.use("/api", (req, res) => {
   res.status(404).json({
     success: false,
@@ -518,12 +464,10 @@ app.use("/api", (req, res) => {
   });
 });
 
-/* =========================
-   SERVER
-========================= */
 
+// =========================
+// SERVER
+// =========================
 app.listen(PORT, () => {
-  console.log(
-    `Hey Karigar server running on port ${PORT}`
-  );
+  console.log(`🚀 Hey Karigar server running on port ${PORT}`);
 });
