@@ -31,7 +31,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
 ========================= */
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "karigar.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get("/api", (req, res) => {
