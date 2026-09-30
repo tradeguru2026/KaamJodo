@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hey Karigar - Karigar Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7f6;
+      color: #17201d;
+    }
+
+    header {
+      background: #07885f;
+      color: white;
+      padding: 22px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 7px 0 0;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .topbar h2 {
+      margin: 0 0 8px;
+    }
+
+    .status {
+      font-weight: bold;
+      color: #07885f;
+    }
+
+    .refresh {
+      width: 100%;
+      margin-top: 14px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #07885f;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .request-card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .request-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .request-title h3 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .request-id {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .info {
+      margin: 9px 0;
+      line-height: 1.5;
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .new {
+      background: #fff0b8;
+      color: #765b00;
+    }
+
+    .accepted {
+      background: #d9ecff;
+      color: #07558f;
+    }
+
+    .progress {
+      background: #ffe2b8;
+      color: #8a4d00;
+    }
+
+    .completed {
+      background: #d9f7df;
+      color: #146126;
+    }
+
+    .cancelled {
+      background: #ffdede;
+      color: #9a2222;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .accept {
+      background: #07885f;
+    }
+
+    .progress-btn {
+      background: #e58a00;
+    }
+
+    .complete {
+      background: #1769aa;
+    }
+
+    .cancel {
+      background: #c62828;
+    }
+
+    .message {
+      text-align: center;
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      color: #666;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .error {
+      color: #b00020;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      color: #777;
+      padding: 25px 10px;
+    }
+
+    @media (min-width: 600px) {
+      .buttons {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔧 Hey Karigar</h1>
+  <p>Karigar Dashboard</p>
+</header>
+
+<div class="container">
+
+  <div class="topbar">
+    <h2>📋 Service Requests</h2>
+
+    <div>
+      Connection:
+      <span class="status" id="connectionStatus">
+        Checking...
+      </span>
+    </div>
+
+    <button class="refresh" onclick="loadRequests()">
+      🔄 Refresh Requests
+    </button>
+  </div>
+
+  <div id="requestsContainer">
+    <div class="message">
+      Requests loading...
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Hey Karigar · Karigar Dashboard
+</footer>
+
+<script>
+
+  // =====================================
+  // LOAD ALL REQUESTS
+  // =====================================
+
+  async function loadRequests() {
+
+    const container = document.getElementById("requestsContainer");
+    const connection = document.getElementById("connectionStatus");
+
+    container.innerHTML = `
+      <div class="message">
+        🔄 Requests loading...
+      </div>
+    `;
+
+    try {
+
+      const response = await fetch("/api/requests");
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || "Could not load requests."
+        );
+      }
+
+      connection.textContent = "Connected ✅";
+
+      if (!data.requests || data.requests.length === 0) {
+
+        container.innerHTML = `
+          <div class="message">
+            📭 Abhi koi service request nahi hai.
+          </div>
+        `;
+
+        return;
+      }
+
+      container.innerHTML = "";
+
+      data.requests.forEach(request => {
+
+        container.innerHTML += createRequestCard(request);
+
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      connection.textContent = "Error ❌";
+
+      container.innerHTML = `
+        <div class="message error">
+          ❌ Requests load nahi ho rahi hain.
+          <br><br>
+          ${escapeHtml(error.message)}
+        </div>
+      `;
+    }
+  }
+
+
+  // =====================================
+  // CREATE REQUEST CARD
+  // =====================================
+
+  function createRequestCard(request) {
+
+    const statusClass = getStatusClass(request.status);
+
+    let buttons = "";
+
+    if (request.status === "New") {
+
+      buttons = `
+        <button
+          class="btn accept"
+          onclick="updateStatus(${request.id}, 'Accepted')">
+          ✅ Accept Request
+        </button>
+
+        <button
+          class="btn cancel"
+          onclick="updateStatus(${request.id}, 'Cancelled')">
+          ❌ Cancel
+        </button>
+      `;
+
+    } else if (request.status === "Accepted") {
+
+      buttons = `
+        <button
+          class="btn progress-btn"
+          onclick="updateStatus(${request.id}, 'In Progress')">
+          🔧 Start Work
+        </button>
+
+        <button
+          class="btn cancel"
+          onclick="updateStatus(${request.id}, 'Cancelled')">
+          ❌ Cancel
+        </button>
+      `;
+
+    } else if (request.status === "In Progress") {
+
+      buttons = `
+        <button
+          class="btn complete"
+          onclick="updateStatus(${request.id}, 'Completed')">
+          ✅ Mark Completed
+        </button>
+      `;
+
+    } else if (request.status === "Assigned") {
+
+      buttons = `
+        <button
+          class="btn progress-btn"
+          onclick="updateStatus(${request.id}, 'In Progress')">
+          🔧 Start Work
+        </button>
+
+        <button
+          class="btn complete"
+          onclick="updateStatus(${request.id}, 'Completed')">
+          ✅ Complete
+        </button>
+      `;
+
+    }
+
+    return `
+      <div class="request-card">
+
+        <div class="request-title">
+
+          <h3>
+            🔔 ${escapeHtml(request.service)}
+          </h3>
+
+          <span class="request-id">
+            #${request.id}
+          </span>
+
+        </div>
+
+        <div class="info">
+          <span class="label">👤 Customer:</span>
+          ${escapeHtml(request.name)}
+        </div>
+
+        <div class="info">
+          <span class="label">📞 Phone:</span>
+          ${escapeHtml(request.phone)}
+        </div>
+
+        <div class="info">
+          <span class="label">📍 Location:</span>
+          ${escapeHtml(request.location)}
+        </div>
+
+        <div class="info">
+          <span class="label">🔧 Service:</span>
+          ${escapeHtml(request.service)}
+        </div>
+
+        <div class="info">
+          <span class="label">📝 Problem:</span>
+          ${escapeHtml(request.details || "Not provided")}
+        </div>
+
+        <div class="info">
+          <span class="label">📌 Status:</span>
+          <span class="badge ${statusClass}">
+            ${escapeHtml(request.status)}
+          </span>
+        </div>
+
+        <div class="buttons">
+          ${buttons}
+        </div>
+
+      </div>
+    `;
+  }
+
+
+  // =====================================
+  // UPDATE STATUS
+  // =====================================
+
+  async function updateStatus(id, status) {
+
+    let confirmMessage = "";
+
+    if (status === "Accepted") {
+      confirmMessage = "Kya aap ye request accept karna chahte hain?";
+    }
+
+    if (status === "In Progress") {
+      confirmMessage = "Kya aap is request ka kaam start karna chahte hain?";
+    }
+
+    if (status === "Completed") {
+      confirmMessage = "Kya ye kaam complete ho gaya hai?";
+    }
+
+    if (status === "Cancelled") {
+      confirmMessage = "Kya aap ye request cancel karna chahte hain?";
+    }
+
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+
+      const response = await fetch(
+        `/api/requests/${id}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            status: status
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || "Status update failed."
+        );
+      }
+
+      alert(
+        `✅ Request #${id} ka status "${status}" ho gaya hai.`
+      );
+
+      await loadRequests();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "❌ Status update nahi ho saka.\n\n" +
+        error.message
+      );
+    }
+  }
+
+
+  // =====================================
+  // STATUS CSS CLASS
+  // =====================================
+
+  function getStatusClass(status) {
+
+    if (status === "New") {
+      return "new";
+    }
+
+    if (status === "Accepted") {
+      return "accepted";
+    }
+
+    if (status === "In Progress") {
+      return "progress";
+    }
+
+    if (status === "Completed") {
+      return "completed";
+    }
+
+    if (status === "Cancelled") {
+      return "cancelled";
+    }
+
+    return "new";
+  }
+
+
+  // =====================================
+  // SECURITY HELPER
+  // =====================================
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  // =====================================
+  // START
+  // =====================================
+
+  loadRequests();
+
+</script>
+
+</body>
+</html>
