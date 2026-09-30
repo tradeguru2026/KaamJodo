@@ -28,9 +28,7 @@ async function supabaseRequest(endpoint, options = {}) {
         "Content-Type": "application/json",
         "apikey": SUPABASE_KEY,
         "Authorization": `Bearer ${SUPABASE_KEY}`,
-        "Prefer": options.method === "POST"
-          ? "return=representation"
-          : "return=representation",
+        "Prefer": "return=representation",
         ...(options.headers || {})
       }
     }
@@ -39,6 +37,7 @@ async function supabaseRequest(endpoint, options = {}) {
   const text = await response.text();
 
   let data;
+
   try {
     data = text ? JSON.parse(text) : null;
   } catch {
@@ -102,7 +101,9 @@ app.get("/api", (req, res) => {
     success: true,
     app: "Hey Karigar",
     message: "API is working",
-    database: SUPABASE_URL ? "Supabase connected" : "Supabase not configured",
+    database: SUPABASE_URL
+      ? "Supabase connected"
+      : "Supabase not configured",
     endpoints: [
       "/api/categories",
       "/api/requests",
@@ -125,7 +126,7 @@ app.get("/api/categories", (req, res) => {
 });
 
 // ===============================
-// GET REQUESTS FROM SUPABASE
+// GET ALL REQUESTS
 // ===============================
 
 app.get("/api/requests", async (req, res) => {
@@ -162,7 +163,7 @@ app.get("/api/requests", async (req, res) => {
 });
 
 // ===============================
-// CREATE REQUEST IN SUPABASE
+// CREATE REQUEST
 // ===============================
 
 app.post("/api/requests", async (req, res) => {
@@ -274,7 +275,7 @@ app.get("/api/requests/:id", async (req, res) => {
 });
 
 // ===============================
-// UPDATE STATUS
+// UPDATE REQUEST STATUS
 // ===============================
 
 app.patch("/api/requests/:id/status", async (req, res) => {
@@ -282,9 +283,11 @@ app.patch("/api/requests/:id/status", async (req, res) => {
     const id = Number(req.params.id);
     const { status } = req.body;
 
+    // All allowed statuses
     const allowedStatuses = [
       "New",
       "Accepted",
+      "In Progress",
       "Assigned",
       "Completed",
       "Cancelled"
@@ -293,7 +296,8 @@ app.patch("/api/requests/:id/status", async (req, res) => {
     if (!allowedStatuses.includes(status)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid status."
+        message: "Invalid status.",
+        allowedStatuses
       });
     }
 
@@ -318,7 +322,7 @@ app.patch("/api/requests/:id/status", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Request status updated.",
+      message: "Request status updated successfully.",
       request: {
         id: item.id,
         name: item.customer_name,
@@ -353,7 +357,7 @@ app.use((req, res) => {
 });
 
 // ===============================
-// START
+// START SERVER
 // ===============================
 
 app.listen(PORT, () => {
