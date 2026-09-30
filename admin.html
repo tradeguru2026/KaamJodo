@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hey Karigar - Admin Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6f8;
+      color: #222;
+    }
+
+    header {
+      background: #087f5b;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    header p {
+      margin: 7px 0 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .top {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .refresh {
+      background: #1769aa;
+      color: white;
+      flex: 1;
+    }
+
+    .home {
+      background: #555;
+      color: white;
+      flex: 1;
+    }
+
+    .request {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.10);
+    }
+
+    .request h2 {
+      margin-top: 0;
+      color: #087f5b;
+    }
+
+    .row {
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 20px;
+      background: #fff0b3;
+      font-weight: bold;
+      margin: 8px 0 14px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .accepted {
+      background: #1971c2;
+      color: white;
+    }
+
+    .progress {
+      background: #f08c00;
+      color: white;
+    }
+
+    .completed {
+      background: #2b8a3e;
+      color: white;
+    }
+
+    .empty {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .error {
+      background: #ffe3e3;
+      color: #c92a2a;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🛠️ Hey Karigar</h1>
+  <p>Karigar / Admin Dashboard</p>
+</header>
+
+<div class="container">
+
+  <div class="top">
+    <button class="refresh" onclick="loadRequests()">
+      🔄 Requests Refresh
+    </button>
+
+    <button class="home" onclick="location.href='/'">
+      🏠 Customer
+    </button>
+  </div>
+
+  <div id="error" class="error"></div>
+
+  <div id="requests">
+    Loading requests...
+  </div>
+
+</div>
+
+<script>
+
+async function loadRequests() {
+
+  const box = document.getElementById("requests");
+  const error = document.getElementById("error");
+
+  error.style.display = "none";
+  box.innerHTML = "⏳ Requests load ho rahi hain...";
+
+  try {
+
+    const response = await fetch("/api/requests");
+
+    const data = await response.json();
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "Requests load nahi hui.");
+    }
+
+    const requests = data.requests || [];
+
+    if (requests.length === 0) {
+
+      box.innerHTML = `
+        <div class="empty">
+          <h2>📭 Koi request nahi hai</h2>
+          <p>Customer request bhejega to yahan dikhegi.</p>
+        </div>
+      `;
+
+      return;
+    }
+
+    box.innerHTML = requests.map(request => {
+
+      const status = request.status || "New";
+
+      return `
+        <div class="request">
+
+          <h2>📌 Request #${request.id}</h2>
+
+          <div class="row">
+            <b>Customer:</b>
+            ${escapeHtml(request.name || request.customer_name || "")}
+          </div>
+
+          <div class="row">
+            <b>Phone:</b>
+            ${escapeHtml(request.phone || "")}
+          </div>
+
+          <div class="row">
+            <b>Location:</b>
+            ${escapeHtml(request.location || "")}
+          </div>
+
+          <div class="row">
+            <b>Service:</b>
+            ${escapeHtml(request.service || "")}
+          </div>
+
+          <div class="row">
+            <b>Problem:</b>
+            ${escapeHtml(request.details || "")}
+          </div>
+
+          <div class="row">
+            <b>Status:</b>
+            <span class="status">${escapeHtml(status)}</span>
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="accepted"
+              onclick="updateStatus(${request.id}, 'Accepted')">
+              ✅ Accept
+            </button>
+
+            <button
+              class="progress"
+              onclick="updateStatus(${request.id}, 'In Progress')">
+              🔧 In Progress
+            </button>
+
+            <button
+              class="completed"
+              onclick="updateStatus(${request.id}, 'Completed')">
+              ✔️ Completed
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+
+  } catch (err) {
+
+    error.style.display = "block";
+
+    error.innerHTML =
+      "❌ Error: " + escapeHtml(err.message);
+
+    box.innerHTML = "";
+  }
+}
+
+
+async function updateStatus(id, status) {
+
+  try {
+
+    const response = await fetch(`/api/requests/${id}/status`, {
+
+      method: "PATCH",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        status: status
+      })
+
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "Status update nahi hua.");
+    }
+
+    alert("✅ Status updated: " + status);
+
+    loadRequests();
+
+  } catch (err) {
+
+    alert("❌ Status update error:\n" + err.message);
+
+  }
+}
+
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+loadRequests();
+
+</script>
+
+</body>
+</html>
