@@ -3,115 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Hey Karigar</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f4f7f6;color:#17221c}
-header{background:#087f5b;color:white;padding:22px 16px;text-align:center}
-header h1{font-size:30px;margin-bottom:6px}
-header p{font-size:14px}
-.container{max-width:700px;margin:auto;padding:16px}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
 
-.box,.welcome,.request-box,.tracking-box,.profile-box,
+body{
+  background:#f4f7f6;
+  color:#17221c;
+}
+
+header{
+  background:#087f5b;
+  color:white;
+  padding:22px 16px;
+  text-align:center;
+}
+
+header h1{
+  font-size:30px;
+  margin-bottom:6px;
+}
+
+header p{
+  font-size:14px;
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:16px;
+}
+
+.box,
+.welcome,
+.request-box,
+.tracking-box,
+.profile-box,
 .dashboard-box{
-  background:white;padding:20px;border-radius:18px;
-  margin-bottom:18px;box-shadow:0 3px 14px rgba(0,0,0,.07)
+  background:white;
+  padding:20px;
+  border-radius:18px;
+  margin-bottom:18px;
+  box-shadow:0 3px 14px rgba(0,0,0,.07);
 }
 
-input,textarea,select{
- width:100%;padding:14px;border:1px solid #ddd;
- border-radius:11px;font-size:16px;outline:none;
- margin-bottom:12px;background:white
+input,
+textarea,
+select{
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:11px;
+  font-size:16px;
+  outline:none;
+  margin-bottom:12px;
+  background:white;
 }
-textarea{min-height:90px;resize:vertical}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
 
 .btn{
- width:100%;padding:14px;border:0;border-radius:10px;
- background:#087f5b;color:white;font-size:16px;
- font-weight:bold;cursor:pointer
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  background:#087f5b;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
 }
-.btn:disabled{opacity:.6}
-.secondary{background:#145ea8;margin-top:10px}
-.cancel{background:#555;margin-top:9px}
-.logout{background:#b42318;margin-top:10px}
-.refresh{background:#145ea8;margin-top:10px}
+
+.btn:disabled{
+  opacity:.6;
+}
+
+.secondary{
+  background:#145ea8;
+  margin-top:10px;
+}
+
+.cancel{
+  background:#555;
+  margin-top:9px;
+}
+
+.logout{
+  background:#b42318;
+  margin-top:10px;
+}
+
+.refresh{
+  background:#145ea8;
+  margin-top:10px;
+}
 
 .switch-btn{
- background:none;border:0;color:#087f5b;font-weight:bold;
- cursor:pointer;margin-top:12px;font-size:14px
+  background:none;
+  border:0;
+  color:#087f5b;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+  font-size:14px;
 }
 
 .role-buttons{
- display:grid;grid-template-columns:1fr 1fr;
- gap:10px;margin:15px 0
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:15px 0;
 }
+
 .role-btn{
- padding:13px;border:2px solid #ddd;border-radius:11px;
- background:white;font-size:15px;font-weight:bold
+  padding:13px;
+  border:2px solid #ddd;
+  border-radius:11px;
+  background:white;
+  font-size:15px;
+  font-weight:bold;
 }
+
 .role-btn.active{
- border-color:#087f5b;background:#e7f8ef;color:#087f5b
+  border-color:#087f5b;
+  background:#e7f8ef;
+  color:#087f5b;
 }
 
 .services{
- display:grid;grid-template-columns:repeat(2,1fr);gap:12px
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
-.service{
- background:white;border:0;border-radius:16px;padding:18px 8px;
- text-align:center;font-size:15px;cursor:pointer;
- box-shadow:0 3px 12px rgba(0,0,0,.07)
-}
-.service-icon{display:block;font-size:32px;margin-bottom:8px}
 
-.request-box,.tracking-box,.profile-box,.dashboard-box{
- display:none
+.service{
+  background:white;
+  border:0;
+  border-radius:16px;
+  padding:18px 8px;
+  text-align:center;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+
+.service-icon{
+  display:block;
+  font-size:32px;
+  margin-bottom:8px;
+}
+
+.request-box,
+.tracking-box,
+.profile-box,
+.dashboard-box{
+  display:none;
 }
 
 .success{
- display:none;background:#e7f8ef;color:#176b3a;
- padding:15px;border-radius:10px;margin-top:15px
+  display:none;
+  background:#e7f8ef;
+  color:#176b3a;
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px;
 }
+
 .error{
- display:none;background:#ffe3e3;color:#b42318;
- padding:15px;border-radius:10px;margin-top:15px
+  display:none;
+  background:#ffe3e3;
+  color:#b42318;
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px;
 }
 
 .status{
- display:inline-block;margin-top:10px;padding:8px 14px;
- border-radius:20px;background:#fff3cd;color:#856404;
- font-weight:bold
+  display:inline-block;
+  margin-top:10px;
+  padding:8px 14px;
+  border-radius:20px;
+  background:#fff3cd;
+  color:#856404;
+  font-weight:bold;
 }
-.status.accepted{background:#dff7e8;color:#176b3a}
-.status.assigned{background:#e1efff;color:#145ea8}
-.status.completed{background:#dff7e8;color:#176b3a}
-.status.cancelled{background:#ffe3e3;color:#b42318}
+
+.status.accepted{
+  background:#dff7e8;
+  color:#176b3a;
+}
+
+.status.assigned{
+  background:#e1efff;
+  color:#145ea8;
+}
+
+.status.completed{
+  background:#dff7e8;
+  color:#176b3a;
+}
+
+.status.cancelled{
+  background:#ffe3e3;
+  color:#b42318;
+}
 
 .request-card{
- background:#f8faf9;border:1px solid #e1e7e4;
- padding:16px;border-radius:14px;margin-top:12px
+  background:#f8faf9;
+  border:1px solid #e1e7e4;
+  padding:16px;
+  border-radius:14px;
+  margin-top:12px;
 }
-.request-card p{margin:7px 0;line-height:1.45}
 
-.loading{text-align:center;padding:18px;color:#777}
+.request-card p{
+  margin:7px 0;
+  line-height:1.45;
+}
+
+.loading{
+  text-align:center;
+  padding:18px;
+  color:#777;
+}
+
 .empty{
- background:white;padding:18px;border-radius:14px;
- text-align:center;color:#777
+  background:white;
+  padding:18px;
+  border-radius:14px;
+  text-align:center;
+  color:#777;
 }
 
 .user-info{
- background:#e7f8ef;padding:12px;border-radius:10px;
- margin-bottom:12px;color:#176b3a
+  background:#e7f8ef;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:12px;
+  color:#176b3a;
 }
 
 .badge{
- display:inline-block;padding:6px 10px;border-radius:15px;
- background:#e1efff;color:#145ea8;font-weight:bold;font-size:13px
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:15px;
+  background:#e1efff;
+  color:#145ea8;
+  font-weight:bold;
+  font-size:13px;
 }
 
-footer{text-align:center;padding:28px 10px;color:#777;font-size:13px}
+footer{
+  text-align:center;
+  padding:28px 10px;
+  color:#777;
+  font-size:13px;
+}
 
-.hidden{display:none!important}
+.hidden{
+  display:none!important;
+}
 </style>
 </head>
 
@@ -136,30 +297,61 @@ Apne Hey Karigar account mein login karein.
 
 <div id="loginForm">
 
-<input id="loginEmail" type="email" placeholder="Email">
+<input
+  id="loginEmail"
+  type="email"
+  placeholder="Email"
+>
 
-<input id="loginPassword" type="password" placeholder="Password">
+<input
+  id="loginPassword"
+  type="password"
+  placeholder="Password"
+>
 
-<button class="btn" id="loginButton" onclick="loginUser()">
+<button
+  class="btn"
+  id="loginButton"
+  onclick="loginUser()"
+>
 🔐 Login
 </button>
 
-<button class="switch-btn" onclick="showSignup()">
+<button
+  class="switch-btn"
+  onclick="showSignup()"
+>
 Naya account hai? Signup karein
 </button>
 
 </div>
 
+
 <div id="signupForm" style="display:none">
 
-<input id="signupName" type="text" placeholder="Aapka poora naam">
+<input
+  id="signupName"
+  type="text"
+  placeholder="Aapka poora naam"
+>
 
-<input id="signupPhone" type="tel" placeholder="Mobile number">
+<input
+  id="signupPhone"
+  type="tel"
+  placeholder="Mobile number"
+>
 
-<input id="signupEmail" type="email" placeholder="Email">
+<input
+  id="signupEmail"
+  type="email"
+  placeholder="Email"
+>
 
-<input id="signupPassword" type="password"
-placeholder="Password (minimum 6 characters)">
+<input
+  id="signupPassword"
+  type="password"
+  placeholder="Password (minimum 6 characters)"
+>
 
 <p style="margin-bottom:8px;font-weight:bold">
 Aap kaun hain?
@@ -167,19 +359,24 @@ Aap kaun hain?
 
 <div class="role-buttons">
 
-<button class="role-btn active"
-id="customerRoleBtn"
-onclick="selectRole('customer')">
+<button
+  class="role-btn active"
+  id="customerRoleBtn"
+  onclick="selectRole('customer')"
+>
 👤 Customer
 </button>
 
-<button class="role-btn"
-id="karigarRoleBtn"
-onclick="selectRole('karigar')">
+<button
+  class="role-btn"
+  id="karigarRoleBtn"
+  onclick="selectRole('karigar')"
+>
 🔧 Karigar
 </button>
 
 </div>
+
 
 <div id="karigarFields" style="display:none">
 
@@ -208,27 +405,38 @@ Apni service select karein
 
 </select>
 
-<input id="signupLocation"
-type="text"
-placeholder="Aapka area / mohalla">
+<input
+  id="signupLocation"
+  type="text"
+  placeholder="Aapka area / mohalla"
+>
 
 </div>
+
 
 <div id="customerLocationField">
 
-<input id="customerLocation"
-type="text"
-placeholder="Aapka area / mohalla">
+<input
+  id="customerLocation"
+  type="text"
+  placeholder="Aapka area / mohalla"
+>
 
 </div>
 
-<button class="btn"
-id="signupButton"
-onclick="signupUser()">
+
+<button
+  class="btn"
+  id="signupButton"
+  onclick="signupUser()"
+>
 📝 Account Banayein
 </button>
 
-<button class="switch-btn" onclick="showLogin()">
+<button
+  class="switch-btn"
+  onclick="showLogin()"
+>
 Pehle se account hai? Login karein
 </button>
 
@@ -246,9 +454,15 @@ Pehle se account hai? Login karein
 
 <h2>👤 My Account</h2>
 
-<div class="user-info" id="userInfo"></div>
+<div
+  class="user-info"
+  id="userInfo"
+></div>
 
-<button class="btn logout" onclick="logoutUser()">
+<button
+  class="btn logout"
+  onclick="logoutUser()"
+>
 🚪 Logout
 </button>
 
@@ -269,70 +483,116 @@ neeche category select karein.
 </p>
 
 <input
-style="margin-top:15px"
-id="search"
-type="search"
-placeholder="🔎 Karigar ya service search karein..."
-oninput="filterServices()">
+  style="margin-top:15px"
+  id="search"
+  type="search"
+  placeholder="🔎 Karigar ya service search karein..."
+  oninput="filterServices()"
+>
 
 </div>
+
 
 <h2 style="margin:20px 2px 12px">
 🧰 Services
 </h2>
 
-<div class="services" id="services"></div>
+<div
+  class="services"
+  id="services"
+></div>
 
-<div class="empty" id="empty">
+<div
+  class="empty"
+  id="empty"
+>
 Is naam ki service abhi nahi mili.
 </div>
 
 
-<!-- REQUEST -->
+<!-- ================= REQUEST ================= -->
 
-<div class="request-box" id="requestBox">
+<div
+  class="request-box"
+  id="requestBox"
+>
 
 <h2>📋 Karigar Request</h2>
 
-<input id="name" type="text" placeholder="Aapka naam">
+<input
+  id="name"
+  type="text"
+  placeholder="Aapka naam"
+>
 
-<input id="phone" type="tel" placeholder="Mobile number">
+<input
+  id="phone"
+  type="tel"
+  placeholder="Mobile number"
+>
 
-<input id="location" type="text" placeholder="Area / Mohalla">
+<input
+  id="location"
+  type="text"
+  placeholder="Area / Mohalla"
+>
 
-<input id="service" type="text" readonly>
+<input
+  id="service"
+  type="text"
+  readonly
+>
 
-<textarea id="details"
-placeholder="Kaam ke baare mein thoda batayein...">
-</textarea>
+<textarea
+  id="details"
+  placeholder="Kaam ke baare mein thoda batayein..."
+></textarea>
 
-<button class="btn"
-id="submitButton"
-onclick="submitRequest()">
+<button
+  class="btn"
+  id="submitButton"
+  onclick="submitRequest()"
+>
 📲 Request Bhejein
 </button>
 
-<button class="btn cancel" onclick="closeRequest()">
+<button
+  class="btn cancel"
+  onclick="closeRequest()"
+>
 Cancel
 </button>
 
-<div class="success" id="success">
-✅ Aapki request receive ho gayi hai!
-</div>
+<div
+  class="success"
+  id="success"
+></div>
+
+<div
+  class="error"
+  id="requestError"
+></div>
 
 </div>
 
 
-<!-- TRACKING -->
+<!-- ================= TRACKING ================= -->
 
-<div class="tracking-box" id="trackingBox">
+<div
+  class="tracking-box"
+  id="trackingBox"
+>
 
 <h2>📍 Meri Request</h2>
 
-<div id="trackingContent"></div>
+<div
+  id="trackingContent"
+></div>
 
-<button class="btn refresh"
-onclick="checkRequestStatus()">
+<button
+  class="btn refresh"
+  onclick="checkRequestStatus()"
+>
 🔄 Status Check Karein
 </button>
 
@@ -343,11 +603,17 @@ onclick="checkRequestStatus()">
 
 <!-- ================= KARIGAR DASHBOARD ================= -->
 
-<div class="dashboard-box" id="karigarDashboard">
+<div
+  class="dashboard-box"
+  id="karigarDashboard"
+>
 
 <h2>🔧 Karigar Dashboard</h2>
 
-<div class="user-info" id="karigarInfo"></div>
+<div
+  class="user-info"
+  id="karigarInfo"
+></div>
 
 <p style="margin-bottom:12px">
 📋 <strong>Aapki Service Requests</strong>
@@ -361,14 +627,17 @@ onclick="checkRequestStatus()">
 
 </div>
 
-<button class="btn refresh"
-onclick="loadKarigarRequests()">
+<button
+  class="btn refresh"
+  onclick="loadKarigarRequests()"
+>
 🔄 Refresh Requests
 </button>
 
 </div>
 
 </main>
+
 
 <footer>
 © 2026 Hey Karigar · Local Services Platform
@@ -380,28 +649,110 @@ onclick="loadKarigarRequests()">
 const API_BASE = window.location.origin;
 
 let categories = [];
+
 let selectedRole = "customer";
 
 
 /* ================= DEFAULT CATEGORIES ================= */
 
 const defaultCategories = [
-{id:1,name:"Gardener / Mali",icon:"🌱"},
-{id:2,name:"Plumber",icon:"🚰"},
-{id:3,name:"Electrician",icon:"💡"},
-{id:4,name:"Carpenter",icon:"🔨"},
-{id:5,name:"Painter",icon:"🎨"},
-{id:6,name:"AC Repair",icon:"❄️"},
-{id:7,name:"Washing Machine Repair",icon:"🧺"},
-{id:8,name:"TV Repair",icon:"📺"},
-{id:9,name:"Gutter Cleaning",icon:"🧹"},
-{id:10,name:"Home Cleaning",icon:"🧼"},
-{id:11,name:"Carpet Cleaning",icon:"🧽"},
-{id:12,name:"Generator Mechanic",icon:"🔧"},
-{id:13,name:"Puncture / Tyre Replacement",icon:"🛞"},
-{id:14,name:"Barber",icon:"💈"},
-{id:15,name:"Physiotherapist",icon:"🧑‍⚕️"},
-{id:16,name:"Mehndi Artist",icon:"🌿"}
+
+{
+  id:1,
+  name:"Gardener / Mali",
+  icon:"🌱"
+},
+
+{
+  id:2,
+  name:"Plumber",
+  icon:"🚰"
+},
+
+{
+  id:3,
+  name:"Electrician",
+  icon:"💡"
+},
+
+{
+  id:4,
+  name:"Carpenter",
+  icon:"🔨"
+},
+
+{
+  id:5,
+  name:"Painter",
+  icon:"🎨"
+},
+
+{
+  id:6,
+  name:"AC Repair",
+  icon:"❄️"
+},
+
+{
+  id:7,
+  name:"Washing Machine Repair",
+  icon:"🧺"
+},
+
+{
+  id:8,
+  name:"TV Repair",
+  icon:"📺"
+},
+
+{
+  id:9,
+  name:"Gutter Cleaning",
+  icon:"🧹"
+},
+
+{
+  id:10,
+  name:"Home Cleaning",
+  icon:"🧼"
+},
+
+{
+  id:11,
+  name:"Carpet Cleaning",
+  icon:"🧽"
+},
+
+{
+  id:12,
+  name:"Generator Mechanic",
+  icon:"🔧"
+},
+
+{
+  id:13,
+  name:"Puncture / Tyre Replacement",
+  icon:"🛞"
+},
+
+{
+  id:14,
+  name:"Barber",
+  icon:"💈"
+},
+
+{
+  id:15,
+  name:"Physiotherapist",
+  icon:"🧑‍⚕️"
+},
+
+{
+  id:16,
+  name:"Mehndi Artist",
+  icon:"🌿"
+}
+
 ];
 
 
@@ -410,6 +761,7 @@ const defaultCategories = [
 function showSignup(){
 
 document.getElementById("loginForm").style.display="none";
+
 document.getElementById("signupForm").style.display="block";
 
 document.getElementById("authTitle").innerText="📝 Signup";
@@ -425,6 +777,7 @@ hideAuthMessages();
 function showLogin(){
 
 document.getElementById("signupForm").style.display="none";
+
 document.getElementById("loginForm").style.display="block";
 
 document.getElementById("authTitle").innerText="🔐 Login";
@@ -456,7 +809,9 @@ const customerLocationField=
 document.getElementById("customerLocationField");
 
 customerBtn.classList.remove("active");
+
 karigarBtn.classList.remove("active");
+
 
 if(role==="customer"){
 
@@ -484,38 +839,52 @@ customerLocationField.style.display="none";
 async function signupUser(){
 
 const full_name=
-document.getElementById("signupName").value.trim();
+document.getElementById("signupName")
+.value
+.trim();
 
 const phone=
-document.getElementById("signupPhone").value.trim();
+document.getElementById("signupPhone")
+.value
+.trim();
 
 const email=
-document.getElementById("signupEmail").value.trim();
+document.getElementById("signupEmail")
+.value
+.trim();
 
 const password=
-document.getElementById("signupPassword").value;
+document.getElementById("signupPassword")
+.value;
 
 let service="";
+
 let location="";
+
 
 if(selectedRole==="karigar"){
 
 service=
-document.getElementById("signupService").value;
+document.getElementById("signupService")
+.value;
 
 location=
 document.getElementById("signupLocation")
-.value.trim();
+.value
+.trim();
 
 }else{
 
 location=
 document.getElementById("customerLocation")
-.value.trim();
+.value
+.trim();
 
 }
 
+
 hideAuthMessages();
+
 
 if(!full_name || !email || !password){
 
@@ -527,6 +896,7 @@ return;
 
 }
 
+
 if(password.length<6){
 
 showAuthError(
@@ -536,6 +906,7 @@ showAuthError(
 return;
 
 }
+
 
 if(selectedRole==="karigar" && !service){
 
@@ -547,51 +918,97 @@ return;
 
 }
 
+
 const button=
 document.getElementById("signupButton");
 
 button.disabled=true;
-button.innerText="⏳ Account ban raha hai...";
+
+button.innerText=
+"⏳ Account ban raha hai...";
+
 
 try{
 
-const response=await fetch(
+const response=
+await fetch(
 API_BASE+"/api/auth/signup",
 {
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
+
 full_name,
+
 phone,
+
 email,
+
 password,
+
 role:selectedRole,
+
 service,
+
 location
+
 })
+
 }
 );
 
-const data=await response.json();
+
+const text=
+await response.text();
+
+
+let data={};
+
+
+try{
+
+data=
+text
+?JSON.parse(text)
+:{};
+
+}catch{
+
+data={
+success:false,
+message:text || "Invalid server response"
+};
+
+}
+
 
 if(!response.ok || !data.success){
 
 throw new Error(
-data.message || "Signup failed"
+data.message ||
+"Signup failed"
 );
 
 }
+
 
 showAuthSuccess(
 "✅ Account successfully create ho gaya! Ab Login karein."
 );
 
+
 document.getElementById("signupName").value="";
+
 document.getElementById("signupPhone").value="";
+
 document.getElementById("signupEmail").value="";
+
 document.getElementById("signupPassword").value="";
+
 
 setTimeout(()=>{
 
@@ -601,16 +1018,26 @@ document.getElementById("loginEmail").value=email;
 
 },1000);
 
+
 }catch(error){
 
-showAuthError(
-error.message || "Signup mein problem hui."
+console.error(
+"SIGNUP ERROR:",
+error
 );
+
+showAuthError(
+error.message ||
+"Signup mein problem hui."
+);
+
 
 }finally{
 
 button.disabled=false;
-button.innerText="📝 Account Banayein";
+
+button.innerText=
+"📝 Account Banayein";
 
 }
 
@@ -622,12 +1049,17 @@ button.innerText="📝 Account Banayein";
 async function loginUser(){
 
 const email=
-document.getElementById("loginEmail").value.trim();
+document.getElementById("loginEmail")
+.value
+.trim();
 
 const password=
-document.getElementById("loginPassword").value;
+document.getElementById("loginPassword")
+.value;
+
 
 hideAuthMessages();
+
 
 if(!email || !password){
 
@@ -639,56 +1071,104 @@ return;
 
 }
 
+
 const button=
 document.getElementById("loginButton");
 
 button.disabled=true;
-button.innerText="⏳ Login ho raha hai...";
+
+button.innerText=
+"⏳ Login ho raha hai...";
+
 
 try{
 
-const response=await fetch(
+const response=
+await fetch(
 API_BASE+"/api/auth/login",
 {
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
 email,
 password
 })
+
 }
 );
 
-const data=await response.json();
+
+const text=
+await response.text();
+
+let data={};
+
+
+try{
+
+data=
+text
+?JSON.parse(text)
+:{};
+
+}catch{
+
+data={
+success:false,
+message:text || "Invalid server response"
+};
+
+}
+
 
 if(!response.ok || !data.success){
 
 throw new Error(
-data.message || "Login failed"
+data.message ||
+"Login failed"
 );
 
 }
+
+
+if(
+!data.session ||
+!data.session.access_token
+){
+
+throw new Error(
+"Login hua lekin session nahi mila."
+);
+
+}
+
 
 localStorage.setItem(
 "heyKarigarAccessToken",
 data.session.access_token
 );
 
+
 localStorage.setItem(
 "heyKarigarRefreshToken",
-data.session.refresh_token
+data.session.refresh_token || ""
 );
+
 
 localStorage.setItem(
 "heyKarigarProfile",
 JSON.stringify(data.profile)
 );
 
+
 showAuthSuccess(
 "✅ Login successful!"
 );
+
 
 setTimeout(()=>{
 
@@ -696,15 +1176,24 @@ showLoggedInUser(data.profile);
 
 },500);
 
+
 }catch(error){
 
-showAuthError(
-error.message || "Login mein problem hui."
+console.error(
+"LOGIN ERROR:",
+error
 );
+
+showAuthError(
+error.message ||
+"Login mein problem hui."
+);
+
 
 }finally{
 
 button.disabled=false;
+
 button.innerText="🔐 Login";
 
 }
@@ -719,59 +1208,103 @@ function showLoggedInUser(profile){
 document.getElementById("authBox")
 .style.display="none";
 
+
 document.getElementById("profileBox")
 .style.display="block";
+
 
 const userInfo=
 document.getElementById("userInfo");
 
+
 userInfo.innerHTML=`
-<strong>${escapeHtml(profile.full_name)}</strong>
+
+<strong>
+${escapeHtml(profile.full_name)}
+</strong>
+
 <br>
-📱 ${escapeHtml(profile.phone || "Phone not added")}
+
+📱
+${escapeHtml(
+profile.phone || "Phone not added"
+)}
+
 <br>
-👤 Role: ${escapeHtml(profile.role)}
+
+👤 Role:
+${escapeHtml(profile.role)}
+
 `;
+
 
 if(profile.role==="karigar"){
 
 document.getElementById("customerArea")
 .style.display="none";
 
+
 document.getElementById("karigarDashboard")
 .style.display="block";
 
-document.getElementById("karigarInfo").innerHTML=`
-<strong>${escapeHtml(profile.full_name)}</strong>
+
+document.getElementById("karigarInfo")
+.innerHTML=`
+
+<strong>
+${escapeHtml(profile.full_name)}
+</strong>
+
 <br>
+
 🔧 Service:
-<strong>${escapeHtml(profile.service || "")}</strong>
+<strong>
+${escapeHtml(profile.service || "")}
+</strong>
+
 <br>
+
 📍 Area:
 ${escapeHtml(profile.location || "")}
+
 `;
 
+
 loadKarigarRequests();
+
 
 }else{
 
 document.getElementById("customerArea")
 .style.display="block";
 
+
 document.getElementById("karigarDashboard")
 .style.display="none";
 
-if(profile.full_name)
+
+if(profile.full_name){
+
 document.getElementById("name").value=
 profile.full_name;
 
-if(profile.phone)
+}
+
+
+if(profile.phone){
+
 document.getElementById("phone").value=
 profile.phone;
 
-if(profile.location)
+}
+
+
+if(profile.location){
+
 document.getElementById("location").value=
 profile.location;
+
+}
 
 }
 
@@ -783,15 +1316,21 @@ profile.location;
 async function loadKarigarRequests(){
 
 const profileText=
-localStorage.getItem("heyKarigarProfile");
+localStorage.getItem(
+"heyKarigarProfile"
+);
+
 
 if(!profileText)return;
 
+
 let profile;
+
 
 try{
 
-profile=JSON.parse(profileText);
+profile=
+JSON.parse(profileText);
 
 }catch{
 
@@ -799,108 +1338,178 @@ return;
 
 }
 
-if(!profile || profile.role!=="karigar")
+
+if(
+!profile ||
+profile.role!=="karigar"
+){
+
 return;
 
+}
+
+
 const container=
-document.getElementById("karigarRequests");
+document.getElementById(
+"karigarRequests"
+);
+
 
 container.innerHTML=`
+
 <div class="loading">
 ⏳ Requests load ho rahi hain...
 </div>
+
 `;
+
 
 try{
 
-const response=await fetch(
+const response=
+await fetch(
 API_BASE+"/api/requests"
 );
 
-const data=await response.json();
+
+const text=
+await response.text();
+
+
+let data={};
+
+
+try{
+
+data=
+text
+?JSON.parse(text)
+:{};
+
+}catch{
+
+data={
+success:false,
+message:text || "Invalid server response"
+};
+
+}
+
 
 if(!response.ok || !data.success){
 
 throw new Error(
-data.message || "Requests load failed"
+data.message ||
+"Requests load failed"
 );
 
 }
+
 
 const requests=
 Array.isArray(data.requests)
 ?data.requests
 :[];
 
+
 const myService=
 String(profile.service || "")
 .trim()
 .toLowerCase();
 
-const filtered=requests.filter(request=>{
+
+const filtered=
+requests.filter(
+request=>{
 
 const requestService=
 String(request.service || "")
 .trim()
 .toLowerCase();
 
+
 return requestService===myService;
 
-});
+}
+);
+
 
 if(filtered.length===0){
 
 container.innerHTML=`
+
 <div class="empty">
+
 📭 Abhi
-<strong>${escapeHtml(profile.service)}</strong>
+
+<strong>
+${escapeHtml(profile.service)}
+</strong>
+
 ki koi request nahi hai.
+
 </div>
+
 `;
 
 return;
 
 }
 
+
 container.innerHTML="";
 
-filtered.forEach(request=>{
+
+filtered.forEach(
+request=>{
 
 const status=
-String(request.status || "New");
+String(
+request.status || "New"
+);
+
 
 const statusClass=
-status==="Accepted"?"accepted":
-status==="Assigned"?"assigned":
-status==="Completed"?"completed":
-status==="Cancelled"?"cancelled":"";
+status==="Accepted"
+?"accepted"
+:
+status==="Assigned"
+?"assigned"
+:
+status==="Completed"
+?"completed"
+:
+status==="Cancelled"
+?"cancelled"
+:
+"";
 
-
-/*
-IMPORTANT:
-Supabase service_requests table ke
-actual columns:
-name
-phone
-location
-service
-details
-status
-*/
 
 const customerName=
-request.name || "Naam nahi mila";
+request.name ||
+request.customer_name ||
+"Naam nahi mila";
+
 
 const address=
-request.location || "Location nahi mili";
+request.location ||
+request.address ||
+"Location nahi mili";
+
 
 const description=
-request.details || "Problem nahi batayi gayi";
+request.details ||
+request.description ||
+"Problem nahi batayi gayi";
+
 
 const card=
 document.createElement("div");
 
-card.className="request-card";
+
+card.className=
+"request-card";
+
 
 card.innerHTML=`
 
@@ -908,30 +1517,38 @@ card.innerHTML=`
 🔔 Request #${escapeHtml(request.id)}
 </h3>
 
+
 <p>
 👤 <strong>Customer:</strong>
 ${escapeHtml(customerName)}
 </p>
 
+
 <p>
 📞 <strong>Phone:</strong>
-${escapeHtml(request.phone || "Phone nahi mila")}
+${escapeHtml(
+request.phone || "Phone nahi mila"
+)}
 </p>
+
 
 <p>
 📍 <strong>Location:</strong>
 ${escapeHtml(address)}
 </p>
 
+
 <p>
 🔧 <strong>Service:</strong>
 ${escapeHtml(request.service || "")}
 </p>
 
+
 <p>
 📝 <strong>Problem:</strong>
 ${escapeHtml(description)}
 </p>
+
 
 <p>
 📌 <strong>Status:</strong><br>
@@ -942,48 +1559,86 @@ ${escapeHtml(status)}
 
 </p>
 
+
 <div style="margin-top:12px">
 
 ${
 status==="New"
 ?
 `
-<button class="btn"
-onclick="updateRequestStatus(${Number(request.id)}, 'Accepted')">
+
+<button
+class="btn"
+onclick="updateRequestStatus(
+${Number(request.id)},
+'Accepted'
+)"
+>
 ✅ Accept Request
 </button>
+
 `
-:""
+:
+""
 }
+
 
 ${
 status==="Accepted"
 ?
 `
-<button class="btn secondary"
-onclick="updateRequestStatus(${Number(request.id)}, 'Completed')">
+
+<button
+class="btn secondary"
+onclick="updateRequestStatus(
+${Number(request.id)},
+'Completed'
+)"
+>
 ✅ Mark Completed
 </button>
+
 `
-:""
+:
+""
 }
 
 </div>
 
 `;
 
+
 container.appendChild(card);
 
-});
+}
+);
+
 
 }catch(error){
 
+console.error(
+"KARIGAR REQUEST ERROR:",
+error
+);
+
+
 container.innerHTML=`
-<div class="error" style="display:block">
+
+<div
+class="error"
+style="display:block"
+>
+
 ❌ Requests load nahi ho saki.
+
 <br><br>
-${escapeHtml(error.message)}
+
+${escapeHtml(
+error.message
+)}
+
 </div>
+
 `;
 
 }
@@ -993,46 +1648,86 @@ ${escapeHtml(error.message)}
 
 /* ================= UPDATE REQUEST STATUS ================= */
 
-async function updateRequestStatus(id,status){
+async function updateRequestStatus(
+id,
+status
+){
 
 try{
 
-const response=await fetch(
+const response=
+await fetch(
 API_BASE+
 "/api/requests/"+
 encodeURIComponent(id)+
 "/status",
 {
 method:"PATCH",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
 status
 })
+
 }
 );
 
-const data=await response.json();
+
+const text=
+await response.text();
+
+
+let data={};
+
+
+try{
+
+data=
+text
+?JSON.parse(text)
+:{};
+
+}catch{
+
+data={
+success:false,
+message:text || "Invalid server response"
+};
+
+}
+
 
 if(!response.ok || !data.success){
 
 throw new Error(
-data.message || "Status update failed"
+data.message ||
+"Status update failed"
 );
 
 }
+
 
 alert(
 "✅ Request status update ho gaya."
 );
 
+
 await loadKarigarRequests();
+
 
 }catch(error){
 
+console.error(
+"STATUS ERROR:",
+error
+);
+
+
 alert(
-"❌ Status update nahi ho saka: "+
+"❌ Status update nahi ho saka:\n"+
 (error.message || "Unknown error")
 );
 
@@ -1057,17 +1752,22 @@ localStorage.removeItem(
 "heyKarigarProfile"
 );
 
+
 document.getElementById("profileBox")
 .style.display="none";
+
 
 document.getElementById("karigarDashboard")
 .style.display="none";
 
+
 document.getElementById("authBox")
 .style.display="block";
 
+
 document.getElementById("customerArea")
 .style.display="block";
+
 
 showLogin();
 
@@ -1079,13 +1779,21 @@ showLogin();
 function showAuthSuccess(message){
 
 const box=
-document.getElementById("authSuccess");
+document.getElementById(
+"authSuccess"
+);
 
-box.innerHTML=message;
+
+box.innerHTML=
+escapeHtml(message);
+
+
 box.style.display="block";
 
-document.getElementById("authError")
-.style.display="none";
+
+document.getElementById(
+"authError"
+).style.display="none";
 
 }
 
@@ -1093,26 +1801,36 @@ document.getElementById("authError")
 function showAuthError(message){
 
 const box=
-document.getElementById("authError");
+document.getElementById(
+"authError"
+);
+
 
 box.innerHTML=
-"❌ "+escapeHtml(message);
+"❌ "+
+escapeHtml(message);
+
 
 box.style.display="block";
 
-document.getElementById("authSuccess")
-.style.display="none";
+
+document.getElementById(
+"authSuccess"
+).style.display="none";
 
 }
 
 
 function hideAuthMessages(){
 
-document.getElementById("authSuccess")
-.style.display="none";
+document.getElementById(
+"authSuccess"
+).style.display="none";
 
-document.getElementById("authError")
-.style.display="none";
+
+document.getElementById(
+"authError"
+).style.display="none";
 
 }
 
@@ -1123,114 +1841,206 @@ async function loadCategories(){
 
 try{
 
-const response=await fetch(
+const response=
+await fetch(
 API_BASE+"/api/categories"
 );
 
-const data=await response.json();
+
+const text=
+await response.text();
+
+
+let data={};
+
+
+try{
+
+data=
+text
+?JSON.parse(text)
+:{};
+
+}catch{
+
+data={};
+
+}
+
 
 if(
 data.success &&
 Array.isArray(data.categories)
 ){
 
-categories=data.categories;
+categories=
+data.categories;
 
 }else{
 
-categories=defaultCategories;
+categories=
+defaultCategories;
 
 }
+
 
 }catch{
 
-categories=defaultCategories;
+categories=
+defaultCategories;
 
 }
 
-displayServices(categories);
+
+displayServices(
+categories
+);
 
 }
 
+
+/* ================= DISPLAY SERVICES ================= */
 
 function displayServices(list){
 
 const services=
-document.getElementById("services");
+document.getElementById(
+"services"
+);
+
 
 services.innerHTML="";
 
-document.getElementById("empty").style.display=
-list.length===0?"block":"none";
 
-list.forEach(category=>{
+document.getElementById(
+"empty"
+).style.display=
+list.length===0
+?"block"
+:"none";
+
+
+list.forEach(
+category=>{
 
 const button=
 document.createElement("button");
 
-button.className="service";
+
+button.className=
+"service";
+
 
 button.innerHTML=`
+
 <span class="service-icon">
-${escapeHtml(category.icon || "🔧")}
+
+${escapeHtml(
+category.icon || "🔧"
+)}
+
 </span>
-${escapeHtml(category.name)}
+
+${escapeHtml(
+category.name
+)}
+
 `;
 
+
 button.onclick=()=>{
-selectService(category.name);
+selectService(
+category.name
+);
 };
 
-services.appendChild(button);
 
-});
+services.appendChild(
+button
+);
+
+}
+);
 
 }
 
+
+/* ================= FILTER SERVICES ================= */
 
 function filterServices(){
 
 const text=
-document.getElementById("search")
+document.getElementById(
+"search"
+)
 .value
 .trim()
 .toLowerCase();
 
+
 const filtered=
-categories.filter(category=>
-String(category.name || "")
+categories.filter(
+category=>
+
+String(
+category.name || ""
+)
 .toLowerCase()
 .includes(text)
+
 );
 
-displayServices(filtered);
+
+displayServices(
+filtered
+);
 
 }
 
 
-function selectService(serviceName){
+/* ================= SELECT SERVICE ================= */
 
-document.getElementById("requestBox")
-.style.display="block";
+function selectService(
+serviceName
+){
 
-document.getElementById("service")
-.value=serviceName;
+document.getElementById(
+"requestBox"
+).style.display="block";
 
-document.getElementById("success")
-.style.display="none";
 
-document.getElementById("requestBox")
-.scrollIntoView({
+document.getElementById(
+"service"
+).value=
+serviceName;
+
+
+document.getElementById(
+"success"
+).style.display="none";
+
+
+document.getElementById(
+"requestError"
+).style.display="none";
+
+
+document.getElementById(
+"requestBox"
+).scrollIntoView({
 behavior:"smooth"
 });
 
 }
 
 
+/* ================= CLOSE REQUEST ================= */
+
 function closeRequest(){
 
-document.getElementById("requestBox")
-.style.display="none";
+document.getElementById(
+"requestBox"
+).style.display="none";
 
 }
 
@@ -1240,99 +2050,258 @@ document.getElementById("requestBox")
 async function submitRequest(){
 
 const name=
-document.getElementById("name")
-.value.trim();
+document.getElementById(
+"name"
+)
+.value
+.trim();
+
 
 const phone=
-document.getElementById("phone")
-.value.trim();
+document.getElementById(
+"phone"
+)
+.value
+.trim();
+
 
 const location=
-document.getElementById("location")
-.value.trim();
+document.getElementById(
+"location"
+)
+.value
+.trim();
+
 
 const service=
-document.getElementById("service")
-.value;
+document.getElementById(
+"service"
+)
+.value
+.trim();
+
 
 const details=
-document.getElementById("details")
-.value.trim();
+document.getElementById(
+"details"
+)
+.value
+.trim();
 
-if(!name || !phone || !location || !service){
 
-alert(
-"Naam, mobile number, area aur service zaroor bharein."
+const errorBox=
+document.getElementById(
+"requestError"
 );
+
+
+const successBox=
+document.getElementById(
+"success"
+);
+
+
+errorBox.style.display="none";
+
+successBox.style.display="none";
+
+
+if(
+!name ||
+!phone ||
+!location ||
+!service
+){
+
+errorBox.innerHTML=
+"❌ Naam, mobile number, area aur service zaroor bharein.";
+
+errorBox.style.display="block";
 
 return;
 
 }
 
+
 const button=
-document.getElementById("submitButton");
+document.getElementById(
+"submitButton"
+);
+
 
 button.disabled=true;
 
 button.innerText=
 "⏳ Request bheji ja rahi hai...";
 
+
 try{
 
-const response=await fetch(
+const response=
+await fetch(
 API_BASE+"/api/requests",
 {
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
-name,
-phone,
-location,
-service,
-details
+
+name:name,
+
+phone:phone,
+
+location:location,
+
+service:service,
+
+details:details
+
 })
+
 }
 );
 
-const data=await response.json();
 
-if(!response.ok || !data.success){
+const text=
+await response.text();
+
+
+let data={};
+
+
+try{
+
+data=
+text
+?JSON.parse(text)
+:{};
+
+}catch{
+
+data={
+success:false,
+message:
+text ||
+"Server ne valid JSON response nahi diya."
+};
+
+}
+
+
+console.log(
+"REQUEST RESPONSE:",
+data
+);
+
+
+if(
+!response.ok ||
+!data.success
+){
 
 throw new Error(
-data.message || "Request failed"
+data.message ||
+"Request save nahi hui."
 );
 
 }
 
-if(data.request && data.request.id){
+
+if(
+data.request &&
+data.request.id
+){
 
 localStorage.setItem(
 "heyKarigarRequestId",
-String(data.request.id)
+String(
+data.request.id
+)
 );
 
 }
 
-document.getElementById("success")
-.style.display="block";
 
-document.getElementById("details")
-.value="";
+successBox.innerHTML=`
+
+✅ Aapki request successfully receive ho gayi!
+
+<br><br>
+
+<strong>
+Request ID:
+#${escapeHtml(
+data.request?.id
+)}
+</strong>
+
+`;
+
+successBox.style.display="block";
+
+
+document.getElementById(
+"details"
+).value="";
+
+
+/*
+Nayi request ka data
+directly tracking mein show karein
+*/
+
+if(data.request){
+
+showTrackingRequest(
+data.request
+);
+
+}else{
 
 await checkRequestStatus();
 
-document.getElementById("trackingBox")
-.scrollIntoView({
+}
+
+
+document.getElementById(
+"trackingBox"
+).scrollIntoView({
 behavior:"smooth"
 });
 
+
 }catch(error){
 
-alert(
-"Request bhejne mein problem hui. Dobara try karein."
+console.error(
+"REQUEST ERROR:",
+error
 );
+
+
+errorBox.innerHTML=`
+
+❌ <strong>Request bhejne mein problem hui.</strong>
+
+<br><br>
+
+<strong>Actual Error:</strong>
+
+<br>
+
+${escapeHtml(
+error.message ||
+"Unknown error"
+)}
+
+`;
+
+errorBox.style.display="block";
+
+
+}catchErrorLog(error);
 
 }finally{
 
@@ -1346,22 +2315,37 @@ button.innerText=
 }
 
 
-/* ================= CUSTOMER STATUS ================= */
+/* ================= ERROR LOGGER ================= */
 
-async function checkRequestStatus(){
+function catchErrorLog(error){
 
-const requestId=
-localStorage.getItem(
-"heyKarigarRequestId"
+console.error(
+"Hey Karigar Request Error:",
+error
 );
 
+}
+
+
+/* ================= SHOW TRACKING REQUEST ================= */
+
+function showTrackingRequest(
+request
+){
+
 const trackingBox=
-document.getElementById("trackingBox");
+document.getElementById(
+"trackingBox"
+);
+
 
 const trackingContent=
-document.getElementById("trackingContent");
+document.getElementById(
+"trackingContent"
+);
 
-if(!requestId){
+
+if(!request){
 
 trackingBox.style.display="none";
 
@@ -1369,50 +2353,49 @@ return;
 
 }
 
+
 trackingBox.style.display="block";
 
-trackingContent.innerHTML=`
-<div class="loading">
-⏳ Status check ho raha hai...
-</div>
-`;
-
-try{
-
-const response=await fetch(
-API_BASE+
-"/api/requests/"+
-encodeURIComponent(requestId)
-);
-
-const data=await response.json();
-
-if(
-!response.ok ||
-!data.success ||
-!data.request
-){
-
-throw new Error(
-data.message || "Request not found"
-);
-
-}
-
-const request=data.request;
 
 const status=
-String(request.status || "New");
+String(
+request.status || "New"
+);
+
 
 const statusClass=
-status==="Accepted"?"accepted":
-status==="Assigned"?"assigned":
-status==="Completed"?"completed":
-status==="Cancelled"?"cancelled":"";
+status==="Accepted"
+?"accepted"
+:
+status==="Assigned"
+?"assigned"
+:
+status==="Completed"
+?"completed"
+:
+status==="Cancelled"
+?"cancelled"
+:
+"";
+
+
+const customerName=
+request.name ||
+request.customer_name ||
+"Naam nahi mila";
+
+
+const address=
+request.location ||
+request.address ||
+"Location nahi mili";
+
 
 const description=
 request.details ||
+request.description ||
 "Details nahi di gayi";
+
 
 trackingContent.innerHTML=`
 
@@ -1423,30 +2406,40 @@ trackingContent.innerHTML=`
 #${escapeHtml(request.id)}
 </p>
 
+
 <p>
 <strong>Customer:</strong>
-${escapeHtml(request.name || "")}
+${escapeHtml(customerName)}
 </p>
+
 
 <p>
 <strong>Phone:</strong>
-${escapeHtml(request.phone || "")}
+${escapeHtml(
+request.phone || "Phone nahi mila"
+)}
 </p>
+
 
 <p>
 <strong>Location:</strong>
-${escapeHtml(request.location || "")}
+${escapeHtml(address)}
 </p>
+
 
 <p>
 <strong>Service:</strong>
-${escapeHtml(request.service || "")}
+${escapeHtml(
+request.service || ""
+)}
 </p>
+
 
 <p>
 <strong>Problem:</strong>
 ${escapeHtml(description)}
 </p>
+
 
 <p>
 <strong>Status:</strong><br>
@@ -1461,14 +2454,136 @@ ${escapeHtml(status)}
 
 `;
 
-}catch(error){
+}
+
+
+/* ================= CUSTOMER STATUS ================= */
+
+async function checkRequestStatus(){
+
+const requestId=
+localStorage.getItem(
+"heyKarigarRequestId"
+);
+
+
+const trackingBox=
+document.getElementById(
+"trackingBox"
+);
+
+
+const trackingContent=
+document.getElementById(
+"trackingContent"
+);
+
+
+if(!requestId){
+
+trackingBox.style.display="none";
+
+return;
+
+}
+
+
+trackingBox.style.display="block";
+
 
 trackingContent.innerHTML=`
-<div class="request-card">
-❌ Request status load nahi ho saka.
-<br><br>
-Please dobara Status Check karein.
+
+<div class="loading">
+⏳ Status check ho raha hai...
 </div>
+
+`;
+
+
+try{
+
+const response=
+await fetch(
+API_BASE+
+"/api/requests/"+
+encodeURIComponent(
+requestId
+)
+);
+
+
+const text=
+await response.text();
+
+
+let data={};
+
+
+try{
+
+data=
+text
+?JSON.parse(text)
+:{};
+
+}catch{
+
+data={
+success:false,
+message:
+text ||
+"Invalid server response"
+};
+
+}
+
+
+if(
+!response.ok ||
+!data.success ||
+!data.request
+){
+
+throw new Error(
+data.message ||
+"Request not found"
+);
+
+}
+
+
+showTrackingRequest(
+data.request
+);
+
+
+}catch(error){
+
+console.error(
+"TRACKING ERROR:",
+error
+);
+
+
+trackingContent.innerHTML=`
+
+<div class="request-card">
+
+❌ Request status load nahi ho saka.
+
+<br><br>
+
+${escapeHtml(
+error.message ||
+"Unknown error"
+)}
+
+<br><br>
+
+Please dobara Status Check karein.
+
+</div>
+
 `;
 
 }
@@ -1480,12 +2595,34 @@ Please dobara Status Check karein.
 
 function escapeHtml(value){
 
-return String(value ?? "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+return String(
+value ?? ""
+)
+
+.replace(
+/&/g,
+"&amp;"
+)
+
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
 
 }
 
@@ -1499,18 +2636,27 @@ localStorage.getItem(
 "heyKarigarProfile"
 );
 
+
 if(!profileText)return;
+
 
 try{
 
 const profile=
 JSON.parse(profileText);
 
-if(profile && profile.role){
 
-showLoggedInUser(profile);
+if(
+profile &&
+profile.role
+){
+
+showLoggedInUser(
+profile
+);
 
 }
+
 
 }catch{
 
@@ -1527,14 +2673,19 @@ localStorage.removeItem(
 
 loadCategories();
 
-window.addEventListener("load",()=>{
+
+window.addEventListener(
+"load",
+()=>{
 
 restoreLogin();
+
 
 const requestId=
 localStorage.getItem(
 "heyKarigarRequestId"
 );
+
 
 if(requestId){
 
@@ -1542,7 +2693,8 @@ checkRequestStatus();
 
 }
 
-});
+}
+);
 
 </script>
 
