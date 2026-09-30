@@ -321,14 +321,8 @@ app.get("/api/profile/:id", async (req, res) => {
 app.post("/api/requests", async (req, res) => {
   try {
 
-    console.log(
-      "================================="
-    );
-
-    console.log(
-      "📥 NEW REQUEST RECEIVED"
-    );
-
+    console.log("=================================");
+    console.log("📥 NEW REQUEST RECEIVED");
     console.log(
       "REQUEST BODY:",
       JSON.stringify(req.body)
@@ -428,22 +422,15 @@ app.post("/api/requests", async (req, res) => {
 
       return res.status(500).json({
         success: false,
-
-        // IMPORTANT:
-        // Ab frontend ko actual Supabase error milega
         message:
           error.message ||
           "Request save nahi hui",
-
         actualError:
           error.message ||
           "Unknown Supabase error",
-
         code: error.code || null,
-
         details:
           error.details || null,
-
         hint:
           error.hint || null
       });
@@ -471,17 +458,13 @@ app.post("/api/requests", async (req, res) => {
       "❌❌❌ REQUEST SERVER ERROR ❌❌❌"
     );
 
-    console.error(
-      error
-    );
+    console.error(error);
 
     return res.status(500).json({
       success: false,
-
       message:
         error.message ||
         "Request save nahi hui",
-
       actualError:
         error.message ||
         "Unknown server error"
@@ -541,6 +524,77 @@ app.get("/api/requests", async (req, res) => {
       success: false,
       message: error.message,
       actualError: error.message
+    });
+  }
+});
+
+
+// =====================================
+// GET CUSTOMER REQUESTS BY PHONE
+// =====================================
+
+app.get("/api/customer-requests", async (req, res) => {
+  try {
+
+    const phone =
+      String(req.query.phone || "").trim();
+
+    if (!phone) {
+      return res.status(400).json({
+        success: false,
+        message: "Phone number required"
+      });
+    }
+
+    const {
+      data,
+      error
+    } = await supabase
+      .from("service_requests")
+      .select("*")
+      .eq("phone", phone)
+      .order("id", {
+        ascending: false
+      });
+
+    if (error) {
+
+      console.error(
+        "❌ CUSTOMER REQUESTS ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+        actualError: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint
+      });
+    }
+
+    return res.json({
+      success: true,
+      count: data.length,
+      requests: data
+    });
+
+  } catch (error) {
+
+    console.error(
+      "❌ CUSTOMER REQUESTS SERVER ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message:
+        error.message ||
+        "Customer requests load nahi hui",
+      actualError:
+        error.message ||
+        "Unknown server error"
     });
   }
 });
