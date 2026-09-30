@@ -1,276 +1,118 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hey Karigar</title>
 
-  <title>Hey Karigar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f7f6;color:#17221c}
+header{background:#087f5b;color:white;padding:22px 16px;text-align:center}
+header h1{font-size:30px;margin-bottom:6px}
+header p{font-size:14px}
+.container{max-width:700px;margin:auto;padding:16px}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+.box,.welcome,.request-box,.tracking-box,.profile-box,
+.dashboard-box{
+  background:white;padding:20px;border-radius:18px;
+  margin-bottom:18px;box-shadow:0 3px 14px rgba(0,0,0,.07)
+}
 
-    body {
-      background: #f4f7f6;
-      color: #17221c;
-    }
+input,textarea,select{
+ width:100%;padding:14px;border:1px solid #ddd;
+ border-radius:11px;font-size:16px;outline:none;
+ margin-bottom:12px;background:white
+}
+textarea{min-height:90px;resize:vertical}
 
-    header {
-      background: #087f5b;
-      color: white;
-      padding: 22px 16px;
-      text-align: center;
-    }
+.btn{
+ width:100%;padding:14px;border:0;border-radius:10px;
+ background:#087f5b;color:white;font-size:16px;
+ font-weight:bold;cursor:pointer
+}
+.btn:disabled{opacity:.6}
+.secondary{background:#145ea8;margin-top:10px}
+.cancel{background:#555;margin-top:9px}
+.logout{background:#b42318;margin-top:10px}
+.refresh{background:#145ea8;margin-top:10px}
 
-    header h1 {
-      font-size: 30px;
-      margin-bottom: 6px;
-    }
+.switch-btn{
+ background:none;border:0;color:#087f5b;font-weight:bold;
+ cursor:pointer;margin-top:12px;font-size:14px
+}
 
-    header p {
-      font-size: 14px;
-    }
+.role-buttons{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:10px;margin:15px 0
+}
+.role-btn{
+ padding:13px;border:2px solid #ddd;border-radius:11px;
+ background:white;font-size:15px;font-weight:bold
+}
+.role-btn.active{
+ border-color:#087f5b;background:#e7f8ef;color:#087f5b
+}
 
-    .container {
-      max-width: 650px;
-      margin: auto;
-      padding: 16px;
-    }
+.services{
+ display:grid;grid-template-columns:repeat(2,1fr);gap:12px
+}
+.service{
+ background:white;border:0;border-radius:16px;padding:18px 8px;
+ text-align:center;font-size:15px;cursor:pointer;
+ box-shadow:0 3px 12px rgba(0,0,0,.07)
+}
+.service-icon{display:block;font-size:32px;margin-bottom:8px}
 
-    .welcome,
-    .auth-box,
-    .request-box,
-    .tracking-box,
-    .profile-box {
-      background: white;
-      padding: 20px;
-      border-radius: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 3px 14px rgba(0,0,0,.07);
-    }
+.request-box,.tracking-box,.profile-box,.dashboard-box{
+ display:none
+}
 
-    .welcome h2,
-    .auth-box h2,
-    .request-box h2,
-    .tracking-box h2,
-    .profile-box h2 {
-      margin-bottom: 10px;
-    }
+.success{
+ display:none;background:#e7f8ef;color:#176b3a;
+ padding:15px;border-radius:10px;margin-top:15px
+}
+.error{
+ display:none;background:#ffe3e3;color:#b42318;
+ padding:15px;border-radius:10px;margin-top:15px
+}
 
-    input,
-    textarea,
-    select {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 11px;
-      font-size: 16px;
-      outline: none;
-      margin-bottom: 12px;
-      background: white;
-    }
+.status{
+ display:inline-block;margin-top:10px;padding:8px 14px;
+ border-radius:20px;background:#fff3cd;color:#856404;
+ font-weight:bold
+}
+.status.accepted{background:#dff7e8;color:#176b3a}
+.status.assigned{background:#e1efff;color:#145ea8}
+.status.completed{background:#dff7e8;color:#176b3a}
+.status.cancelled{background:#ffe3e3;color:#b42318}
 
-    .search {
-      margin-top: 15px;
-    }
+.request-card{
+ background:#f8faf9;border:1px solid #e1e7e4;
+ padding:16px;border-radius:14px;margin-top:12px
+}
+.request-card p{margin:7px 0;line-height:1.45}
 
-    .section-title {
-      margin: 20px 2px 12px;
-    }
+.loading{text-align:center;padding:18px;color:#777}
+.empty{
+ background:white;padding:18px;border-radius:14px;
+ text-align:center;color:#777
+}
 
-    .services {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
+.user-info{
+ background:#e7f8ef;padding:12px;border-radius:10px;
+ margin-bottom:12px;color:#176b3a
+}
 
-    .service {
-      background: white;
-      border: 0;
-      border-radius: 16px;
-      padding: 18px 8px;
-      text-align: center;
-      font-size: 15px;
-      cursor: pointer;
-      box-shadow: 0 3px 12px rgba(0,0,0,.07);
-    }
+.badge{
+ display:inline-block;padding:6px 10px;border-radius:15px;
+ background:#e1efff;color:#145ea8;font-weight:bold;font-size:13px
+}
 
-    .service:active {
-      transform: scale(.96);
-    }
+footer{text-align:center;padding:28px 10px;color:#777;font-size:13px}
 
-    .service-icon {
-      display: block;
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
-
-    .request-box,
-    .tracking-box,
-    .profile-box {
-      display: none;
-      margin-top: 20px;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 14px;
-      border: 0;
-      border-radius: 10px;
-      background: #087f5b;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .btn:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
-    .secondary {
-      background: #145ea8;
-      margin-top: 10px;
-    }
-
-    .cancel {
-      background: #555;
-      margin-top: 9px;
-    }
-
-    .logout {
-      background: #b42318;
-      margin-top: 10px;
-    }
-
-    .switch-btn {
-      background: none;
-      border: 0;
-      color: #087f5b;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 12px;
-      font-size: 14px;
-    }
-
-    .role-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 15px 0;
-    }
-
-    .role-btn {
-      padding: 13px;
-      border: 2px solid #ddd;
-      border-radius: 11px;
-      background: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .role-btn.active {
-      border-color: #087f5b;
-      background: #e7f8ef;
-      color: #087f5b;
-    }
-
-    .success {
-      display: none;
-      background: #e7f8ef;
-      color: #176b3a;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-    }
-
-    .error {
-      display: none;
-      background: #ffe3e3;
-      color: #b42318;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-    }
-
-    .tracking-card {
-      background: #f1f8f5;
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 12px;
-    }
-
-    .status {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 14px;
-      border-radius: 20px;
-      background: #fff3cd;
-      color: #856404;
-      font-weight: bold;
-    }
-
-    .status.accepted {
-      background: #dff7e8;
-      color: #176b3a;
-    }
-
-    .status.assigned {
-      background: #e1efff;
-      color: #145ea8;
-    }
-
-    .status.completed {
-      background: #dff7e8;
-      color: #176b3a;
-    }
-
-    .status.cancelled {
-      background: #ffe3e3;
-      color: #b42318;
-    }
-
-    .empty {
-      display: none;
-      background: white;
-      padding: 18px;
-      border-radius: 14px;
-      text-align: center;
-      color: #777;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 15px;
-      color: #777;
-    }
-
-    .user-info {
-      background: #e7f8ef;
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      color: #176b3a;
-    }
-
-    footer {
-      text-align: center;
-      padding: 28px 10px;
-      color: #777;
-      font-size: 13px;
-    }
-  </style>
+.hidden{display:none!important}
+</style>
 </head>
 
 <body>
@@ -282,308 +124,245 @@
 
 <main class="container">
 
-  <!-- AUTH -->
-
-  <div class="auth-box" id="authBox">
-
-    <h2 id="authTitle">🔐 Login</h2>
-
-    <p id="authSubtitle">
-      Apne Hey Karigar account mein login karein.
-    </p>
-
-    <!-- LOGIN -->
-
-    <div id="loginForm">
-
-      <input
-        id="loginEmail"
-        type="email"
-        placeholder="Email"
-      >
-
-      <input
-        id="loginPassword"
-        type="password"
-        placeholder="Password"
-      >
-
-      <button
-        class="btn"
-        id="loginButton"
-        onclick="loginUser()"
-      >
-        🔐 Login
-      </button>
-
-      <button
-        class="switch-btn"
-        onclick="showSignup()"
-      >
-        Naya account hai? Signup karein
-      </button>
-
-    </div>
-
-    <!-- SIGNUP -->
-
-    <div id="signupForm" style="display:none;">
-
-      <input
-        id="signupName"
-        type="text"
-        placeholder="Aapka poora naam"
-      >
-
-      <input
-        id="signupPhone"
-        type="tel"
-        placeholder="Mobile number"
-      >
-
-      <input
-        id="signupEmail"
-        type="email"
-        placeholder="Email"
-      >
-
-      <input
-        id="signupPassword"
-        type="password"
-        placeholder="Password (minimum 6 characters)"
-      >
-
-      <p style="margin-bottom:8px;font-weight:bold;">
-        Aap kaun hain?
-      </p>
-
-      <div class="role-buttons">
-
-        <button
-          class="role-btn active"
-          id="customerRoleBtn"
-          onclick="selectRole('customer')"
-        >
-          👤 Customer
-        </button>
+<!-- ================= AUTH ================= -->
 
-        <button
-          class="role-btn"
-          id="karigarRoleBtn"
-          onclick="selectRole('karigar')"
-        >
-          🔧 Karigar
-        </button>
+<div class="box" id="authBox">
 
-      </div>
+<h2 id="authTitle">🔐 Login</h2>
 
-      <div id="karigarFields" style="display:none;">
+<p id="authSubtitle" style="margin:8px 0 15px">
+Apne Hey Karigar account mein login karein.
+</p>
 
-        <select id="signupService">
-
-          <option value="">
-            Apni service select karein
-          </option>
+<div id="loginForm">
 
-          <option>Gardener / Mali</option>
-          <option>Plumber</option>
-          <option>Electrician</option>
-          <option>Carpenter</option>
-          <option>Painter</option>
-          <option>AC Repair</option>
-          <option>Washing Machine Repair</option>
-          <option>TV Repair</option>
-          <option>Gutter Cleaning</option>
-          <option>Home Cleaning</option>
-          <option>Carpet Cleaning</option>
-          <option>Generator Mechanic</option>
-          <option>Puncture / Tyre Replacement</option>
-          <option>Barber</option>
-          <option>Physiotherapist</option>
-          <option>Mehndi Artist</option>
+<input id="loginEmail" type="email" placeholder="Email">
 
-        </select>
+<input id="loginPassword" type="password" placeholder="Password">
 
-        <input
-          id="signupLocation"
-          type="text"
-          placeholder="Aapka area / mohalla"
-        >
+<button class="btn" id="loginButton" onclick="loginUser()">
+🔐 Login
+</button>
 
-      </div>
+<button class="switch-btn" onclick="showSignup()">
+Naya account hai? Signup karein
+</button>
 
-      <div id="customerLocationField">
+</div>
 
-        <input
-          id="customerLocation"
-          type="text"
-          placeholder="Aapka area / mohalla"
-        >
+<div id="signupForm" style="display:none">
 
-      </div>
+<input id="signupName" type="text" placeholder="Aapka poora naam">
 
-      <button
-        class="btn"
-        id="signupButton"
-        onclick="signupUser()"
-      >
-        📝 Account Banayein
-      </button>
+<input id="signupPhone" type="tel" placeholder="Mobile number">
 
-      <button
-        class="switch-btn"
-        onclick="showLogin()"
-      >
-        Pehle se account hai? Login karein
-      </button>
+<input id="signupEmail" type="email" placeholder="Email">
 
-    </div>
+<input id="signupPassword" type="password" placeholder="Password (minimum 6 characters)">
 
-    <div class="success" id="authSuccess"></div>
-
-    <div class="error" id="authError"></div>
-
-  </div>
-
-  <!-- LOGGED IN PROFILE -->
-
-  <div class="profile-box" id="profileBox">
-
-    <h2>👤 My Account</h2>
-
-    <div class="user-info" id="userInfo"></div>
-
-    <button
-      class="btn logout"
-      onclick="logoutUser()"
-    >
-      🚪 Logout
-    </button>
-
-  </div>
+<p style="margin-bottom:8px;font-weight:bold">Aap kaun hain?</p>
 
-  <!-- CUSTOMER HOME -->
-
-  <div id="customerArea">
-
-    <div class="welcome">
-
-      <h2>Namaste 👋</h2>
-
-      <p>
-        Apne area mein jis kaam ke liye karigar chahiye,
-        neeche category select karein.
-      </p>
-
-      <input
-        class="search"
-        id="search"
-        type="search"
-        placeholder="🔎 Karigar ya service search karein..."
-        oninput="filterServices()"
-      >
-
-    </div>
-
-    <h2 class="section-title">🧰 Services</h2>
-
-    <div class="services" id="services"></div>
-
-    <div class="empty" id="empty">
-      Is naam ki service abhi nahi mili.
-    </div>
-
-    <!-- REQUEST FORM -->
-
-    <div class="request-box" id="requestBox">
-
-      <h2>📋 Karigar Request</h2>
-
-      <input
-        id="name"
-        type="text"
-        placeholder="Aapka naam"
-      >
-
-      <input
-        id="phone"
-        type="tel"
-        placeholder="Mobile number"
-      >
-
-      <input
-        id="location"
-        type="text"
-        placeholder="Area / Mohalla"
-      >
-
-      <input
-        id="service"
-        type="text"
-        readonly
-      >
-
-      <textarea
-        id="details"
-        placeholder="Kaam ke baare mein thoda batayein..."
-      ></textarea>
-
-      <button
-        class="btn"
-        id="submitButton"
-        onclick="submitRequest()"
-      >
-        📲 Request Bhejein
-      </button>
-
-      <button
-        class="btn cancel"
-        onclick="closeRequest()"
-      >
-        Cancel
-      </button>
-
-      <div class="success" id="success">
-        ✅ Aapki request receive ho gayi hai!
-        <br><br>
-        Hey Karigar aapki request ko process karega.
-        <br><br>
-        <strong>
-          📋 Neeche apni request ka status dekh sakte hain.
-        </strong>
-      </div>
-
-    </div>
-
-    <!-- TRACKING -->
-
-    <div class="tracking-box" id="trackingBox">
-
-      <h2>📍 Meri Request</h2>
-
-      <div id="trackingContent">
-        <div class="loading">
-          ⏳ Request status load ho raha hai...
-        </div>
-      </div>
-
-      <button
-        class="btn"
-        style="margin-top:12px;"
-        onclick="checkRequestStatus()"
-      >
-        🔄 Status Check Karein
-      </button>
-
-    </div>
-
-  </div>
+<div class="role-buttons">
+
+<button class="role-btn active"
+id="customerRoleBtn"
+onclick="selectRole('customer')">
+👤 Customer
+</button>
+
+<button class="role-btn"
+id="karigarRoleBtn"
+onclick="selectRole('karigar')">
+🔧 Karigar
+</button>
+
+</div>
+
+<div id="karigarFields" style="display:none">
+
+<select id="signupService">
+<option value="">Apni service select karein</option>
+<option>Gardener / Mali</option>
+<option>Plumber</option>
+<option>Electrician</option>
+<option>Carpenter</option>
+<option>Painter</option>
+<option>AC Repair</option>
+<option>Washing Machine Repair</option>
+<option>TV Repair</option>
+<option>Gutter Cleaning</option>
+<option>Home Cleaning</option>
+<option>Carpet Cleaning</option>
+<option>Generator Mechanic</option>
+<option>Puncture / Tyre Replacement</option>
+<option>Barber</option>
+<option>Physiotherapist</option>
+<option>Mehndi Artist</option>
+</select>
+
+<input id="signupLocation"
+type="text"
+placeholder="Aapka area / mohalla">
+
+</div>
+
+<div id="customerLocationField">
+
+<input id="customerLocation"
+type="text"
+placeholder="Aapka area / mohalla">
+
+</div>
+
+<button class="btn"
+id="signupButton"
+onclick="signupUser()">
+📝 Account Banayein
+</button>
+
+<button class="switch-btn" onclick="showLogin()">
+Pehle se account hai? Login karein
+</button>
+
+</div>
+
+<div class="success" id="authSuccess"></div>
+<div class="error" id="authError"></div>
+
+</div>
+
+
+<!-- ================= PROFILE ================= -->
+
+<div class="profile-box" id="profileBox">
+
+<h2>👤 My Account</h2>
+
+<div class="user-info" id="userInfo"></div>
+
+<button class="btn logout" onclick="logoutUser()">
+🚪 Logout
+</button>
+
+</div>
+
+
+<!-- ================= CUSTOMER AREA ================= -->
+
+<div id="customerArea">
+
+<div class="welcome">
+
+<h2>Namaste 👋</h2>
+
+<p style="margin-top:8px">
+Apne area mein jis kaam ke liye karigar chahiye,
+neeche category select karein.
+</p>
+
+<input
+style="margin-top:15px"
+id="search"
+type="search"
+placeholder="🔎 Karigar ya service search karein..."
+oninput="filterServices()">
+
+</div>
+
+<h2 style="margin:20px 2px 12px">🧰 Services</h2>
+
+<div class="services" id="services"></div>
+
+<div class="empty" id="empty">
+Is naam ki service abhi nahi mili.
+</div>
+
+
+<!-- REQUEST -->
+
+<div class="request-box" id="requestBox">
+
+<h2>📋 Karigar Request</h2>
+
+<input id="name" type="text" placeholder="Aapka naam">
+
+<input id="phone" type="tel" placeholder="Mobile number">
+
+<input id="location" type="text" placeholder="Area / Mohalla">
+
+<input id="service" type="text" readonly>
+
+<textarea id="details"
+placeholder="Kaam ke baare mein thoda batayein..."></textarea>
+
+<button class="btn"
+id="submitButton"
+onclick="submitRequest()">
+📲 Request Bhejein
+</button>
+
+<button class="btn cancel" onclick="closeRequest()">
+Cancel
+</button>
+
+<div class="success" id="success">
+✅ Aapki request receive ho gayi hai!
+</div>
+
+</div>
+
+
+<!-- TRACKING -->
+
+<div class="tracking-box" id="trackingBox">
+
+<h2>📍 Meri Request</h2>
+
+<div id="trackingContent"></div>
+
+<button class="btn refresh"
+onclick="checkRequestStatus()">
+🔄 Status Check Karein
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= KARIGAR DASHBOARD ================= -->
+
+<div class="dashboard-box" id="karigarDashboard">
+
+<h2>🔧 Karigar Dashboard</h2>
+
+<div class="user-info" id="karigarInfo"></div>
+
+<p style="margin-bottom:12px">
+📋 <strong>Aapki Service Requests</strong>
+</p>
+
+<div id="karigarRequests">
+
+<div class="loading">
+⏳ Requests load ho rahi hain...
+</div>
+
+</div>
+
+<button class="btn refresh"
+onclick="loadKarigarRequests()">
+🔄 Refresh Requests
+</button>
+
+</div>
 
 </main>
 
 <footer>
-  © 2026 Hey Karigar · Local Services Platform
+© 2026 Hey Karigar · Local Services Platform
 </footer>
+
 
 <script>
 
@@ -592,1003 +371,959 @@ const API_BASE = window.location.origin;
 let categories = [];
 let selectedRole = "customer";
 
-/* ===============================
-   DEFAULT CATEGORIES
-================================ */
+
+/* ================= DEFAULT CATEGORIES ================= */
 
 const defaultCategories = [
-  {id:1,name:"Gardener / Mali",icon:"🌱"},
-  {id:2,name:"Plumber",icon:"🚰"},
-  {id:3,name:"Electrician",icon:"💡"},
-  {id:4,name:"Carpenter",icon:"🔨"},
-  {id:5,name:"Painter",icon:"🎨"},
-  {id:6,name:"AC Repair",icon:"❄️"},
-  {id:7,name:"Washing Machine Repair",icon:"🧺"},
-  {id:8,name:"TV Repair",icon:"📺"},
-  {id:9,name:"Gutter Cleaning",icon:"🧹"},
-  {id:10,name:"Home Cleaning",icon:"🧼"},
-  {id:11,name:"Carpet Cleaning",icon:"🧽"},
-  {id:12,name:"Generator Mechanic",icon:"🔧"},
-  {id:13,name:"Puncture / Tyre Replacement",icon:"🛞"},
-  {id:14,name:"Barber",icon:"💈"},
-  {id:15,name:"Physiotherapist",icon:"🧑‍⚕️"},
-  {id:16,name:"Mehndi Artist",icon:"🌿"}
+{id:1,name:"Gardener / Mali",icon:"🌱"},
+{id:2,name:"Plumber",icon:"🚰"},
+{id:3,name:"Electrician",icon:"💡"},
+{id:4,name:"Carpenter",icon:"🔨"},
+{id:5,name:"Painter",icon:"🎨"},
+{id:6,name:"AC Repair",icon:"❄️"},
+{id:7,name:"Washing Machine Repair",icon:"🧺"},
+{id:8,name:"TV Repair",icon:"📺"},
+{id:9,name:"Gutter Cleaning",icon:"🧹"},
+{id:10,name:"Home Cleaning",icon:"🧼"},
+{id:11,name:"Carpet Cleaning",icon:"🧽"},
+{id:12,name:"Generator Mechanic",icon:"🔧"},
+{id:13,name:"Puncture / Tyre Replacement",icon:"🛞"},
+{id:14,name:"Barber",icon:"💈"},
+{id:15,name:"Physiotherapist",icon:"🧑‍⚕️"},
+{id:16,name:"Mehndi Artist",icon:"🌿"}
 ];
 
-/* ===============================
-   AUTH SCREEN
-================================ */
 
-function showSignup() {
+/* ================= AUTH SCREEN ================= */
 
-  document.getElementById("loginForm")
-    .style.display = "none";
+function showSignup(){
 
-  document.getElementById("signupForm")
-    .style.display = "block";
+document.getElementById("loginForm").style.display="none";
+document.getElementById("signupForm").style.display="block";
 
-  document.getElementById("authTitle")
-    .innerText = "📝 Signup";
+document.getElementById("authTitle").innerText="📝 Signup";
+document.getElementById("authSubtitle").innerText=
+"Hey Karigar par apna account banayein.";
 
-  document.getElementById("authSubtitle")
-    .innerText =
-      "Hey Karigar par apna account banayein.";
-
-  hideAuthMessages();
+hideAuthMessages();
 }
 
-function showLogin() {
 
-  document.getElementById("signupForm")
-    .style.display = "none";
+function showLogin(){
 
-  document.getElementById("loginForm")
-    .style.display = "block";
+document.getElementById("signupForm").style.display="none";
+document.getElementById("loginForm").style.display="block";
 
-  document.getElementById("authTitle")
-    .innerText = "🔐 Login";
+document.getElementById("authTitle").innerText="🔐 Login";
+document.getElementById("authSubtitle").innerText=
+"Apne Hey Karigar account mein login karein.";
 
-  document.getElementById("authSubtitle")
-    .innerText =
-      "Apne Hey Karigar account mein login karein.";
-
-  hideAuthMessages();
+hideAuthMessages();
 }
 
-/* ===============================
-   ROLE
-================================ */
 
-function selectRole(role) {
+/* ================= ROLE ================= */
 
-  selectedRole = role;
+function selectRole(role){
 
-  const customerBtn =
-    document.getElementById("customerRoleBtn");
+selectedRole=role;
 
-  const karigarBtn =
-    document.getElementById("karigarRoleBtn");
+const customerBtn=document.getElementById("customerRoleBtn");
+const karigarBtn=document.getElementById("karigarRoleBtn");
 
-  const karigarFields =
-    document.getElementById("karigarFields");
+const karigarFields=document.getElementById("karigarFields");
+const customerLocationField=document.getElementById("customerLocationField");
 
-  const customerLocationField =
-    document.getElementById(
-      "customerLocationField"
-    );
+customerBtn.classList.remove("active");
+karigarBtn.classList.remove("active");
 
-  customerBtn.classList.remove("active");
-  karigarBtn.classList.remove("active");
+if(role==="customer"){
 
-  if (role === "customer") {
+customerBtn.classList.add("active");
+karigarFields.style.display="none";
+customerLocationField.style.display="block";
 
-    customerBtn.classList.add("active");
+}else{
 
-    karigarFields.style.display = "none";
+karigarBtn.classList.add("active");
+karigarFields.style.display="block";
+customerLocationField.style.display="none";
 
-    customerLocationField.style.display =
-      "block";
-
-  } else {
-
-    karigarBtn.classList.add("active");
-
-    karigarFields.style.display = "block";
-
-    customerLocationField.style.display =
-      "none";
-  }
 }
 
-/* ===============================
-   SIGNUP
-================================ */
-
-async function signupUser() {
-
-  const full_name =
-    document.getElementById("signupName")
-      .value.trim();
-
-  const phone =
-    document.getElementById("signupPhone")
-      .value.trim();
-
-  const email =
-    document.getElementById("signupEmail")
-      .value.trim();
-
-  const password =
-    document.getElementById("signupPassword")
-      .value;
-
-  let service = "";
-  let location = "";
-
-  if (selectedRole === "karigar") {
-
-    service =
-      document.getElementById("signupService")
-        .value;
-
-    location =
-      document.getElementById("signupLocation")
-        .value.trim();
-
-  } else {
-
-    location =
-      document.getElementById("customerLocation")
-        .value.trim();
-
-  }
-
-  hideAuthMessages();
-
-  if (!full_name || !email || !password) {
-
-    showAuthError(
-      "Naam, email aur password zaroor bharein."
-    );
-
-    return;
-  }
-
-  if (password.length < 6) {
-
-    showAuthError(
-      "Password kam se kam 6 characters ka hona chahiye."
-    );
-
-    return;
-  }
-
-  if (selectedRole === "karigar" && !service) {
-
-    showAuthError(
-      "Karigar ke liye service select karein."
-    );
-
-    return;
-  }
-
-  const button =
-    document.getElementById("signupButton");
-
-  button.disabled = true;
-
-  button.innerText =
-    "⏳ Account ban raha hai...";
-
-  try {
-
-    const response = await fetch(
-      API_BASE + "/api/auth/signup",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          full_name,
-          phone,
-          email,
-          password,
-          role: selectedRole,
-          service,
-          location
-        })
-      }
-    );
-
-    const data =
-      await response.json();
-
-    if (!response.ok || !data.success) {
-
-      throw new Error(
-        data.message ||
-        "Signup failed"
-      );
-    }
-
-    showAuthSuccess(
-      "✅ Account successfully create ho gaya! Ab Login karein."
-    );
-
-    document.getElementById("signupName").value = "";
-    document.getElementById("signupPhone").value = "";
-    document.getElementById("signupEmail").value = "";
-    document.getElementById("signupPassword").value = "";
-
-    setTimeout(function() {
-      showLogin();
-
-      document.getElementById("loginEmail").value =
-        email;
-
-    }, 1200);
-
-  } catch (error) {
-
-    showAuthError(
-      error.message ||
-      "Signup mein problem hui."
-    );
-
-  } finally {
-
-    button.disabled = false;
-
-    button.innerText =
-      "📝 Account Banayein";
-  }
 }
 
-/* ===============================
-   LOGIN
-================================ */
 
-async function loginUser() {
+/* ================= SIGNUP ================= */
 
-  const email =
-    document.getElementById("loginEmail")
-      .value.trim();
+async function signupUser(){
 
-  const password =
-    document.getElementById("loginPassword")
-      .value;
+const full_name=document.getElementById("signupName").value.trim();
+const phone=document.getElementById("signupPhone").value.trim();
+const email=document.getElementById("signupEmail").value.trim();
+const password=document.getElementById("signupPassword").value;
 
-  hideAuthMessages();
+let service="";
+let location="";
 
-  if (!email || !password) {
+if(selectedRole==="karigar"){
 
-    showAuthError(
-      "Email aur password zaroor bharein."
-    );
+service=document.getElementById("signupService").value;
+location=document.getElementById("signupLocation").value.trim();
 
-    return;
-  }
+}else{
 
-  const button =
-    document.getElementById("loginButton");
+location=document.getElementById("customerLocation").value.trim();
 
-  button.disabled = true;
-
-  button.innerText =
-    "⏳ Login ho raha hai...";
-
-  try {
-
-    const response = await fetch(
-      API_BASE + "/api/auth/login",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          email,
-          password
-        })
-      }
-    );
-
-    const data =
-      await response.json();
-
-    if (!response.ok || !data.success) {
-
-      throw new Error(
-        data.message ||
-        "Login failed"
-      );
-    }
-
-    /*
-      Session browser mein save.
-    */
-
-    localStorage.setItem(
-      "heyKarigarAccessToken",
-      data.session.access_token
-    );
-
-    localStorage.setItem(
-      "heyKarigarRefreshToken",
-      data.session.refresh_token
-    );
-
-    localStorage.setItem(
-      "heyKarigarProfile",
-      JSON.stringify(data.profile)
-    );
-
-    showAuthSuccess(
-      "✅ Login successful!"
-    );
-
-    setTimeout(function() {
-      showLoggedInUser(data.profile);
-    }, 600);
-
-  } catch (error) {
-
-    showAuthError(
-      error.message ||
-      "Login mein problem hui."
-    );
-
-  } finally {
-
-    button.disabled = false;
-
-    button.innerText = "🔐 Login";
-  }
 }
 
-/* ===============================
-   SHOW LOGGED USER
-================================ */
+hideAuthMessages();
 
-function showLoggedInUser(profile) {
+if(!full_name || !email || !password){
 
-  document.getElementById("authBox")
-    .style.display = "none";
+showAuthError("Naam, email aur password zaroor bharein.");
+return;
 
-  document.getElementById("profileBox")
-    .style.display = "block";
-
-  const userInfo =
-    document.getElementById("userInfo");
-
-  let text = `
-    <strong>${escapeHtml(profile.full_name)}</strong>
-    <br>
-    📱 ${escapeHtml(profile.phone || "Phone not added")}
-    <br>
-    👤 Role: ${escapeHtml(profile.role)}
-  `;
-
-  if (profile.role === "karigar") {
-
-    text += `
-      <br>
-      🔧 Service: ${escapeHtml(profile.service || "")}
-      <br>
-      📍 Area: ${escapeHtml(profile.location || "")}
-    `;
-
-    /*
-      फिलहाल customer request area hide.
-      अगला step: Karigar dashboard/profile.
-    */
-
-    document.getElementById("customerArea")
-      .style.display = "none";
-
-  } else {
-
-    document.getElementById("customerArea")
-      .style.display = "block";
-
-    /*
-      Customer form mein profile details
-      automatically fill.
-    */
-
-    if (profile.full_name) {
-      document.getElementById("name").value =
-        profile.full_name;
-    }
-
-    if (profile.phone) {
-      document.getElementById("phone").value =
-        profile.phone;
-    }
-
-    if (profile.location) {
-      document.getElementById("location").value =
-        profile.location;
-    }
-  }
-
-  userInfo.innerHTML = text;
 }
 
-/* ===============================
-   LOGOUT
-================================ */
+if(password.length<6){
 
-function logoutUser() {
+showAuthError("Password kam se kam 6 characters ka hona chahiye.");
+return;
 
-  localStorage.removeItem(
-    "heyKarigarAccessToken"
-  );
-
-  localStorage.removeItem(
-    "heyKarigarRefreshToken"
-  );
-
-  localStorage.removeItem(
-    "heyKarigarProfile"
-  );
-
-  document.getElementById("profileBox")
-    .style.display = "none";
-
-  document.getElementById("authBox")
-    .style.display = "block";
-
-  document.getElementById("customerArea")
-    .style.display = "block";
-
-  showLogin();
 }
 
-/* ===============================
-   AUTH MESSAGES
-================================ */
+if(selectedRole==="karigar" && !service){
 
-function showAuthSuccess(message) {
+showAuthError("Karigar ke liye service select karein.");
+return;
 
-  const box =
-    document.getElementById("authSuccess");
-
-  box.innerHTML = message;
-
-  box.style.display = "block";
-
-  document.getElementById("authError")
-    .style.display = "none";
 }
 
-function showAuthError(message) {
+const button=document.getElementById("signupButton");
 
-  const box =
-    document.getElementById("authError");
+button.disabled=true;
+button.innerText="⏳ Account ban raha hai...";
 
-  box.innerHTML = "❌ " + escapeHtml(message);
+try{
 
-  box.style.display = "block";
+const response=await fetch(
+API_BASE+"/api/auth/signup",
+{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+full_name,
+phone,
+email,
+password,
+role:selectedRole,
+service,
+location
+})
+}
+);
 
-  document.getElementById("authSuccess")
-    .style.display = "none";
+const data=await response.json();
+
+if(!response.ok || !data.success){
+
+throw new Error(data.message || "Signup failed");
+
 }
 
-function hideAuthMessages() {
+showAuthSuccess(
+"✅ Account successfully create ho gaya! Ab Login karein."
+);
 
-  document.getElementById("authSuccess")
-    .style.display = "none";
+document.getElementById("signupName").value="";
+document.getElementById("signupPhone").value="";
+document.getElementById("signupEmail").value="";
+document.getElementById("signupPassword").value="";
 
-  document.getElementById("authError")
-    .style.display = "none";
+setTimeout(()=>{
+
+showLogin();
+
+document.getElementById("loginEmail").value=email;
+
+},1000);
+
+}catch(error){
+
+showAuthError(error.message || "Signup mein problem hui.");
+
+}finally{
+
+button.disabled=false;
+button.innerText="📝 Account Banayein";
+
 }
 
-/* ===============================
-   LOAD CATEGORIES
-================================ */
-
-async function loadCategories() {
-
-  try {
-
-    const response = await fetch(
-      API_BASE + "/api/categories"
-    );
-
-    const data =
-      await response.json();
-
-    if (
-      data.success &&
-      Array.isArray(data.categories)
-    ) {
-
-      categories =
-        data.categories;
-
-    } else {
-
-      categories =
-        defaultCategories;
-    }
-
-  } catch (error) {
-
-    categories =
-      defaultCategories;
-  }
-
-  displayServices(categories);
 }
 
-/* ===============================
-   DISPLAY SERVICES
-================================ */
 
-function displayServices(list) {
+/* ================= LOGIN ================= */
 
-  const services =
-    document.getElementById("services");
+async function loginUser(){
 
-  services.innerHTML = "";
+const email=document.getElementById("loginEmail").value.trim();
+const password=document.getElementById("loginPassword").value;
 
-  document.getElementById("empty")
-    .style.display =
-      list.length === 0
-        ? "block"
-        : "none";
+hideAuthMessages();
 
-  list.forEach(category => {
+if(!email || !password){
 
-    const button =
-      document.createElement("button");
+showAuthError("Email aur password zaroor bharein.");
+return;
 
-    button.className = "service";
-
-    button.innerHTML = `
-      <span class="service-icon">
-        ${category.icon}
-      </span>
-      ${escapeHtml(category.name)}
-    `;
-
-    button.onclick = function() {
-
-      selectService(
-        category.name
-      );
-    };
-
-    services.appendChild(button);
-  });
 }
 
-/* ===============================
-   SEARCH
-================================ */
+const button=document.getElementById("loginButton");
 
-function filterServices() {
+button.disabled=true;
+button.innerText="⏳ Login ho raha hai...";
 
-  const text =
-    document.getElementById("search")
-      .value
-      .trim()
-      .toLowerCase();
+try{
 
-  const filtered =
-    categories.filter(category =>
-      category.name
-        .toLowerCase()
-        .includes(text)
-    );
+const response=await fetch(
+API_BASE+"/api/auth/login",
+{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email,password})
+}
+);
 
-  displayServices(filtered);
+const data=await response.json();
+
+if(!response.ok || !data.success){
+
+throw new Error(data.message || "Login failed");
+
 }
 
-/* ===============================
-   SELECT SERVICE
-================================ */
+localStorage.setItem(
+"heyKarigarAccessToken",
+data.session.access_token
+);
 
-function selectService(serviceName) {
+localStorage.setItem(
+"heyKarigarRefreshToken",
+data.session.refresh_token
+);
 
-  document.getElementById("requestBox")
-    .style.display = "block";
+localStorage.setItem(
+"heyKarigarProfile",
+JSON.stringify(data.profile)
+);
 
-  document.getElementById("service")
-    .value = serviceName;
+showAuthSuccess("✅ Login successful!");
 
-  document.getElementById("success")
-    .style.display = "none";
+setTimeout(()=>{
 
-  document.getElementById("requestBox")
-    .scrollIntoView({
-      behavior: "smooth"
-    });
+showLoggedInUser(data.profile);
+
+},500);
+
+}catch(error){
+
+showAuthError(error.message || "Login mein problem hui.");
+
+}finally{
+
+button.disabled=false;
+button.innerText="🔐 Login";
+
 }
 
-/* ===============================
-   CLOSE REQUEST
-================================ */
-
-function closeRequest() {
-
-  document.getElementById("requestBox")
-    .style.display = "none";
 }
 
-/* ===============================
-   SUBMIT REQUEST
-================================ */
 
-async function submitRequest() {
+/* ================= SHOW USER ================= */
 
-  const name =
-    document.getElementById("name")
-      .value.trim();
+function showLoggedInUser(profile){
 
-  const phone =
-    document.getElementById("phone")
-      .value.trim();
+document.getElementById("authBox").style.display="none";
+document.getElementById("profileBox").style.display="block";
 
-  const location =
-    document.getElementById("location")
-      .value.trim();
+const userInfo=document.getElementById("userInfo");
 
-  const service =
-    document.getElementById("service")
-      .value;
+userInfo.innerHTML=`
+<strong>${escapeHtml(profile.full_name)}</strong>
+<br>
+📱 ${escapeHtml(profile.phone || "Phone not added")}
+<br>
+👤 Role: ${escapeHtml(profile.role)}
+`;
 
-  const details =
-    document.getElementById("details")
-      .value.trim();
+if(profile.role==="karigar"){
 
-  if (
-    !name ||
-    !phone ||
-    !location ||
-    !service
-  ) {
+document.getElementById("customerArea").style.display="none";
 
-    alert(
-      "Naam, mobile number, area aur service zaroor bharein."
-    );
+document.getElementById("karigarDashboard").style.display="block";
 
-    return;
-  }
+document.getElementById("karigarInfo").innerHTML=`
+<strong>${escapeHtml(profile.full_name)}</strong>
+<br>
+🔧 Service: <strong>${escapeHtml(profile.service || "")}</strong>
+<br>
+📍 Area: ${escapeHtml(profile.location || "")}
+`;
 
-  const button =
-    document.getElementById("submitButton");
+loadKarigarRequests();
 
-  button.disabled = true;
+}else{
 
-  button.innerText =
-    "⏳ Request bheji ja rahi hai...";
+document.getElementById("customerArea").style.display="block";
+document.getElementById("karigarDashboard").style.display="none";
 
-  try {
+if(profile.full_name)
+document.getElementById("name").value=profile.full_name;
 
-    const response = await fetch(
-      API_BASE + "/api/requests",
-      {
-        method: "POST",
+if(profile.phone)
+document.getElementById("phone").value=profile.phone;
 
-        headers: {
-          "Content-Type": "application/json"
-        },
+if(profile.location)
+document.getElementById("location").value=profile.location;
 
-        body: JSON.stringify({
-          name,
-          phone,
-          location,
-          service,
-          details
-        })
-      }
-    );
-
-    const data =
-      await response.json();
-
-    if (
-      !response.ok ||
-      !data.success
-    ) {
-
-      throw new Error(
-        data.message ||
-        "Request failed"
-      );
-    }
-
-    if (
-      data.request &&
-      data.request.id
-    ) {
-
-      localStorage.setItem(
-        "heyKarigarRequestId",
-        String(data.request.id)
-      );
-    }
-
-    document.getElementById("success")
-      .style.display = "block";
-
-    document.getElementById("trackingBox")
-      .style.display = "block";
-
-    document.getElementById("details")
-      .value = "";
-
-    await checkRequestStatus();
-
-    document.getElementById("trackingBox")
-      .scrollIntoView({
-        behavior: "smooth"
-      });
-
-  } catch (error) {
-
-    alert(
-      "Request bhejne mein problem hui. Dobara try karein."
-    );
-
-  } finally {
-
-    button.disabled = false;
-
-    button.innerText =
-      "📲 Request Bhejein";
-  }
 }
 
-/* ===============================
-   CHECK REQUEST STATUS
-================================ */
-
-async function checkRequestStatus() {
-
-  const requestId =
-    localStorage.getItem(
-      "heyKarigarRequestId"
-    );
-
-  const trackingBox =
-    document.getElementById(
-      "trackingBox"
-    );
-
-  const trackingContent =
-    document.getElementById(
-      "trackingContent"
-    );
-
-  if (!requestId) {
-
-    trackingBox.style.display =
-      "none";
-
-    return;
-  }
-
-  trackingBox.style.display =
-    "block";
-
-  trackingContent.innerHTML = `
-    <div class="loading">
-      ⏳ Status check ho raha hai...
-    </div>
-  `;
-
-  try {
-
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/requests/" +
-        encodeURIComponent(requestId)
-      );
-
-    const data =
-      await response.json();
-
-    if (
-      !response.ok ||
-      !data.success ||
-      !data.request
-    ) {
-
-      throw new Error(
-        data.message ||
-        "Request not found"
-      );
-    }
-
-    const request =
-      data.request;
-
-    const status =
-      String(
-        request.status || "New"
-      );
-
-    let statusClass = "";
-
-    if (status === "Accepted") {
-      statusClass = "accepted";
-    }
-
-    if (status === "Assigned") {
-      statusClass = "assigned";
-    }
-
-    if (status === "Completed") {
-      statusClass = "completed";
-    }
-
-    if (status === "Cancelled") {
-      statusClass = "cancelled";
-    }
-
-    let statusMessage =
-      "Aapki request receive ho gayi hai.";
-
-    if (status === "Accepted") {
-
-      statusMessage =
-        "🎉 Karigar ne aapki request accept kar li hai.";
-    }
-
-    if (status === "Assigned") {
-
-      statusMessage =
-        "👨‍🔧 Aapki request ek Karigar ko assign ho gayi hai.";
-    }
-
-    if (status === "Completed") {
-
-      statusMessage =
-        "✅ Aapka kaam completed mark kar diya gaya hai.";
-    }
-
-    if (status === "Cancelled") {
-
-      statusMessage =
-        "❌ Ye request cancel kar di gayi hai.";
-    }
-
-    trackingContent.innerHTML = `
-
-      <div class="tracking-card">
-
-        <p>
-          <strong>Request ID:</strong>
-          #${escapeHtml(request.id)}
-        </p>
-
-        <p style="margin-top:8px;">
-          <strong>Service:</strong>
-          ${escapeHtml(request.service)}
-        </p>
-
-        <p style="margin-top:8px;">
-          <strong>Problem:</strong>
-          ${escapeHtml(
-            request.description ||
-            request.details ||
-            "Details nahi di gayi"
-          )}
-        </p>
-
-        <p style="margin-top:12px;">
-          <strong>Status:</strong>
-        </p>
-
-        <span class="status ${statusClass}">
-          ${escapeHtml(status)}
-        </span>
-
-        <p style="margin-top:12px;">
-          ${statusMessage}
-        </p>
-
-      </div>
-    `;
-
-  } catch (error) {
-
-    trackingContent.innerHTML = `
-
-      <div class="tracking-card">
-
-        ❌ Request status load nahi ho saka.
-
-        <br><br>
-
-        Please dobara
-        <strong>Status Check Karein</strong>
-        dabayein.
-
-      </div>
-    `;
-  }
 }
 
-/* ===============================
-   HTML SAFETY
-================================ */
 
-function escapeHtml(value) {
+/* ================= KARIGAR REQUESTS ================= */
 
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+async function loadKarigarRequests(){
+
+const profileText=localStorage.getItem("heyKarigarProfile");
+
+if(!profileText)return;
+
+let profile;
+
+try{
+
+profile=JSON.parse(profileText);
+
+}catch{
+
+return;
+
 }
 
-/* ===============================
-   RESTORE LOGIN
-================================ */
+if(!profile || profile.role!=="karigar")return;
 
-function restoreLogin() {
+const container=document.getElementById("karigarRequests");
 
-  const profileText =
-    localStorage.getItem(
-      "heyKarigarProfile"
-    );
+container.innerHTML=`
+<div class="loading">
+⏳ Requests load ho rahi hain...
+</div>
+`;
 
-  if (!profileText) {
-    return;
-  }
+try{
 
-  try {
+const response=await fetch(
+API_BASE+"/api/requests"
+);
 
-    const profile =
-      JSON.parse(profileText);
+const data=await response.json();
 
-    if (profile && profile.role) {
+if(!response.ok || !data.success){
 
-      showLoggedInUser(profile);
-    }
+throw new Error(
+data.message || "Requests load failed"
+);
 
-  } catch (error) {
-
-    localStorage.removeItem(
-      "heyKarigarProfile"
-    );
-  }
 }
 
-/* ===============================
-   PAGE LOAD
-================================ */
+const requests=Array.isArray(data.requests)
+?data.requests
+:[];
+
+const myService=String(profile.service || "")
+.trim()
+.toLowerCase();
+
+const filtered=requests.filter(request=>{
+
+const requestService=String(
+request.service || ""
+).trim().toLowerCase();
+
+return requestService===myService;
+
+});
+
+if(filtered.length===0){
+
+container.innerHTML=`
+<div class="empty">
+📭 Abhi <strong>${escapeHtml(profile.service)}</strong>
+ki koi request nahi hai.
+</div>
+`;
+
+return;
+
+}
+
+container.innerHTML="";
+
+filtered.forEach(request=>{
+
+const status=String(request.status || "New");
+
+const statusClass=
+status==="Accepted"?"accepted":
+status==="Assigned"?"assigned":
+status==="Completed"?"completed":
+status==="Cancelled"?"cancelled":"";
+
+const customerName=
+request.customer_name ||
+request.name ||
+"Naam nahi mila";
+
+const address=
+request.address ||
+request.location ||
+"Location nahi mili";
+
+const description=
+request.description ||
+request.details ||
+"Problem nahi batayi gayi";
+
+const card=document.createElement("div");
+
+card.className="request-card";
+
+card.innerHTML=`
+
+<h3>🔔 Request #${escapeHtml(request.id)}</h3>
+
+<p>
+👤 <strong>Customer:</strong>
+${escapeHtml(customerName)}
+</p>
+
+<p>
+📞 <strong>Phone:</strong>
+${escapeHtml(request.phone || "Phone nahi mila")}
+</p>
+
+<p>
+📍 <strong>Location:</strong>
+${escapeHtml(address)}
+</p>
+
+<p>
+🔧 <strong>Service:</strong>
+${escapeHtml(request.service || "")}
+</p>
+
+<p>
+📝 <strong>Problem:</strong>
+${escapeHtml(description)}
+</p>
+
+<p>
+📌 <strong>Status:</strong><br>
+<span class="status ${statusClass}">
+${escapeHtml(status)}
+</span>
+</p>
+
+<div style="margin-top:12px">
+
+${
+status==="New"
+?
+`<button class="btn"
+onclick="updateRequestStatus(${Number(request.id)} ,'Accepted')">
+✅ Accept Request
+</button>`
+:""
+}
+
+${
+status==="Accepted"
+?
+`<button class="btn secondary"
+onclick="updateRequestStatus(${Number(request.id)},'Completed')">
+✅ Mark Completed
+</button>`
+:""
+}
+
+</div>
+
+`;
+
+container.appendChild(card);
+
+});
+
+}catch(error){
+
+container.innerHTML=`
+<div class="error" style="display:block">
+❌ Requests load nahi ho saki.
+<br><br>
+${escapeHtml(error.message)}
+</div>
+`;
+
+}
+
+}
+
+
+/* ================= UPDATE REQUEST ================= */
+
+async function updateRequestStatus(id,status){
+
+try{
+
+const response=await fetch(
+API_BASE+"/api/requests/"+encodeURIComponent(id),
+{
+method:"PATCH",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({status})
+}
+);
+
+const data=await response.json();
+
+if(!response.ok || !data.success){
+
+throw new Error(
+data.message || "Status update failed"
+);
+
+}
+
+alert("✅ Request status update ho gaya.");
+
+loadKarigarRequests();
+
+}catch(error){
+
+alert(
+"❌ Status update nahi ho saka: "+
+(error.message || "Unknown error")
+);
+
+}
+
+}
+
+
+/* ================= LOGOUT ================= */
+
+function logoutUser(){
+
+localStorage.removeItem("heyKarigarAccessToken");
+localStorage.removeItem("heyKarigarRefreshToken");
+localStorage.removeItem("heyKarigarProfile");
+
+document.getElementById("profileBox").style.display="none";
+document.getElementById("karigarDashboard").style.display="none";
+document.getElementById("authBox").style.display="block";
+document.getElementById("customerArea").style.display="block";
+
+showLogin();
+
+}
+
+
+/* ================= AUTH MESSAGES ================= */
+
+function showAuthSuccess(message){
+
+const box=document.getElementById("authSuccess");
+
+box.innerHTML=message;
+box.style.display="block";
+
+document.getElementById("authError").style.display="none";
+
+}
+
+function showAuthError(message){
+
+const box=document.getElementById("authError");
+
+box.innerHTML="❌ "+escapeHtml(message);
+box.style.display="block";
+
+document.getElementById("authSuccess").style.display="none";
+
+}
+
+function hideAuthMessages(){
+
+document.getElementById("authSuccess").style.display="none";
+document.getElementById("authError").style.display="none";
+
+}
+
+
+/* ================= CATEGORIES ================= */
+
+async function loadCategories(){
+
+try{
+
+const response=await fetch(
+API_BASE+"/api/categories"
+);
+
+const data=await response.json();
+
+if(data.success && Array.isArray(data.categories)){
+
+categories=data.categories;
+
+}else{
+
+categories=defaultCategories;
+
+}
+
+}catch{
+
+categories=defaultCategories;
+
+}
+
+displayServices(categories);
+
+}
+
+
+function displayServices(list){
+
+const services=document.getElementById("services");
+
+services.innerHTML="";
+
+document.getElementById("empty").style.display=
+list.length===0?"block":"none";
+
+list.forEach(category=>{
+
+const button=document.createElement("button");
+
+button.className="service";
+
+button.innerHTML=`
+<span class="service-icon">
+${escapeHtml(category.icon || "🔧")}
+</span>
+${escapeHtml(category.name)}
+`;
+
+button.onclick=()=>{
+selectService(category.name);
+};
+
+services.appendChild(button);
+
+});
+
+}
+
+
+function filterServices(){
+
+const text=document.getElementById("search")
+.value.trim().toLowerCase();
+
+const filtered=categories.filter(category=>
+String(category.name || "")
+.toLowerCase()
+.includes(text)
+);
+
+displayServices(filtered);
+
+}
+
+
+function selectService(serviceName){
+
+document.getElementById("requestBox").style.display="block";
+
+document.getElementById("service").value=serviceName;
+
+document.getElementById("success").style.display="none";
+
+document.getElementById("requestBox")
+.scrollIntoView({behavior:"smooth"});
+
+}
+
+
+function closeRequest(){
+
+document.getElementById("requestBox").style.display="none";
+
+}
+
+
+/* ================= SUBMIT REQUEST ================= */
+
+async function submitRequest(){
+
+const name=document.getElementById("name").value.trim();
+const phone=document.getElementById("phone").value.trim();
+const location=document.getElementById("location").value.trim();
+const service=document.getElementById("service").value;
+const details=document.getElementById("details").value.trim();
+
+if(!name || !phone || !location || !service){
+
+alert(
+"Naam, mobile number, area aur service zaroor bharein."
+);
+
+return;
+
+}
+
+const button=document.getElementById("submitButton");
+
+button.disabled=true;
+button.innerText="⏳ Request bheji ja rahi hai...";
+
+try{
+
+const response=await fetch(
+API_BASE+"/api/requests",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+name,
+phone,
+location,
+service,
+details
+})
+}
+);
+
+const data=await response.json();
+
+if(!response.ok || !data.success){
+
+throw new Error(
+data.message || "Request failed"
+);
+
+}
+
+if(data.request && data.request.id){
+
+localStorage.setItem(
+"heyKarigarRequestId",
+String(data.request.id)
+);
+
+}
+
+document.getElementById("success").style.display="block";
+document.getElementById("trackingBox").style.display="block";
+document.getElementById("details").value="";
+
+await checkRequestStatus();
+
+document.getElementById("trackingBox")
+.scrollIntoView({behavior:"smooth"});
+
+}catch(error){
+
+alert(
+"Request bhejne mein problem hui. Dobara try karein."
+);
+
+}finally{
+
+button.disabled=false;
+button.innerText="📲 Request Bhejein";
+
+}
+
+}
+
+
+/* ================= CUSTOMER STATUS ================= */
+
+async function checkRequestStatus(){
+
+const requestId=localStorage.getItem("heyKarigarRequestId");
+
+const trackingBox=document.getElementById("trackingBox");
+const trackingContent=document.getElementById("trackingContent");
+
+if(!requestId){
+
+trackingBox.style.display="none";
+return;
+
+}
+
+trackingBox.style.display="block";
+
+trackingContent.innerHTML=`
+<div class="loading">
+⏳ Status check ho raha hai...
+</div>
+`;
+
+try{
+
+const response=await fetch(
+API_BASE+"/api/requests/"+encodeURIComponent(requestId)
+);
+
+const data=await response.json();
+
+if(!response.ok || !data.success || !data.request){
+
+throw new Error(
+data.message || "Request not found"
+);
+
+}
+
+const request=data.request;
+const status=String(request.status || "New");
+
+const statusClass=
+status==="Accepted"?"accepted":
+status==="Assigned"?"assigned":
+status==="Completed"?"completed":
+status==="Cancelled"?"cancelled":"";
+
+const description=
+request.description ||
+request.details ||
+"Details nahi di gayi";
+
+trackingContent.innerHTML=`
+
+<div class="request-card">
+
+<p>
+<strong>Request ID:</strong>
+#${escapeHtml(request.id)}
+</p>
+
+<p>
+<strong>Service:</strong>
+${escapeHtml(request.service || "")}
+</p>
+
+<p>
+<strong>Problem:</strong>
+${escapeHtml(description)}
+</p>
+
+<p>
+<strong>Status:</strong><br>
+<span class="status ${statusClass}">
+${escapeHtml(status)}
+</span>
+</p>
+
+</div>
+
+`;
+
+}catch(error){
+
+trackingContent.innerHTML=`
+<div class="request-card">
+❌ Request status load nahi ho saka.
+<br><br>
+Please dobara Status Check karein.
+</div>
+`;
+
+}
+
+}
+
+
+/* ================= ESCAPE ================= */
+
+function escapeHtml(value){
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* ================= RESTORE LOGIN ================= */
+
+function restoreLogin(){
+
+const profileText=
+localStorage.getItem("heyKarigarProfile");
+
+if(!profileText)return;
+
+try{
+
+const profile=JSON.parse(profileText);
+
+if(profile && profile.role){
+
+showLoggedInUser(profile);
+
+}
+
+}catch{
+
+localStorage.removeItem("heyKarigarProfile");
+
+}
+
+}
+
+
+/* ================= PAGE LOAD ================= */
 
 loadCategories();
 
-window.addEventListener(
-  "load",
-  function() {
+window.addEventListener("load",()=>{
 
-    restoreLogin();
+restoreLogin();
 
-    const requestId =
-      localStorage.getItem(
-        "heyKarigarRequestId"
-      );
+const requestId=
+localStorage.getItem("heyKarigarRequestId");
 
-    if (requestId) {
-      checkRequestStatus();
-    }
+if(requestId){
 
-  }
-);
+checkRequestStatus();
+
+}
+
+});
 
 </script>
 
