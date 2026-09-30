@@ -257,7 +257,6 @@ async function loadRequests() {
 
         let actionButtons = "";
 
-        // NEW REQUEST
         if (request.status === "New") {
 
           actionButtons = `
@@ -281,7 +280,6 @@ async function loadRequests() {
           `;
         }
 
-        // ACCEPTED REQUEST
         else if (request.status === "Accepted") {
 
           actionButtons = `
@@ -305,7 +303,6 @@ async function loadRequests() {
           `;
         }
 
-        // ASSIGNED REQUEST
         else if (request.status === "Assigned") {
 
           actionButtons = `
@@ -330,30 +327,30 @@ async function loadRequests() {
         }
 
         card.innerHTML = `
-          <h3>🛠️ ${escapeHtml(request.service)}</h3>
+          <h3>🔧 ${escapeHtml(request.service)}</h3>
 
           <div class="row">
-            <span class="label">👤 Naam:</span>
-            ${escapeHtml(request.name)}
+            <span class="label">👤 Customer:</span>
+            ${escapeHtml(request.customer_name)}
           </div>
 
           <div class="row">
-            <span class="label">📞 Mobile:</span>
+            <span class="label">📞 Phone:</span>
             ${escapeHtml(request.phone)}
           </div>
 
           <div class="row">
-            <span class="label">📍 Area:</span>
-            ${escapeHtml(request.location)}
+            <span class="label">📍 Location:</span>
+            ${escapeHtml(request.address)}
           </div>
 
           <div class="row">
-            <span class="label">📝 Kaam:</span>
-            ${escapeHtml(request.details || "Details nahi di gayi")}
+            <span class="label">📝 Problem:</span>
+            ${escapeHtml(request.description || "Problem details nahi di gayi")}
           </div>
 
           <div class="row">
-            <span class="label">Status:</span><br>
+            <span class="label">📌 Status:</span><br>
 
             <span class="status ${escapeHtml(request.status)}">
               ${getStatusIcon(request.status)}
@@ -369,6 +366,8 @@ async function loadRequests() {
       });
 
   } catch (error) {
+
+    console.error("Load requests error:", error);
 
     container.innerHTML = `
       <div class="empty">
@@ -432,6 +431,8 @@ async function updateStatus(id, status) {
     loadRequests();
 
   } catch (error) {
+
+    console.error("Status update error:", error);
 
     showMessage(
       "❌ Status update nahi ho saka."
