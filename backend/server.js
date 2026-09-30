@@ -31,7 +31,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
 ========================= */
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "karigar.html"));
 });
 
 app.get("/api", (req, res) => {
@@ -86,8 +86,6 @@ app.post("/api/auth/signup", async (req, res) => {
       });
     }
 
-    /* Create Supabase Auth user */
-
     const { data: userData, error: userError } =
       await supabase.auth.admin.createUser({
         email: email.trim().toLowerCase(),
@@ -111,8 +109,6 @@ app.post("/api/auth/signup", async (req, res) => {
 
     const user = userData.user;
 
-    /* Save profile */
-
     const { error: profileError } = await supabase
       .from("profiles")
       .insert({
@@ -127,7 +123,6 @@ app.post("/api/auth/signup", async (req, res) => {
     if (profileError) {
       console.error("Profile error:", profileError);
 
-      /* Remove auth user if profile creation failed */
       await supabase.auth.admin.deleteUser(user.id);
 
       return res.status(500).json({
@@ -191,8 +186,6 @@ app.post("/api/auth/login", async (req, res) => {
 
     const user = data.user;
     const session = data.session;
-
-    /* Get profile */
 
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
