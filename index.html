@@ -42,8 +42,10 @@
     }
 
     .welcome,
+    .auth-box,
     .request-box,
-    .tracking-box {
+    .tracking-box,
+    .profile-box {
       background: white;
       padding: 20px;
       border-radius: 18px;
@@ -52,20 +54,24 @@
     }
 
     .welcome h2,
+    .auth-box h2,
     .request-box h2,
-    .tracking-box h2 {
+    .tracking-box h2,
+    .profile-box h2 {
       margin-bottom: 10px;
     }
 
-    .search,
     input,
-    textarea {
+    textarea,
+    select {
       width: 100%;
       padding: 14px;
       border: 1px solid #ddd;
       border-radius: 11px;
       font-size: 16px;
       outline: none;
+      margin-bottom: 12px;
+      background: white;
     }
 
     .search {
@@ -103,14 +109,11 @@
       margin-bottom: 8px;
     }
 
-    .request-box {
+    .request-box,
+    .tracking-box,
+    .profile-box {
       display: none;
       margin-top: 20px;
-    }
-
-    input,
-    textarea {
-      margin-bottom: 12px;
     }
 
     textarea {
@@ -135,9 +138,52 @@
       cursor: not-allowed;
     }
 
+    .secondary {
+      background: #145ea8;
+      margin-top: 10px;
+    }
+
     .cancel {
       background: #555;
       margin-top: 9px;
+    }
+
+    .logout {
+      background: #b42318;
+      margin-top: 10px;
+    }
+
+    .switch-btn {
+      background: none;
+      border: 0;
+      color: #087f5b;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .role-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .role-btn {
+      padding: 13px;
+      border: 2px solid #ddd;
+      border-radius: 11px;
+      background: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .role-btn.active {
+      border-color: #087f5b;
+      background: #e7f8ef;
+      color: #087f5b;
     }
 
     .success {
@@ -149,8 +195,13 @@
       margin-top: 15px;
     }
 
-    .tracking-box {
+    .error {
       display: none;
+      background: #ffe3e3;
+      color: #b42318;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
     }
 
     .tracking-card {
@@ -205,6 +256,14 @@
       color: #777;
     }
 
+    .user-info {
+      background: #e7f8ef;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      color: #176b3a;
+    }
+
     footer {
       text-align: center;
       padding: 28px 10px;
@@ -223,110 +282,300 @@
 
 <main class="container">
 
-  <div class="welcome">
-    <h2>Namaste 👋</h2>
+  <!-- AUTH -->
 
-    <p>
-      Apne area mein jis kaam ke liye karigar chahiye,
-      neeche category select karein.
+  <div class="auth-box" id="authBox">
+
+    <h2 id="authTitle">🔐 Login</h2>
+
+    <p id="authSubtitle">
+      Apne Hey Karigar account mein login karein.
     </p>
 
-    <input
-      class="search"
-      id="search"
-      type="search"
-      placeholder="🔎 Karigar ya service search karein..."
-      oninput="filterServices()"
-    >
-  </div>
+    <!-- LOGIN -->
 
-  <h2 class="section-title">🧰 Services</h2>
+    <div id="loginForm">
 
-  <div class="services" id="services"></div>
+      <input
+        id="loginEmail"
+        type="email"
+        placeholder="Email"
+      >
 
-  <div class="empty" id="empty">
-    Is naam ki service abhi nahi mili.
-  </div>
+      <input
+        id="loginPassword"
+        type="password"
+        placeholder="Password"
+      >
 
-  <!-- REQUEST FORM -->
+      <button
+        class="btn"
+        id="loginButton"
+        onclick="loginUser()"
+      >
+        🔐 Login
+      </button>
 
-  <div class="request-box" id="requestBox">
+      <button
+        class="switch-btn"
+        onclick="showSignup()"
+      >
+        Naya account hai? Signup karein
+      </button>
 
-    <h2>📋 Karigar Request</h2>
-
-    <input
-      id="name"
-      type="text"
-      placeholder="Aapka naam"
-    >
-
-    <input
-      id="phone"
-      type="tel"
-      placeholder="Mobile number"
-    >
-
-    <input
-      id="location"
-      type="text"
-      placeholder="Area / Mohalla"
-    >
-
-    <input
-      id="service"
-      type="text"
-      readonly
-    >
-
-    <textarea
-      id="details"
-      placeholder="Kaam ke baare mein thoda batayein..."
-    ></textarea>
-
-    <button
-      class="btn"
-      id="submitButton"
-      onclick="submitRequest()"
-    >
-      📲 Request Bhejein
-    </button>
-
-    <button
-      class="btn cancel"
-      onclick="closeRequest()"
-    >
-      Cancel
-    </button>
-
-    <div class="success" id="success">
-      ✅ Aapki request receive ho gayi hai!
-      <br><br>
-      Hey Karigar aapki request ko process karega.
-      <br><br>
-      <strong>📋 Neeche apni request ka status dekh sakte hain.</strong>
     </div>
 
-  </div>
+    <!-- SIGNUP -->
 
-  <!-- CUSTOMER REQUEST TRACKING -->
+    <div id="signupForm" style="display:none;">
 
-  <div class="tracking-box" id="trackingBox">
+      <input
+        id="signupName"
+        type="text"
+        placeholder="Aapka poora naam"
+      >
 
-    <h2>📍 Meri Request</h2>
+      <input
+        id="signupPhone"
+        type="tel"
+        placeholder="Mobile number"
+      >
 
-    <div id="trackingContent">
-      <div class="loading">
-        ⏳ Request status load ho raha hai...
+      <input
+        id="signupEmail"
+        type="email"
+        placeholder="Email"
+      >
+
+      <input
+        id="signupPassword"
+        type="password"
+        placeholder="Password (minimum 6 characters)"
+      >
+
+      <p style="margin-bottom:8px;font-weight:bold;">
+        Aap kaun hain?
+      </p>
+
+      <div class="role-buttons">
+
+        <button
+          class="role-btn active"
+          id="customerRoleBtn"
+          onclick="selectRole('customer')"
+        >
+          👤 Customer
+        </button>
+
+        <button
+          class="role-btn"
+          id="karigarRoleBtn"
+          onclick="selectRole('karigar')"
+        >
+          🔧 Karigar
+        </button>
+
       </div>
+
+      <div id="karigarFields" style="display:none;">
+
+        <select id="signupService">
+
+          <option value="">
+            Apni service select karein
+          </option>
+
+          <option>Gardener / Mali</option>
+          <option>Plumber</option>
+          <option>Electrician</option>
+          <option>Carpenter</option>
+          <option>Painter</option>
+          <option>AC Repair</option>
+          <option>Washing Machine Repair</option>
+          <option>TV Repair</option>
+          <option>Gutter Cleaning</option>
+          <option>Home Cleaning</option>
+          <option>Carpet Cleaning</option>
+          <option>Generator Mechanic</option>
+          <option>Puncture / Tyre Replacement</option>
+          <option>Barber</option>
+          <option>Physiotherapist</option>
+          <option>Mehndi Artist</option>
+
+        </select>
+
+        <input
+          id="signupLocation"
+          type="text"
+          placeholder="Aapka area / mohalla"
+        >
+
+      </div>
+
+      <div id="customerLocationField">
+
+        <input
+          id="customerLocation"
+          type="text"
+          placeholder="Aapka area / mohalla"
+        >
+
+      </div>
+
+      <button
+        class="btn"
+        id="signupButton"
+        onclick="signupUser()"
+      >
+        📝 Account Banayein
+      </button>
+
+      <button
+        class="switch-btn"
+        onclick="showLogin()"
+      >
+        Pehle se account hai? Login karein
+      </button>
+
     </div>
 
+    <div class="success" id="authSuccess"></div>
+
+    <div class="error" id="authError"></div>
+
+  </div>
+
+  <!-- LOGGED IN PROFILE -->
+
+  <div class="profile-box" id="profileBox">
+
+    <h2>👤 My Account</h2>
+
+    <div class="user-info" id="userInfo"></div>
+
     <button
-      class="btn"
-      style="margin-top:12px;"
-      onclick="checkRequestStatus()"
+      class="btn logout"
+      onclick="logoutUser()"
     >
-      🔄 Status Check Karein
+      🚪 Logout
     </button>
+
+  </div>
+
+  <!-- CUSTOMER HOME -->
+
+  <div id="customerArea">
+
+    <div class="welcome">
+
+      <h2>Namaste 👋</h2>
+
+      <p>
+        Apne area mein jis kaam ke liye karigar chahiye,
+        neeche category select karein.
+      </p>
+
+      <input
+        class="search"
+        id="search"
+        type="search"
+        placeholder="🔎 Karigar ya service search karein..."
+        oninput="filterServices()"
+      >
+
+    </div>
+
+    <h2 class="section-title">🧰 Services</h2>
+
+    <div class="services" id="services"></div>
+
+    <div class="empty" id="empty">
+      Is naam ki service abhi nahi mili.
+    </div>
+
+    <!-- REQUEST FORM -->
+
+    <div class="request-box" id="requestBox">
+
+      <h2>📋 Karigar Request</h2>
+
+      <input
+        id="name"
+        type="text"
+        placeholder="Aapka naam"
+      >
+
+      <input
+        id="phone"
+        type="tel"
+        placeholder="Mobile number"
+      >
+
+      <input
+        id="location"
+        type="text"
+        placeholder="Area / Mohalla"
+      >
+
+      <input
+        id="service"
+        type="text"
+        readonly
+      >
+
+      <textarea
+        id="details"
+        placeholder="Kaam ke baare mein thoda batayein..."
+      ></textarea>
+
+      <button
+        class="btn"
+        id="submitButton"
+        onclick="submitRequest()"
+      >
+        📲 Request Bhejein
+      </button>
+
+      <button
+        class="btn cancel"
+        onclick="closeRequest()"
+      >
+        Cancel
+      </button>
+
+      <div class="success" id="success">
+        ✅ Aapki request receive ho gayi hai!
+        <br><br>
+        Hey Karigar aapki request ko process karega.
+        <br><br>
+        <strong>
+          📋 Neeche apni request ka status dekh sakte hain.
+        </strong>
+      </div>
+
+    </div>
+
+    <!-- TRACKING -->
+
+    <div class="tracking-box" id="trackingBox">
+
+      <h2>📍 Meri Request</h2>
+
+      <div id="trackingContent">
+        <div class="loading">
+          ⏳ Request status load ho raha hai...
+        </div>
+      </div>
+
+      <button
+        class="btn"
+        style="margin-top:12px;"
+        onclick="checkRequestStatus()"
+      >
+        🔄 Status Check Karein
+      </button>
+
+    </div>
 
   </div>
 
@@ -341,6 +590,7 @@
 const API_BASE = window.location.origin;
 
 let categories = [];
+let selectedRole = "customer";
 
 /* ===============================
    DEFAULT CATEGORIES
@@ -366,6 +616,480 @@ const defaultCategories = [
 ];
 
 /* ===============================
+   AUTH SCREEN
+================================ */
+
+function showSignup() {
+
+  document.getElementById("loginForm")
+    .style.display = "none";
+
+  document.getElementById("signupForm")
+    .style.display = "block";
+
+  document.getElementById("authTitle")
+    .innerText = "📝 Signup";
+
+  document.getElementById("authSubtitle")
+    .innerText =
+      "Hey Karigar par apna account banayein.";
+
+  hideAuthMessages();
+}
+
+function showLogin() {
+
+  document.getElementById("signupForm")
+    .style.display = "none";
+
+  document.getElementById("loginForm")
+    .style.display = "block";
+
+  document.getElementById("authTitle")
+    .innerText = "🔐 Login";
+
+  document.getElementById("authSubtitle")
+    .innerText =
+      "Apne Hey Karigar account mein login karein.";
+
+  hideAuthMessages();
+}
+
+/* ===============================
+   ROLE
+================================ */
+
+function selectRole(role) {
+
+  selectedRole = role;
+
+  const customerBtn =
+    document.getElementById("customerRoleBtn");
+
+  const karigarBtn =
+    document.getElementById("karigarRoleBtn");
+
+  const karigarFields =
+    document.getElementById("karigarFields");
+
+  const customerLocationField =
+    document.getElementById(
+      "customerLocationField"
+    );
+
+  customerBtn.classList.remove("active");
+  karigarBtn.classList.remove("active");
+
+  if (role === "customer") {
+
+    customerBtn.classList.add("active");
+
+    karigarFields.style.display = "none";
+
+    customerLocationField.style.display =
+      "block";
+
+  } else {
+
+    karigarBtn.classList.add("active");
+
+    karigarFields.style.display = "block";
+
+    customerLocationField.style.display =
+      "none";
+  }
+}
+
+/* ===============================
+   SIGNUP
+================================ */
+
+async function signupUser() {
+
+  const full_name =
+    document.getElementById("signupName")
+      .value.trim();
+
+  const phone =
+    document.getElementById("signupPhone")
+      .value.trim();
+
+  const email =
+    document.getElementById("signupEmail")
+      .value.trim();
+
+  const password =
+    document.getElementById("signupPassword")
+      .value;
+
+  let service = "";
+  let location = "";
+
+  if (selectedRole === "karigar") {
+
+    service =
+      document.getElementById("signupService")
+        .value;
+
+    location =
+      document.getElementById("signupLocation")
+        .value.trim();
+
+  } else {
+
+    location =
+      document.getElementById("customerLocation")
+        .value.trim();
+
+  }
+
+  hideAuthMessages();
+
+  if (!full_name || !email || !password) {
+
+    showAuthError(
+      "Naam, email aur password zaroor bharein."
+    );
+
+    return;
+  }
+
+  if (password.length < 6) {
+
+    showAuthError(
+      "Password kam se kam 6 characters ka hona chahiye."
+    );
+
+    return;
+  }
+
+  if (selectedRole === "karigar" && !service) {
+
+    showAuthError(
+      "Karigar ke liye service select karein."
+    );
+
+    return;
+  }
+
+  const button =
+    document.getElementById("signupButton");
+
+  button.disabled = true;
+
+  button.innerText =
+    "⏳ Account ban raha hai...";
+
+  try {
+
+    const response = await fetch(
+      API_BASE + "/api/auth/signup",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          full_name,
+          phone,
+          email,
+          password,
+          role: selectedRole,
+          service,
+          location
+        })
+      }
+    );
+
+    const data =
+      await response.json();
+
+    if (!response.ok || !data.success) {
+
+      throw new Error(
+        data.message ||
+        "Signup failed"
+      );
+    }
+
+    showAuthSuccess(
+      "✅ Account successfully create ho gaya! Ab Login karein."
+    );
+
+    document.getElementById("signupName").value = "";
+    document.getElementById("signupPhone").value = "";
+    document.getElementById("signupEmail").value = "";
+    document.getElementById("signupPassword").value = "";
+
+    setTimeout(function() {
+      showLogin();
+
+      document.getElementById("loginEmail").value =
+        email;
+
+    }, 1200);
+
+  } catch (error) {
+
+    showAuthError(
+      error.message ||
+      "Signup mein problem hui."
+    );
+
+  } finally {
+
+    button.disabled = false;
+
+    button.innerText =
+      "📝 Account Banayein";
+  }
+}
+
+/* ===============================
+   LOGIN
+================================ */
+
+async function loginUser() {
+
+  const email =
+    document.getElementById("loginEmail")
+      .value.trim();
+
+  const password =
+    document.getElementById("loginPassword")
+      .value;
+
+  hideAuthMessages();
+
+  if (!email || !password) {
+
+    showAuthError(
+      "Email aur password zaroor bharein."
+    );
+
+    return;
+  }
+
+  const button =
+    document.getElementById("loginButton");
+
+  button.disabled = true;
+
+  button.innerText =
+    "⏳ Login ho raha hai...";
+
+  try {
+
+    const response = await fetch(
+      API_BASE + "/api/auth/login",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    );
+
+    const data =
+      await response.json();
+
+    if (!response.ok || !data.success) {
+
+      throw new Error(
+        data.message ||
+        "Login failed"
+      );
+    }
+
+    /*
+      Session browser mein save.
+    */
+
+    localStorage.setItem(
+      "heyKarigarAccessToken",
+      data.session.access_token
+    );
+
+    localStorage.setItem(
+      "heyKarigarRefreshToken",
+      data.session.refresh_token
+    );
+
+    localStorage.setItem(
+      "heyKarigarProfile",
+      JSON.stringify(data.profile)
+    );
+
+    showAuthSuccess(
+      "✅ Login successful!"
+    );
+
+    setTimeout(function() {
+      showLoggedInUser(data.profile);
+    }, 600);
+
+  } catch (error) {
+
+    showAuthError(
+      error.message ||
+      "Login mein problem hui."
+    );
+
+  } finally {
+
+    button.disabled = false;
+
+    button.innerText = "🔐 Login";
+  }
+}
+
+/* ===============================
+   SHOW LOGGED USER
+================================ */
+
+function showLoggedInUser(profile) {
+
+  document.getElementById("authBox")
+    .style.display = "none";
+
+  document.getElementById("profileBox")
+    .style.display = "block";
+
+  const userInfo =
+    document.getElementById("userInfo");
+
+  let text = `
+    <strong>${escapeHtml(profile.full_name)}</strong>
+    <br>
+    📱 ${escapeHtml(profile.phone || "Phone not added")}
+    <br>
+    👤 Role: ${escapeHtml(profile.role)}
+  `;
+
+  if (profile.role === "karigar") {
+
+    text += `
+      <br>
+      🔧 Service: ${escapeHtml(profile.service || "")}
+      <br>
+      📍 Area: ${escapeHtml(profile.location || "")}
+    `;
+
+    /*
+      फिलहाल customer request area hide.
+      अगला step: Karigar dashboard/profile.
+    */
+
+    document.getElementById("customerArea")
+      .style.display = "none";
+
+  } else {
+
+    document.getElementById("customerArea")
+      .style.display = "block";
+
+    /*
+      Customer form mein profile details
+      automatically fill.
+    */
+
+    if (profile.full_name) {
+      document.getElementById("name").value =
+        profile.full_name;
+    }
+
+    if (profile.phone) {
+      document.getElementById("phone").value =
+        profile.phone;
+    }
+
+    if (profile.location) {
+      document.getElementById("location").value =
+        profile.location;
+    }
+  }
+
+  userInfo.innerHTML = text;
+}
+
+/* ===============================
+   LOGOUT
+================================ */
+
+function logoutUser() {
+
+  localStorage.removeItem(
+    "heyKarigarAccessToken"
+  );
+
+  localStorage.removeItem(
+    "heyKarigarRefreshToken"
+  );
+
+  localStorage.removeItem(
+    "heyKarigarProfile"
+  );
+
+  document.getElementById("profileBox")
+    .style.display = "none";
+
+  document.getElementById("authBox")
+    .style.display = "block";
+
+  document.getElementById("customerArea")
+    .style.display = "block";
+
+  showLogin();
+}
+
+/* ===============================
+   AUTH MESSAGES
+================================ */
+
+function showAuthSuccess(message) {
+
+  const box =
+    document.getElementById("authSuccess");
+
+  box.innerHTML = message;
+
+  box.style.display = "block";
+
+  document.getElementById("authError")
+    .style.display = "none";
+}
+
+function showAuthError(message) {
+
+  const box =
+    document.getElementById("authError");
+
+  box.innerHTML = "❌ " + escapeHtml(message);
+
+  box.style.display = "block";
+
+  document.getElementById("authSuccess")
+    .style.display = "none";
+}
+
+function hideAuthMessages() {
+
+  document.getElementById("authSuccess")
+    .style.display = "none";
+
+  document.getElementById("authError")
+    .style.display = "none";
+}
+
+/* ===============================
    LOAD CATEGORIES
 ================================ */
 
@@ -377,21 +1101,27 @@ async function loadCategories() {
       API_BASE + "/api/categories"
     );
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
     if (
       data.success &&
       Array.isArray(data.categories)
     ) {
-      categories = data.categories;
+
+      categories =
+        data.categories;
+
     } else {
-      categories = defaultCategories;
+
+      categories =
+        defaultCategories;
     }
 
   } catch (error) {
 
-    categories = defaultCategories;
-
+    categories =
+      defaultCategories;
   }
 
   displayServices(categories);
@@ -408,8 +1138,11 @@ function displayServices(list) {
 
   services.innerHTML = "";
 
-  document.getElementById("empty").style.display =
-    list.length === 0 ? "block" : "none";
+  document.getElementById("empty")
+    .style.display =
+      list.length === 0
+        ? "block"
+        : "none";
 
   list.forEach(category => {
 
@@ -426,11 +1159,13 @@ function displayServices(list) {
     `;
 
     button.onclick = function() {
-      selectService(category.name);
+
+      selectService(
+        category.name
+      );
     };
 
     services.appendChild(button);
-
   });
 }
 
@@ -495,18 +1230,15 @@ async function submitRequest() {
 
   const name =
     document.getElementById("name")
-      .value
-      .trim();
+      .value.trim();
 
   const phone =
     document.getElementById("phone")
-      .value
-      .trim();
+      .value.trim();
 
   const location =
     document.getElementById("location")
-      .value
-      .trim();
+      .value.trim();
 
   const service =
     document.getElementById("service")
@@ -514,8 +1246,7 @@ async function submitRequest() {
 
   const details =
     document.getElementById("details")
-      .value
-      .trim();
+      .value.trim();
 
   if (
     !name ||
@@ -574,13 +1305,6 @@ async function submitRequest() {
       );
     }
 
-    /*
-      IMPORTANT:
-      Backend se milne wali request ID
-      phone mein save nahi hoti.
-      Browser ke localStorage mein save hogi.
-    */
-
     if (
       data.request &&
       data.request.id
@@ -590,7 +1314,6 @@ async function submitRequest() {
         "heyKarigarRequestId",
         String(data.request.id)
       );
-
     }
 
     document.getElementById("success")
@@ -598,15 +1321,6 @@ async function submitRequest() {
 
     document.getElementById("trackingBox")
       .style.display = "block";
-
-    document.getElementById("name")
-      .value = "";
-
-    document.getElementById("phone")
-      .value = "";
-
-    document.getElementById("location")
-      .value = "";
 
     document.getElementById("details")
       .value = "";
@@ -630,7 +1344,6 @@ async function submitRequest() {
 
     button.innerText =
       "📲 Request Bhejein";
-
   }
 }
 
@@ -657,12 +1370,14 @@ async function checkRequestStatus() {
 
   if (!requestId) {
 
-    trackingBox.style.display = "none";
+    trackingBox.style.display =
+      "none";
 
     return;
   }
 
-  trackingBox.style.display = "block";
+  trackingBox.style.display =
+    "block";
 
   trackingContent.innerHTML = `
     <div class="loading">
@@ -672,11 +1387,12 @@ async function checkRequestStatus() {
 
   try {
 
-    const response = await fetch(
-      API_BASE +
-      "/api/requests/" +
-      encodeURIComponent(requestId)
-    );
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/requests/" +
+        encodeURIComponent(requestId)
+      );
 
     const data =
       await response.json();
@@ -697,7 +1413,9 @@ async function checkRequestStatus() {
       data.request;
 
     const status =
-      String(request.status || "New");
+      String(
+        request.status || "New"
+      );
 
     let statusClass = "";
 
@@ -721,21 +1439,25 @@ async function checkRequestStatus() {
       "Aapki request receive ho gayi hai.";
 
     if (status === "Accepted") {
+
       statusMessage =
         "🎉 Karigar ne aapki request accept kar li hai.";
     }
 
     if (status === "Assigned") {
+
       statusMessage =
         "👨‍🔧 Aapki request ek Karigar ko assign ho gayi hai.";
     }
 
     if (status === "Completed") {
+
       statusMessage =
         "✅ Aapka kaam completed mark kar diya gaya hai.";
     }
 
     if (status === "Cancelled") {
+
       statusMessage =
         "❌ Ye request cancel kar di gayi hai.";
     }
@@ -757,6 +1479,7 @@ async function checkRequestStatus() {
         <p style="margin-top:8px;">
           <strong>Problem:</strong>
           ${escapeHtml(
+            request.description ||
             request.details ||
             "Details nahi di gayi"
           )}
@@ -793,7 +1516,6 @@ async function checkRequestStatus() {
 
       </div>
     `;
-
   }
 }
 
@@ -812,20 +1534,49 @@ function escapeHtml(value) {
 }
 
 /* ===============================
+   RESTORE LOGIN
+================================ */
+
+function restoreLogin() {
+
+  const profileText =
+    localStorage.getItem(
+      "heyKarigarProfile"
+    );
+
+  if (!profileText) {
+    return;
+  }
+
+  try {
+
+    const profile =
+      JSON.parse(profileText);
+
+    if (profile && profile.role) {
+
+      showLoggedInUser(profile);
+    }
+
+  } catch (error) {
+
+    localStorage.removeItem(
+      "heyKarigarProfile"
+    );
+  }
+}
+
+/* ===============================
    PAGE LOAD
 ================================ */
 
 loadCategories();
 
-/*
-  Agar browser mein pehle se
-  request ID saved hai,
-  to status automatically dikhega.
-*/
-
 window.addEventListener(
   "load",
   function() {
+
+    restoreLogin();
 
     const requestId =
       localStorage.getItem(
@@ -842,4 +1593,4 @@ window.addEventListener(
 </script>
 
 </body>
-  </html>
+</html>
