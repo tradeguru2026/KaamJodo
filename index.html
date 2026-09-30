@@ -158,9 +158,12 @@ Naya account hai? Signup karein
 
 <input id="signupEmail" type="email" placeholder="Email">
 
-<input id="signupPassword" type="password" placeholder="Password (minimum 6 characters)">
+<input id="signupPassword" type="password"
+placeholder="Password (minimum 6 characters)">
 
-<p style="margin-bottom:8px;font-weight:bold">Aap kaun hain?</p>
+<p style="margin-bottom:8px;font-weight:bold">
+Aap kaun hain?
+</p>
 
 <div class="role-buttons">
 
@@ -181,7 +184,11 @@ onclick="selectRole('karigar')">
 <div id="karigarFields" style="display:none">
 
 <select id="signupService">
-<option value="">Apni service select karein</option>
+
+<option value="">
+Apni service select karein
+</option>
+
 <option>Gardener / Mali</option>
 <option>Plumber</option>
 <option>Electrician</option>
@@ -198,6 +205,7 @@ onclick="selectRole('karigar')">
 <option>Barber</option>
 <option>Physiotherapist</option>
 <option>Mehndi Artist</option>
+
 </select>
 
 <input id="signupLocation"
@@ -269,7 +277,9 @@ oninput="filterServices()">
 
 </div>
 
-<h2 style="margin:20px 2px 12px">🧰 Services</h2>
+<h2 style="margin:20px 2px 12px">
+🧰 Services
+</h2>
 
 <div class="services" id="services"></div>
 
@@ -293,7 +303,8 @@ Is naam ki service abhi nahi mili.
 <input id="service" type="text" readonly>
 
 <textarea id="details"
-placeholder="Kaam ke baare mein thoda batayein..."></textarea>
+placeholder="Kaam ke baare mein thoda batayein...">
+</textarea>
 
 <button class="btn"
 id="submitButton"
@@ -402,10 +413,12 @@ document.getElementById("loginForm").style.display="none";
 document.getElementById("signupForm").style.display="block";
 
 document.getElementById("authTitle").innerText="📝 Signup";
+
 document.getElementById("authSubtitle").innerText=
 "Hey Karigar par apna account banayein.";
 
 hideAuthMessages();
+
 }
 
 
@@ -415,10 +428,12 @@ document.getElementById("signupForm").style.display="none";
 document.getElementById("loginForm").style.display="block";
 
 document.getElementById("authTitle").innerText="🔐 Login";
+
 document.getElementById("authSubtitle").innerText=
 "Apne Hey Karigar account mein login karein.";
 
 hideAuthMessages();
+
 }
 
 
@@ -428,11 +443,17 @@ function selectRole(role){
 
 selectedRole=role;
 
-const customerBtn=document.getElementById("customerRoleBtn");
-const karigarBtn=document.getElementById("karigarRoleBtn");
+const customerBtn=
+document.getElementById("customerRoleBtn");
 
-const karigarFields=document.getElementById("karigarFields");
-const customerLocationField=document.getElementById("customerLocationField");
+const karigarBtn=
+document.getElementById("karigarRoleBtn");
+
+const karigarFields=
+document.getElementById("karigarFields");
+
+const customerLocationField=
+document.getElementById("customerLocationField");
 
 customerBtn.classList.remove("active");
 karigarBtn.classList.remove("active");
@@ -440,13 +461,17 @@ karigarBtn.classList.remove("active");
 if(role==="customer"){
 
 customerBtn.classList.add("active");
+
 karigarFields.style.display="none";
+
 customerLocationField.style.display="block";
 
 }else{
 
 karigarBtn.classList.add("active");
+
 karigarFields.style.display="block";
+
 customerLocationField.style.display="none";
 
 }
@@ -458,22 +483,35 @@ customerLocationField.style.display="none";
 
 async function signupUser(){
 
-const full_name=document.getElementById("signupName").value.trim();
-const phone=document.getElementById("signupPhone").value.trim();
-const email=document.getElementById("signupEmail").value.trim();
-const password=document.getElementById("signupPassword").value;
+const full_name=
+document.getElementById("signupName").value.trim();
+
+const phone=
+document.getElementById("signupPhone").value.trim();
+
+const email=
+document.getElementById("signupEmail").value.trim();
+
+const password=
+document.getElementById("signupPassword").value;
 
 let service="";
 let location="";
 
 if(selectedRole==="karigar"){
 
-service=document.getElementById("signupService").value;
-location=document.getElementById("signupLocation").value.trim();
+service=
+document.getElementById("signupService").value;
+
+location=
+document.getElementById("signupLocation")
+.value.trim();
 
 }else{
 
-location=document.getElementById("customerLocation").value.trim();
+location=
+document.getElementById("customerLocation")
+.value.trim();
 
 }
 
@@ -481,26 +519,36 @@ hideAuthMessages();
 
 if(!full_name || !email || !password){
 
-showAuthError("Naam, email aur password zaroor bharein.");
+showAuthError(
+"Naam, email aur password zaroor bharein."
+);
+
 return;
 
 }
 
 if(password.length<6){
 
-showAuthError("Password kam se kam 6 characters ka hona chahiye.");
+showAuthError(
+"Password kam se kam 6 characters ka hona chahiye."
+);
+
 return;
 
 }
 
 if(selectedRole==="karigar" && !service){
 
-showAuthError("Karigar ke liye service select karein.");
+showAuthError(
+"Karigar ke liye service select karein."
+);
+
 return;
 
 }
 
-const button=document.getElementById("signupButton");
+const button=
+document.getElementById("signupButton");
 
 button.disabled=true;
 button.innerText="⏳ Account ban raha hai...";
@@ -511,7 +559,9 @@ const response=await fetch(
 API_BASE+"/api/auth/signup",
 {
 method:"POST",
-headers:{"Content-Type":"application/json"},
+headers:{
+"Content-Type":"application/json"
+},
 body:JSON.stringify({
 full_name,
 phone,
@@ -528,7 +578,9 @@ const data=await response.json();
 
 if(!response.ok || !data.success){
 
-throw new Error(data.message || "Signup failed");
+throw new Error(
+data.message || "Signup failed"
+);
 
 }
 
@@ -551,7 +603,9 @@ document.getElementById("loginEmail").value=email;
 
 }catch(error){
 
-showAuthError(error.message || "Signup mein problem hui.");
+showAuthError(
+error.message || "Signup mein problem hui."
+);
 
 }finally{
 
@@ -567,19 +621,26 @@ button.innerText="📝 Account Banayein";
 
 async function loginUser(){
 
-const email=document.getElementById("loginEmail").value.trim();
-const password=document.getElementById("loginPassword").value;
+const email=
+document.getElementById("loginEmail").value.trim();
+
+const password=
+document.getElementById("loginPassword").value;
 
 hideAuthMessages();
 
 if(!email || !password){
 
-showAuthError("Email aur password zaroor bharein.");
+showAuthError(
+"Email aur password zaroor bharein."
+);
+
 return;
 
 }
 
-const button=document.getElementById("loginButton");
+const button=
+document.getElementById("loginButton");
 
 button.disabled=true;
 button.innerText="⏳ Login ho raha hai...";
@@ -590,8 +651,13 @@ const response=await fetch(
 API_BASE+"/api/auth/login",
 {
 method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({email,password})
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+email,
+password
+})
 }
 );
 
@@ -599,7 +665,9 @@ const data=await response.json();
 
 if(!response.ok || !data.success){
 
-throw new Error(data.message || "Login failed");
+throw new Error(
+data.message || "Login failed"
+);
 
 }
 
@@ -618,7 +686,9 @@ localStorage.setItem(
 JSON.stringify(data.profile)
 );
 
-showAuthSuccess("✅ Login successful!");
+showAuthSuccess(
+"✅ Login successful!"
+);
 
 setTimeout(()=>{
 
@@ -628,7 +698,9 @@ showLoggedInUser(data.profile);
 
 }catch(error){
 
-showAuthError(error.message || "Login mein problem hui.");
+showAuthError(
+error.message || "Login mein problem hui."
+);
 
 }finally{
 
@@ -644,10 +716,14 @@ button.innerText="🔐 Login";
 
 function showLoggedInUser(profile){
 
-document.getElementById("authBox").style.display="none";
-document.getElementById("profileBox").style.display="block";
+document.getElementById("authBox")
+.style.display="none";
 
-const userInfo=document.getElementById("userInfo");
+document.getElementById("profileBox")
+.style.display="block";
+
+const userInfo=
+document.getElementById("userInfo");
 
 userInfo.innerHTML=`
 <strong>${escapeHtml(profile.full_name)}</strong>
@@ -659,33 +735,43 @@ userInfo.innerHTML=`
 
 if(profile.role==="karigar"){
 
-document.getElementById("customerArea").style.display="none";
+document.getElementById("customerArea")
+.style.display="none";
 
-document.getElementById("karigarDashboard").style.display="block";
+document.getElementById("karigarDashboard")
+.style.display="block";
 
 document.getElementById("karigarInfo").innerHTML=`
 <strong>${escapeHtml(profile.full_name)}</strong>
 <br>
-🔧 Service: <strong>${escapeHtml(profile.service || "")}</strong>
+🔧 Service:
+<strong>${escapeHtml(profile.service || "")}</strong>
 <br>
-📍 Area: ${escapeHtml(profile.location || "")}
+📍 Area:
+${escapeHtml(profile.location || "")}
 `;
 
 loadKarigarRequests();
 
 }else{
 
-document.getElementById("customerArea").style.display="block";
-document.getElementById("karigarDashboard").style.display="none";
+document.getElementById("customerArea")
+.style.display="block";
+
+document.getElementById("karigarDashboard")
+.style.display="none";
 
 if(profile.full_name)
-document.getElementById("name").value=profile.full_name;
+document.getElementById("name").value=
+profile.full_name;
 
 if(profile.phone)
-document.getElementById("phone").value=profile.phone;
+document.getElementById("phone").value=
+profile.phone;
 
 if(profile.location)
-document.getElementById("location").value=profile.location;
+document.getElementById("location").value=
+profile.location;
 
 }
 
@@ -696,7 +782,8 @@ document.getElementById("location").value=profile.location;
 
 async function loadKarigarRequests(){
 
-const profileText=localStorage.getItem("heyKarigarProfile");
+const profileText=
+localStorage.getItem("heyKarigarProfile");
 
 if(!profileText)return;
 
@@ -712,9 +799,11 @@ return;
 
 }
 
-if(!profile || profile.role!=="karigar")return;
+if(!profile || profile.role!=="karigar")
+return;
 
-const container=document.getElementById("karigarRequests");
+const container=
+document.getElementById("karigarRequests");
 
 container.innerHTML=`
 <div class="loading">
@@ -738,19 +827,22 @@ data.message || "Requests load failed"
 
 }
 
-const requests=Array.isArray(data.requests)
+const requests=
+Array.isArray(data.requests)
 ?data.requests
 :[];
 
-const myService=String(profile.service || "")
+const myService=
+String(profile.service || "")
 .trim()
 .toLowerCase();
 
 const filtered=requests.filter(request=>{
 
-const requestService=String(
-request.service || ""
-).trim().toLowerCase();
+const requestService=
+String(request.service || "")
+.trim()
+.toLowerCase();
 
 return requestService===myService;
 
@@ -760,7 +852,8 @@ if(filtered.length===0){
 
 container.innerHTML=`
 <div class="empty">
-📭 Abhi <strong>${escapeHtml(profile.service)}</strong>
+📭 Abhi
+<strong>${escapeHtml(profile.service)}</strong>
 ki koi request nahi hai.
 </div>
 `;
@@ -773,7 +866,8 @@ container.innerHTML="";
 
 filtered.forEach(request=>{
 
-const status=String(request.status || "New");
+const status=
+String(request.status || "New");
 
 const statusClass=
 status==="Accepted"?"accepted":
@@ -781,28 +875,38 @@ status==="Assigned"?"assigned":
 status==="Completed"?"completed":
 status==="Cancelled"?"cancelled":"";
 
+
+/*
+IMPORTANT:
+Supabase service_requests table ke
+actual columns:
+name
+phone
+location
+service
+details
+status
+*/
+
 const customerName=
-request.customer_name ||
-request.name ||
-"Naam nahi mila";
+request.name || "Naam nahi mila";
 
 const address=
-request.address ||
-request.location ||
-"Location nahi mili";
+request.location || "Location nahi mili";
 
 const description=
-request.description ||
-request.details ||
-"Problem nahi batayi gayi";
+request.details || "Problem nahi batayi gayi";
 
-const card=document.createElement("div");
+const card=
+document.createElement("div");
 
 card.className="request-card";
 
 card.innerHTML=`
 
-<h3>🔔 Request #${escapeHtml(request.id)}</h3>
+<h3>
+🔔 Request #${escapeHtml(request.id)}
+</h3>
 
 <p>
 👤 <strong>Customer:</strong>
@@ -831,9 +935,11 @@ ${escapeHtml(description)}
 
 <p>
 📌 <strong>Status:</strong><br>
+
 <span class="status ${statusClass}">
 ${escapeHtml(status)}
 </span>
+
 </p>
 
 <div style="margin-top:12px">
@@ -841,20 +947,24 @@ ${escapeHtml(status)}
 ${
 status==="New"
 ?
-`<button class="btn"
-onclick="updateRequestStatus(${Number(request.id)} ,'Accepted')">
+`
+<button class="btn"
+onclick="updateRequestStatus(${Number(request.id)}, 'Accepted')">
 ✅ Accept Request
-</button>`
+</button>
+`
 :""
 }
 
 ${
 status==="Accepted"
 ?
-`<button class="btn secondary"
-onclick="updateRequestStatus(${Number(request.id)},'Completed')">
+`
+<button class="btn secondary"
+onclick="updateRequestStatus(${Number(request.id)}, 'Completed')">
 ✅ Mark Completed
-</button>`
+</button>
+`
 :""
 }
 
@@ -881,20 +991,25 @@ ${escapeHtml(error.message)}
 }
 
 
-/* ================= UPDATE REQUEST ================= */
+/* ================= UPDATE REQUEST STATUS ================= */
 
 async function updateRequestStatus(id,status){
 
 try{
 
 const response=await fetch(
-API_BASE+"/api/requests/"+encodeURIComponent(id),
+API_BASE+
+"/api/requests/"+
+encodeURIComponent(id)+
+"/status",
 {
 method:"PATCH",
 headers:{
 "Content-Type":"application/json"
 },
-body:JSON.stringify({status})
+body:JSON.stringify({
+status
+})
 }
 );
 
@@ -908,9 +1023,11 @@ data.message || "Status update failed"
 
 }
 
-alert("✅ Request status update ho gaya.");
+alert(
+"✅ Request status update ho gaya."
+);
 
-loadKarigarRequests();
+await loadKarigarRequests();
 
 }catch(error){
 
@@ -928,14 +1045,29 @@ alert(
 
 function logoutUser(){
 
-localStorage.removeItem("heyKarigarAccessToken");
-localStorage.removeItem("heyKarigarRefreshToken");
-localStorage.removeItem("heyKarigarProfile");
+localStorage.removeItem(
+"heyKarigarAccessToken"
+);
 
-document.getElementById("profileBox").style.display="none";
-document.getElementById("karigarDashboard").style.display="none";
-document.getElementById("authBox").style.display="block";
-document.getElementById("customerArea").style.display="block";
+localStorage.removeItem(
+"heyKarigarRefreshToken"
+);
+
+localStorage.removeItem(
+"heyKarigarProfile"
+);
+
+document.getElementById("profileBox")
+.style.display="none";
+
+document.getElementById("karigarDashboard")
+.style.display="none";
+
+document.getElementById("authBox")
+.style.display="block";
+
+document.getElementById("customerArea")
+.style.display="block";
 
 showLogin();
 
@@ -946,30 +1078,41 @@ showLogin();
 
 function showAuthSuccess(message){
 
-const box=document.getElementById("authSuccess");
+const box=
+document.getElementById("authSuccess");
 
 box.innerHTML=message;
 box.style.display="block";
 
-document.getElementById("authError").style.display="none";
+document.getElementById("authError")
+.style.display="none";
 
 }
+
 
 function showAuthError(message){
 
-const box=document.getElementById("authError");
+const box=
+document.getElementById("authError");
 
-box.innerHTML="❌ "+escapeHtml(message);
+box.innerHTML=
+"❌ "+escapeHtml(message);
+
 box.style.display="block";
 
-document.getElementById("authSuccess").style.display="none";
+document.getElementById("authSuccess")
+.style.display="none";
 
 }
 
+
 function hideAuthMessages(){
 
-document.getElementById("authSuccess").style.display="none";
-document.getElementById("authError").style.display="none";
+document.getElementById("authSuccess")
+.style.display="none";
+
+document.getElementById("authError")
+.style.display="none";
 
 }
 
@@ -986,7 +1129,10 @@ API_BASE+"/api/categories"
 
 const data=await response.json();
 
-if(data.success && Array.isArray(data.categories)){
+if(
+data.success &&
+Array.isArray(data.categories)
+){
 
 categories=data.categories;
 
@@ -1009,7 +1155,8 @@ displayServices(categories);
 
 function displayServices(list){
 
-const services=document.getElementById("services");
+const services=
+document.getElementById("services");
 
 services.innerHTML="";
 
@@ -1018,7 +1165,8 @@ list.length===0?"block":"none";
 
 list.forEach(category=>{
 
-const button=document.createElement("button");
+const button=
+document.createElement("button");
 
 button.className="service";
 
@@ -1042,10 +1190,14 @@ services.appendChild(button);
 
 function filterServices(){
 
-const text=document.getElementById("search")
-.value.trim().toLowerCase();
+const text=
+document.getElementById("search")
+.value
+.trim()
+.toLowerCase();
 
-const filtered=categories.filter(category=>
+const filtered=
+categories.filter(category=>
 String(category.name || "")
 .toLowerCase()
 .includes(text)
@@ -1058,21 +1210,27 @@ displayServices(filtered);
 
 function selectService(serviceName){
 
-document.getElementById("requestBox").style.display="block";
+document.getElementById("requestBox")
+.style.display="block";
 
-document.getElementById("service").value=serviceName;
+document.getElementById("service")
+.value=serviceName;
 
-document.getElementById("success").style.display="none";
+document.getElementById("success")
+.style.display="none";
 
 document.getElementById("requestBox")
-.scrollIntoView({behavior:"smooth"});
+.scrollIntoView({
+behavior:"smooth"
+});
 
 }
 
 
 function closeRequest(){
 
-document.getElementById("requestBox").style.display="none";
+document.getElementById("requestBox")
+.style.display="none";
 
 }
 
@@ -1081,11 +1239,25 @@ document.getElementById("requestBox").style.display="none";
 
 async function submitRequest(){
 
-const name=document.getElementById("name").value.trim();
-const phone=document.getElementById("phone").value.trim();
-const location=document.getElementById("location").value.trim();
-const service=document.getElementById("service").value;
-const details=document.getElementById("details").value.trim();
+const name=
+document.getElementById("name")
+.value.trim();
+
+const phone=
+document.getElementById("phone")
+.value.trim();
+
+const location=
+document.getElementById("location")
+.value.trim();
+
+const service=
+document.getElementById("service")
+.value;
+
+const details=
+document.getElementById("details")
+.value.trim();
 
 if(!name || !phone || !location || !service){
 
@@ -1097,10 +1269,13 @@ return;
 
 }
 
-const button=document.getElementById("submitButton");
+const button=
+document.getElementById("submitButton");
 
 button.disabled=true;
-button.innerText="⏳ Request bheji ja rahi hai...";
+
+button.innerText=
+"⏳ Request bheji ja rahi hai...";
 
 try{
 
@@ -1140,14 +1315,18 @@ String(data.request.id)
 
 }
 
-document.getElementById("success").style.display="block";
-document.getElementById("trackingBox").style.display="block";
-document.getElementById("details").value="";
+document.getElementById("success")
+.style.display="block";
+
+document.getElementById("details")
+.value="";
 
 await checkRequestStatus();
 
 document.getElementById("trackingBox")
-.scrollIntoView({behavior:"smooth"});
+.scrollIntoView({
+behavior:"smooth"
+});
 
 }catch(error){
 
@@ -1158,7 +1337,9 @@ alert(
 }finally{
 
 button.disabled=false;
-button.innerText="📲 Request Bhejein";
+
+button.innerText=
+"📲 Request Bhejein";
 
 }
 
@@ -1169,14 +1350,21 @@ button.innerText="📲 Request Bhejein";
 
 async function checkRequestStatus(){
 
-const requestId=localStorage.getItem("heyKarigarRequestId");
+const requestId=
+localStorage.getItem(
+"heyKarigarRequestId"
+);
 
-const trackingBox=document.getElementById("trackingBox");
-const trackingContent=document.getElementById("trackingContent");
+const trackingBox=
+document.getElementById("trackingBox");
+
+const trackingContent=
+document.getElementById("trackingContent");
 
 if(!requestId){
 
 trackingBox.style.display="none";
+
 return;
 
 }
@@ -1192,12 +1380,18 @@ trackingContent.innerHTML=`
 try{
 
 const response=await fetch(
-API_BASE+"/api/requests/"+encodeURIComponent(requestId)
+API_BASE+
+"/api/requests/"+
+encodeURIComponent(requestId)
 );
 
 const data=await response.json();
 
-if(!response.ok || !data.success || !data.request){
+if(
+!response.ok ||
+!data.success ||
+!data.request
+){
 
 throw new Error(
 data.message || "Request not found"
@@ -1206,7 +1400,9 @@ data.message || "Request not found"
 }
 
 const request=data.request;
-const status=String(request.status || "New");
+
+const status=
+String(request.status || "New");
 
 const statusClass=
 status==="Accepted"?"accepted":
@@ -1215,7 +1411,6 @@ status==="Completed"?"completed":
 status==="Cancelled"?"cancelled":"";
 
 const description=
-request.description ||
 request.details ||
 "Details nahi di gayi";
 
@@ -1226,6 +1421,21 @@ trackingContent.innerHTML=`
 <p>
 <strong>Request ID:</strong>
 #${escapeHtml(request.id)}
+</p>
+
+<p>
+<strong>Customer:</strong>
+${escapeHtml(request.name || "")}
+</p>
+
+<p>
+<strong>Phone:</strong>
+${escapeHtml(request.phone || "")}
+</p>
+
+<p>
+<strong>Location:</strong>
+${escapeHtml(request.location || "")}
 </p>
 
 <p>
@@ -1240,9 +1450,11 @@ ${escapeHtml(description)}
 
 <p>
 <strong>Status:</strong><br>
+
 <span class="status ${statusClass}">
 ${escapeHtml(status)}
 </span>
+
 </p>
 
 </div>
@@ -1283,13 +1495,16 @@ return String(value ?? "")
 function restoreLogin(){
 
 const profileText=
-localStorage.getItem("heyKarigarProfile");
+localStorage.getItem(
+"heyKarigarProfile"
+);
 
 if(!profileText)return;
 
 try{
 
-const profile=JSON.parse(profileText);
+const profile=
+JSON.parse(profileText);
 
 if(profile && profile.role){
 
@@ -1299,7 +1514,9 @@ showLoggedInUser(profile);
 
 }catch{
 
-localStorage.removeItem("heyKarigarProfile");
+localStorage.removeItem(
+"heyKarigarProfile"
+);
 
 }
 
@@ -1315,7 +1532,9 @@ window.addEventListener("load",()=>{
 restoreLogin();
 
 const requestId=
-localStorage.getItem("heyKarigarRequestId");
+localStorage.getItem(
+"heyKarigarRequestId"
+);
 
 if(requestId){
 
