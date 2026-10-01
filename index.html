@@ -1,256 +1,696 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Hey Karigar</title>
+<title>Hey Karigar - Ghar Ka Har Kaam</title>
 
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body{
-      font-family:Arial, sans-serif;
-      background:#f4f7fb;
-      color:#222;
-    }
+:root{
+  --green:#087f5b;
+  --green-dark:#056246;
+  --green-light:#e9f8f2;
+  --blue:#0d6efd;
+  --red:#dc3545;
+  --orange:#fd7e14;
+  --text:#17221c;
+  --muted:#68756f;
+  --bg:#f4f8f6;
+  --white:#fff;
+  --border:#e1e9e5;
+  --shadow:0 6px 22px rgba(0,0,0,.07);
+}
 
-    header{
-      background:#0d6efd;
-      color:white;
-      padding:18px;
-      text-align:center;
-    }
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.5;
+}
 
-    header h1{
-      font-size:28px;
-      margin-bottom:5px;
-    }
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
 
-    header p{
-      font-size:14px;
-      opacity:.9;
-    }
+button{
+  cursor:pointer;
+}
 
-    .container{
-      max-width:900px;
-      margin:auto;
-      padding:20px;
-    }
+/* ================= HEADER ================= */
 
-    .card{
-      background:white;
-      padding:20px;
-      border-radius:14px;
-      margin-bottom:20px;
-      box-shadow:0 3px 12px rgba(0,0,0,.08);
-    }
+header{
+  background:linear-gradient(135deg,#087f5b,#0aa873);
+  color:white;
+  padding:22px 16px 26px;
+  text-align:center;
+  box-shadow:0 3px 15px rgba(0,0,0,.12);
+}
 
-    h2{
-      margin-bottom:15px;
-      color:#0d6efd;
-    }
+.logo{
+  font-size:31px;
+  font-weight:800;
+  letter-spacing:.2px;
+}
 
-    h3{
-      margin-bottom:10px;
-    }
+.tagline{
+  margin-top:5px;
+  font-size:14px;
+  opacity:.94;
+}
 
-    input,
-    textarea,
-    select{
-      width:100%;
-      padding:12px;
-      margin:7px 0 12px;
-      border:1px solid #ccc;
-      border-radius:8px;
-      font-size:15px;
-    }
+.header-badge{
+  display:inline-block;
+  margin-top:13px;
+  padding:6px 12px;
+  border-radius:30px;
+  background:rgba(255,255,255,.16);
+  font-size:12px;
+}
 
-    textarea{
-      min-height:100px;
-      resize:vertical;
-    }
+/* ================= CONTAINER ================= */
 
-    button{
-      width:100%;
-      padding:13px;
-      border:0;
-      border-radius:8px;
-      background:#0d6efd;
-      color:white;
-      font-size:16px;
-      font-weight:bold;
-      cursor:pointer;
-      margin-top:5px;
-    }
+.container{
+  width:100%;
+  max-width:950px;
+  margin:auto;
+  padding:16px;
+}
 
-    button:hover{
-      opacity:.9;
-    }
+/* ================= HERO ================= */
 
-    .secondary{
-      background:#6c757d;
-    }
+.hero{
+  background:linear-gradient(135deg,#ffffff,#effaf5);
+  border:1px solid #dceee6;
+  border-radius:20px;
+  padding:22px 18px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
 
-    .success{
-      background:#198754;
-    }
+.hero h2{
+  color:var(--green);
+  font-size:23px;
+  margin-bottom:6px;
+}
 
-    .danger{
-      background:#dc3545;
-    }
+.hero p{
+  color:var(--muted);
+  font-size:14px;
+}
 
-    .hidden{
-      display:none !important;
-    }
+.hero-points{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:17px;
+}
 
-    .message{
-      padding:12px;
-      border-radius:8px;
-      margin:10px 0;
-      background:#eef5ff;
-    }
+.hero-point{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 6px;
+  text-align:center;
+  font-size:12px;
+  font-weight:bold;
+}
 
-    .request-card{
-      border:1px solid #ddd;
-      border-radius:12px;
-      padding:15px;
-      margin-bottom:15px;
-      background:#fff;
-    }
+.hero-point span{
+  display:block;
+  font-size:21px;
+  margin-bottom:3px;
+}
 
-    .request-card p{
-      margin:8px 0;
-      line-height:1.5;
-    }
+/* ================= CARD ================= */
 
-    .status{
-      display:inline-block;
-      padding:7px 12px;
-      border-radius:20px;
-      background:#6c757d;
-      color:white;
-      font-weight:bold;
-      margin-top:5px;
-    }
+.card{
+  background:var(--white);
+  padding:20px;
+  border-radius:18px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow);
+  border:1px solid #e7eeeb;
+}
 
-    .status.accepted{
-      background:#198754;
-    }
+.card-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:5px;
+}
 
-    .status.assigned{
-      background:#6f42c1;
-    }
+.card-title h2{
+  color:var(--green);
+  font-size:21px;
+}
 
-    .status.inprogress{
-      background:#fd7e14;
-    }
+.card-subtitle{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:17px;
+}
 
-    .status.completed{
-      background:#20c997;
-    }
+/* ================= AUTH ================= */
 
-    .status.cancelled{
-      background:#dc3545;
-    }
+.auth-card{
+  max-width:600px;
+  margin:20px auto;
+}
 
-    .loading{
-      text-align:center;
-      padding:20px;
-    }
+.auth-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:18px;
+}
 
-    .empty{
-      text-align:center;
-      padding:20px;
-      color:#666;
-    }
+.auth-tab{
+  padding:11px;
+  border-radius:10px;
+  background:#eef3f1;
+  color:#51605a;
+  text-align:center;
+  font-weight:bold;
+}
 
-    .top-user{
-      background:white;
-      padding:15px;
-      border-radius:12px;
-      margin-bottom:20px;
-      box-shadow:0 3px 10px rgba(0,0,0,.06);
-    }
+.auth-tab.active{
+  background:var(--green);
+  color:white;
+}
 
-    .service-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:10px;
-    }
+/* ================= FORM ================= */
 
-    .service-btn{
-      background:#f1f5ff;
-      color:#0d6efd;
-      border:1px solid #dbe7ff;
-      padding:12px;
-      border-radius:8px;
-      cursor:pointer;
-      text-align:center;
-      font-weight:bold;
-    }
+label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin:11px 0 5px;
+  color:#39463f;
+}
 
-    .service-btn.selected{
-      background:#0d6efd;
-      color:white;
-    }
+input,
+textarea,
+select{
+  width:100%;
+  padding:13px 14px;
+  border:1px solid #d3ded9;
+  border-radius:11px;
+  background:#fbfdfc;
+  color:var(--text);
+  font-size:15px;
+  outline:none;
+  transition:.2s;
+}
 
-    footer{
-      text-align:center;
-      padding:25px;
-      color:#777;
-      font-size:13px;
-    }
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(8,127,91,.09);
+  background:white;
+}
 
-    @media(max-width:600px){
-      .container{
-        padding:12px;
-      }
+textarea{
+  min-height:105px;
+  resize:vertical;
+}
 
-      .service-grid{
-        grid-template-columns:1fr;
-      }
-    }
-  </style>
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+/* ================= BUTTONS ================= */
+
+button{
+  width:100%;
+  padding:13px 15px;
+  border:0;
+  border-radius:11px;
+  background:var(--green);
+  color:white;
+  font-size:15px;
+  font-weight:700;
+  margin-top:8px;
+  transition:.15s;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+button:hover{
+  filter:brightness(.96);
+}
+
+.secondary{
+  background:#68756f;
+}
+
+.success{
+  background:#198754;
+}
+
+.danger{
+  background:#dc3545;
+}
+
+.warning{
+  background:#fd7e14;
+}
+
+.outline{
+  background:white;
+  color:var(--green);
+  border:1px solid #b9ddd0;
+}
+
+/* ================= SERVICE GRID ================= */
+
+.service-heading{
+  margin:18px 0 10px;
+  font-size:15px;
+  color:#34433c;
+}
+
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+}
+
+.service-btn{
+  min-height:83px;
+  background:#f5faf8;
+  color:#145d48;
+  border:1px solid #d7ebe3;
+  border-radius:13px;
+  padding:10px 5px;
+  cursor:pointer;
+  text-align:center;
+  font-weight:bold;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:5px;
+  transition:.15s;
+}
+
+.service-btn .icon{
+  font-size:25px;
+}
+
+.service-btn:hover{
+  border-color:#8bcdb7;
+  transform:translateY(-1px);
+}
+
+.service-btn.selected{
+  background:var(--green);
+  border-color:var(--green);
+  color:white;
+  box-shadow:0 4px 12px rgba(8,127,91,.2);
+}
+
+/* ================= USER ================= */
+
+.top-user{
+  background:linear-gradient(135deg,#087f5b,#0aa873);
+  color:white;
+  padding:18px;
+  border-radius:18px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+
+.top-user h2{
+  font-size:21px;
+  margin-bottom:5px;
+}
+
+.top-user p{
+  font-size:14px;
+  opacity:.95;
+}
+
+.top-user button{
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.3);
+  margin-top:14px;
+}
+
+/* ================= REQUEST ================= */
+
+.request-card{
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:16px;
+  margin-bottom:12px;
+  background:#fff;
+}
+
+.request-card h3{
+  color:var(--green);
+  font-size:17px;
+  margin-bottom:11px;
+}
+
+.request-card p{
+  margin:7px 0;
+  line-height:1.5;
+  font-size:14px;
+}
+
+.request-card strong{
+  color:#39463f;
+}
+
+.request-card button{
+  margin-top:8px;
+}
+
+/* ================= STATUS ================= */
+
+.status{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:30px;
+  background:#6c757d;
+  color:white;
+  font-size:12px;
+  font-weight:bold;
+  margin-top:4px;
+}
+
+.status.new{
+  background:#6c757d;
+}
+
+.status.accepted{
+  background:#198754;
+}
+
+.status.assigned{
+  background:#6f42c1;
+}
+
+.status.inprogress{
+  background:#fd7e14;
+}
+
+.status.completed{
+  background:#20c997;
+}
+
+.status.cancelled{
+  background:#dc3545;
+}
+
+/* ================= MESSAGE ================= */
+
+.message{
+  padding:12px 14px;
+  border-radius:11px;
+  margin-top:12px;
+  background:#eef7f3;
+  border:1px solid #d7ebe3;
+  font-size:14px;
+}
+
+.loading{
+  text-align:center;
+  padding:25px 10px;
+  color:#68756f;
+}
+
+.loading-icon{
+  font-size:25px;
+}
+
+.empty{
+  text-align:center;
+  padding:25px 10px;
+  color:#68756f;
+}
+
+/* ================= DASHBOARD ================= */
+
+.dashboard-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.connection{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:#e8fff2;
+  color:#087f5b;
+  border:1px solid #c8eadb;
+  border-radius:30px;
+  padding:6px 10px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.dashboard-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin:15px 0;
+}
+
+.stat{
+  background:#f5faf8;
+  border:1px solid #dfebe6;
+  border-radius:12px;
+  padding:12px 8px;
+  text-align:center;
+}
+
+.stat-number{
+  font-size:20px;
+  font-weight:800;
+  color:var(--green);
+}
+
+.stat-label{
+  font-size:11px;
+  color:#68756f;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  text-align:center;
+  padding:30px 15px;
+  color:#7a8580;
+  font-size:12px;
+}
+
+.footer-brand{
+  color:var(--green);
+  font-weight:bold;
+}
+
+/* ================= HIDDEN ================= */
+
+.hidden{
+  display:none !important;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:700px){
+
+  .container{
+    padding:12px;
+  }
+
+  .service-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+}
+
+@media(max-width:480px){
+
+  header{
+    padding:19px 12px 22px;
+  }
+
+  .logo{
+    font-size:27px;
+  }
+
+  .hero{
+    padding:18px 14px;
+  }
+
+  .hero h2{
+    font-size:20px;
+  }
+
+  .hero-points{
+    grid-template-columns:1fr 1fr 1fr;
+  }
+
+  .hero-point{
+    font-size:10px;
+    padding:8px 3px;
+  }
+
+  .hero-point span{
+    font-size:18px;
+  }
+
+  .card{
+    padding:15px;
+    border-radius:15px;
+  }
+
+  .service-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .service-btn{
+    min-height:78px;
+  }
+
+  .form-row{
+    grid-template-columns:1fr;
+  }
+
+  .dashboard-stats{
+    grid-template-columns:1fr 1fr 1fr;
+  }
+
+}
+
+/* ================= SMALL PHONE ================= */
+
+@media(max-width:350px){
+
+  .service-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>🛠️ Hey Karigar</h1>
-  <p>Apne ghar ke kaam ke liye trusted karigar paayein</p>
+
+  <div class="logo">
+    🛠️ Hey Karigar
+  </div>
+
+  <div class="tagline">
+    Apne ghar ke har kaam ke liye karigar ek jagah
+  </div>
+
+  <div class="header-badge">
+    🟢 Local Services • Easy Booking
+  </div>
+
 </header>
+
 
 <div class="container">
 
-  <!-- AUTH SECTION -->
-  <div id="authSection" class="card">
+  <!-- ================= HERO ================= -->
 
-    <h2>🔐 Login / Signup</h2>
+  <div class="hero">
+
+    <h2>🏠 Ghar ka kaam? Karigar yahan milega.</h2>
+
+    <p>
+      Plumber se lekar electrician, carpenter aur cleaning tak
+      apni zarurat ka service request bhejein.
+    </p>
+
+    <div class="hero-points">
+
+      <div class="hero-point">
+        <span>🔎</span>
+        Service Chunein
+      </div>
+
+      <div class="hero-point">
+        <span>📩</span>
+        Request Bhejein
+      </div>
+
+      <div class="hero-point">
+        <span>👷</span>
+        Karigar Payein
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= AUTH ================= -->
+
+  <div id="authSection" class="card auth-card">
+
+    <div class="card-title">
+      <span>🔐</span>
+      <h2>Login / Signup</h2>
+    </div>
+
+    <div class="card-subtitle">
+      Customer ya Karigar ke roop mein account banayein.
+    </div>
 
     <div id="authMessage"></div>
+
+    <label>Aapka naam</label>
 
     <input
       type="text"
       id="authName"
-      placeholder="Aapka naam"
+      placeholder="Jaise: Sarfaraz"
     >
+
+
+    <label>Mobile number</label>
 
     <input
       type="tel"
       id="authPhone"
-      placeholder="Mobile number"
+      placeholder="10 digit mobile number"
     >
+
+
+    <label>Email</label>
 
     <input
       type="email"
       id="authEmail"
-      placeholder="Email"
+      placeholder="Aapka email"
     >
+
+
+    <label>Password</label>
 
     <input
       type="password"
@@ -258,69 +698,103 @@
       placeholder="Password"
     >
 
+
+    <label>Account type</label>
+
     <select id="authRole">
-      <option value="customer">Customer</option>
-      <option value="karigar">Karigar</option>
+
+      <option value="customer">
+        👤 Customer
+      </option>
+
+      <option value="karigar">
+        👷 Karigar
+      </option>
+
     </select>
+
 
     <input
       type="text"
       id="authService"
-      placeholder="Karigar service (example: Plumber)"
+      placeholder="Karigar ki service — jaise Plumber"
       class="hidden"
     >
+
+
+    <label>Location</label>
 
     <input
       type="text"
       id="authLocation"
-      placeholder="Location"
+      placeholder="Area / City"
     >
 
+
     <button onclick="signup()">
-      📝 Signup
+      📝 Naya Account Banayein
     </button>
 
     <button
       class="secondary"
       onclick="login()"
     >
-      🔑 Login
+      🔑 Login Karein
     </button>
 
   </div>
 
 
-  <!-- LOGGED IN USER -->
-  <div id="userSection" class="hidden">
+  <!-- ================= LOGGED IN ================= -->
+
+  <div
+    id="userSection"
+    class="hidden"
+  >
 
     <div class="top-user">
 
-      <h2>👋 Welcome</h2>
+      <h2>
+        👋 Welcome
+      </h2>
 
       <p id="userInfo"></p>
 
       <button
-        class="danger"
         onclick="logout()"
       >
-        Logout
+        🚪 Logout
       </button>
 
     </div>
 
 
-    <!-- CUSTOMER SECTION -->
+    <!-- ================= CUSTOMER ================= -->
+
     <div id="customerSection">
 
       <div class="card">
 
-        <h2>🛠️ Service Request</h2>
+        <div class="card-title">
+          <span>🛠️</span>
+          <h2>Service Request</h2>
+        </div>
+
+        <div class="card-subtitle">
+          Apne kaam ki details bharein aur request bhejein.
+        </div>
+
+
+        <label>Naam</label>
 
         <input
           type="text"
           id="name"
-          placeholder="Naam"
+          placeholder="Aapka naam"
         >
+
+
+        <label>Mobile number</label>
 
         <input
           type="tel"
@@ -328,171 +802,185 @@
           placeholder="Mobile number"
         >
 
+
+        <label>Location / Address</label>
+
         <input
           type="text"
           id="location"
-          placeholder="Location / Address"
+          placeholder="Area, mohalla ya address"
         >
 
-        <h3>Service select karein</h3>
+
+        <div class="service-heading">
+          🔧 Kis service ki zarurat hai?
+        </div>
+
 
         <div class="service-grid">
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Plumber')"
-          >
-            🔧 Plumber
+          <div class="service-btn"
+               onclick="selectService(this,'Plumber')">
+            <span class="icon">🔧</span>
+            Plumber
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Electrician')"
-          >
-            ⚡ Electrician
+          <div class="service-btn"
+               onclick="selectService(this,'Electrician')">
+            <span class="icon">⚡</span>
+            Electrician
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Carpenter')"
-          >
-            🪚 Carpenter
+          <div class="service-btn"
+               onclick="selectService(this,'Carpenter')">
+            <span class="icon">🪚</span>
+            Carpenter
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Painter')"
-          >
-            🎨 Painter
+          <div class="service-btn"
+               onclick="selectService(this,'Painter')">
+            <span class="icon">🎨</span>
+            Painter
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'AC Repair')"
-          >
-            ❄️ AC Repair
+          <div class="service-btn"
+               onclick="selectService(this,'AC Repair')">
+            <span class="icon">❄️</span>
+            AC Repair
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Washing Machine Repair')"
-          >
-            🧺 Washing Machine
+          <div class="service-btn"
+               onclick="selectService(this,'Washing Machine Repair')">
+            <span class="icon">🧺</span>
+            Washing Machine
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'TV Repair')"
-          >
-            📺 TV Repair
+          <div class="service-btn"
+               onclick="selectService(this,'TV Repair')">
+            <span class="icon">📺</span>
+            TV Repair
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Mali')"
-          >
-            🌱 Mali
+          <div class="service-btn"
+               onclick="selectService(this,'Mali')">
+            <span class="icon">🌱</span>
+            Mali
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Generator Mechanic')"
-          >
-            🔋 Generator Mechanic
+          <div class="service-btn"
+               onclick="selectService(this,'Generator Mechanic')">
+            <span class="icon">🔋</span>
+            Generator Mechanic
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Puncture / Tyre')"
-          >
-            🚗 Puncture / Tyre
+          <div class="service-btn"
+               onclick="selectService(this,'Puncture / Tyre')">
+            <span class="icon">🚗</span>
+            Puncture / Tyre
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Barber')"
-          >
-            💈 Barber
+          <div class="service-btn"
+               onclick="selectService(this,'Barber')">
+            <span class="icon">💈</span>
+            Barber
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Physiotherapist')"
-          >
-            🧑‍⚕️ Physiotherapist
+          <div class="service-btn"
+               onclick="selectService(this,'Physiotherapist')">
+            <span class="icon">🧑‍⚕️</span>
+            Physiotherapist
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Mehndi Artist')"
-          >
-            🌿 Mehndi Artist
+          <div class="service-btn"
+               onclick="selectService(this,'Mehndi Artist')">
+            <span class="icon">🌿</span>
+            Mehndi Artist
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Carpet Cleaning')"
-          >
-            🧹 Carpet Cleaning
+          <div class="service-btn"
+               onclick="selectService(this,'Carpet Cleaning')">
+            <span class="icon">🧹</span>
+            Carpet Cleaning
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Gutter Cleaning')"
-          >
-            🧽 Gutter Cleaning
+          <div class="service-btn"
+               onclick="selectService(this,'Gutter Cleaning')">
+            <span class="icon">🧽</span>
+            Gutter Cleaning
           </div>
 
-          <div
-            class="service-btn"
-            onclick="selectService(this,'Other')"
-          >
-            🔨 Other
+          <div class="service-btn"
+               onclick="selectService(this,'Home Cleaning')">
+            <span class="icon">🏠</span>
+            Home Cleaning
+          </div>
+
+          <div class="service-btn"
+               onclick="selectService(this,'Gardener / Mali')">
+            <span class="icon">🌳</span>
+            Gardener
+          </div>
+
+          <div class="service-btn"
+               onclick="selectService(this,'Other')">
+            <span class="icon">🔨</span>
+            Other
           </div>
 
         </div>
 
-        <br>
 
         <input
           type="hidden"
           id="service"
         >
 
+
+        <label>Kaam ki details</label>
+
         <textarea
           id="details"
-          placeholder="Problem / kaam ki details likhein..."
+          placeholder="Problem kya hai? Jaise: bathroom ka pipe leak ho raha hai..."
         ></textarea>
+
 
         <button
           class="success"
           onclick="submitRequest()"
         >
-          📩 Request Submit Karein
+          📩 Service Request Bhejein
         </button>
+
 
         <div id="requestMessage"></div>
 
       </div>
 
 
-      <!-- CUSTOMER TRACKING -->
+      <!-- ================= TRACKING ================= -->
+
       <div
         id="trackingBox"
         class="card"
         style="display:none"
       >
 
-        <h2>📋 Meri Service Requests</h2>
-
-        <div id="trackingContent">
+        <div class="card-title">
+          <span>📋</span>
+          <h2>Meri Requests</h2>
         </div>
+
+        <div class="card-subtitle">
+          Aapki service requests ka current status.
+        </div>
+
+        <div id="trackingContent"></div>
 
         <button
           class="secondary"
           onclick="checkRequestStatus()"
         >
-          🔄 Status Check Karein
+          🔄 Status Refresh Karein
         </button>
 
       </div>
@@ -500,7 +988,8 @@
     </div>
 
 
-    <!-- KARIGAR SECTION -->
+    <!-- ================= KARIGAR ================= -->
+
     <div
       id="karigarSection"
       class="hidden"
@@ -508,7 +997,64 @@
 
       <div class="card">
 
-        <h2>👷 Karigar Dashboard</h2>
+        <div class="dashboard-title">
+
+          <div class="card-title">
+            <span>👷</span>
+            <h2>Karigar Dashboard</h2>
+          </div>
+
+          <span class="connection">
+            🟢 Connected
+          </span>
+
+        </div>
+
+        <div class="card-subtitle">
+          Customers ki service requests yahan dekhein.
+        </div>
+
+
+        <div class="dashboard-stats">
+
+          <div class="stat">
+            <div
+              class="stat-number"
+              id="totalRequests"
+            >
+              -
+            </div>
+            <div class="stat-label">
+              Requests
+            </div>
+          </div>
+
+          <div class="stat">
+            <div
+              class="stat-number"
+              id="newRequests"
+            >
+              -
+            </div>
+            <div class="stat-label">
+              New
+            </div>
+          </div>
+
+          <div class="stat">
+            <div
+              class="stat-number"
+              id="completedRequests"
+            >
+              -
+            </div>
+            <div class="stat-label">
+              Completed
+            </div>
+          </div>
+
+        </div>
+
 
         <button
           class="secondary"
@@ -517,10 +1063,14 @@
           🔄 Requests Refresh Karein
         </button>
 
+
         <div id="karigarRequests">
+
           <div class="loading">
+            <div class="loading-icon">⏳</div>
             Requests load ho rahi hain...
           </div>
+
         </div>
 
       </div>
@@ -533,7 +1083,19 @@
 
 
 <footer>
-  © 2026 Hey Karigar
+
+  <div class="footer-brand">
+    🛠️ Hey Karigar
+  </div>
+
+  <div>
+    Apne ghar ke har kaam ke liye karigar ek jagah
+  </div>
+
+  <br>
+
+  © 2026 Hey Karigar • Made for local services
+
 </footer>
 
 
@@ -562,7 +1124,7 @@ function escapeHtml(value){
 
 document
   .getElementById("authRole")
-  .addEventListener("change", function(){
+  .addEventListener("change",function(){
 
     const serviceInput =
       document.getElementById("authService");
@@ -582,7 +1144,7 @@ document
 
 /* ================= MESSAGE ================= */
 
-function showAuthMessage(message, success=false){
+function showAuthMessage(message,success=false){
 
   const box =
     document.getElementById("authMessage");
@@ -606,39 +1168,25 @@ function showAuthMessage(message, success=false){
 async function signup(){
 
   const full_name =
-    document
-      .getElementById("authName")
-      .value.trim();
+    document.getElementById("authName").value.trim();
 
   const phone =
-    document
-      .getElementById("authPhone")
-      .value.trim();
+    document.getElementById("authPhone").value.trim();
 
   const email =
-    document
-      .getElementById("authEmail")
-      .value.trim();
+    document.getElementById("authEmail").value.trim();
 
   const password =
-    document
-      .getElementById("authPassword")
-      .value;
+    document.getElementById("authPassword").value;
 
   const role =
-    document
-      .getElementById("authRole")
-      .value;
+    document.getElementById("authRole").value;
 
   const service =
-    document
-      .getElementById("authService")
-      .value.trim();
+    document.getElementById("authService").value.trim();
 
   const location =
-    document
-      .getElementById("authLocation")
-      .value.trim();
+    document.getElementById("authLocation").value.trim();
 
 
   if(!full_name || !email || !password || !role){
@@ -659,16 +1207,15 @@ async function signup(){
         API_BASE + "/api/auth/signup",
         {
           method:"POST",
+
           headers:{
             "Content-Type":"application/json"
           },
 
           body:JSON.stringify({
 
-            /* Backend compatibility */
             name:full_name,
             full_name:full_name,
-
             phone,
             email,
             password,
@@ -721,14 +1268,10 @@ async function signup(){
 async function login(){
 
   const email =
-    document
-      .getElementById("authEmail")
-      .value.trim();
+    document.getElementById("authEmail").value.trim();
 
   const password =
-    document
-      .getElementById("authPassword")
-      .value;
+    document.getElementById("authPassword").value;
 
 
   if(!email || !password){
@@ -775,11 +1318,6 @@ async function login(){
 
     }
 
-
-    /*
-      Different backend response
-      formats ko support karta hai.
-    */
 
     const token =
       data.access_token ||
@@ -854,12 +1392,6 @@ function showLoggedInUser(profile){
 
   if(!profile){
 
-    /*
-      Agar backend profile directly
-      return na kare to existing local
-      profile use karne ki koshish.
-    */
-
     try{
 
       const saved =
@@ -925,9 +1457,11 @@ function showLoggedInUser(profile){
       <strong>
         ${escapeHtml(displayName)}
       </strong>
-      ${displayPhone
+      ${
+        displayPhone
         ? "<br>📱 " + escapeHtml(displayPhone)
-        : ""}
+        : ""
+      }
     `;
 
 
@@ -963,10 +1497,6 @@ function showLoggedInUser(profile){
     .classList.add("hidden");
 
 
-  /*
-    Customer details automatically fill.
-  */
-
   if(profile.full_name || profile.name){
 
     document
@@ -999,11 +1529,6 @@ function showLoggedInUser(profile){
   }
 
 
-  /*
-    IMPORTANT:
-    Login ke baad ALL requests load hongi.
-  */
-
   checkRequestStatus();
 
 }
@@ -1011,7 +1536,7 @@ function showLoggedInUser(profile){
 
 /* ================= SELECT SERVICE ================= */
 
-function selectService(element, service){
+function selectService(element,service){
 
   document
     .querySelectorAll(".service-btn")
@@ -1036,29 +1561,19 @@ function selectService(element, service){
 async function submitRequest(){
 
   const name =
-    document
-      .getElementById("name")
-      .value.trim();
+    document.getElementById("name").value.trim();
 
   const phone =
-    document
-      .getElementById("phone")
-      .value.trim();
+    document.getElementById("phone").value.trim();
 
   const location =
-    document
-      .getElementById("location")
-      .value.trim();
+    document.getElementById("location").value.trim();
 
   const details =
-    document
-      .getElementById("details")
-      .value.trim();
+    document.getElementById("details").value.trim();
 
   const service =
-    document
-      .getElementById("service")
-      .value.trim();
+    document.getElementById("service").value.trim();
 
 
   if(!name || !phone || !location || !service){
@@ -1118,6 +1633,7 @@ async function submitRequest(){
 
     let data = {};
 
+
     try{
 
       data =
@@ -1144,11 +1660,6 @@ async function submitRequest(){
 
     }
 
-
-    /*
-      Request ID localStorage mein bhi save.
-      Multiple IDs supported.
-    */
 
     if(data.request?.id){
 
@@ -1197,6 +1708,7 @@ async function submitRequest(){
           style="background:#e8fff1"
         >
           ✅ Request successfully submit ho gayi!
+
           <br><br>
 
           ${
@@ -1207,24 +1719,16 @@ async function submitRequest(){
           }
 
           <br>
-          Status: New
+          Status:
+          <strong>New</strong>
         </div>
       `;
 
-
-    /*
-      Form details clear.
-    */
 
     document
       .getElementById("details")
       .value = "";
 
-
-    /*
-      Service request ke baad
-      saari requests reload.
-    */
 
     checkRequestStatus();
 
@@ -1252,10 +1756,7 @@ async function submitRequest(){
 }
 
 
-/* =====================================================
-   CUSTOMER STATUS
-   ALL REQUESTS BY PHONE
-===================================================== */
+/* ================= CUSTOMER STATUS ================= */
 
 async function checkRequestStatus(){
 
@@ -1268,10 +1769,6 @@ async function checkRequestStatus(){
 
   let profile = null;
 
-
-  /*
-    Logged-in profile read.
-  */
 
   try{
 
@@ -1298,10 +1795,6 @@ async function checkRequestStatus(){
   }
 
 
-  /*
-    Profile se phone number.
-  */
-
   const phone =
     String(
       profile?.phone ||
@@ -1324,22 +1817,13 @@ async function checkRequestStatus(){
 
 
   trackingContent.innerHTML = `
-
     <div class="loading">
-
-      ⏳ Aapki sabhi requests load ho rahi hain...
-
+      ⏳ Aapki requests load ho rahi hain...
     </div>
-
   `;
 
 
   try{
-
-    /*
-      IMPORTANT:
-      Backend ka new endpoint.
-    */
 
     const response =
       await fetch(
@@ -1366,22 +1850,16 @@ async function checkRequestStatus(){
     }catch{
 
       data = {
-
         success:false,
-
         message:
           text ||
           "Invalid server response"
-
       };
 
     }
 
 
-    if(
-      !response.ok ||
-      !data.success
-    ){
+    if(!response.ok || !data.success){
 
       throw new Error(
         data.message ||
@@ -1397,30 +1875,18 @@ async function checkRequestStatus(){
       : [];
 
 
-    /*
-      NO REQUESTS
-    */
-
     if(requests.length === 0){
 
       trackingContent.innerHTML = `
-
         <div class="empty">
-
           📭 Abhi koi request nahi mili.
-
         </div>
-
       `;
 
       return;
 
     }
 
-
-    /*
-      ALL REQUESTS SHOW
-    */
 
     trackingContent.innerHTML =
       requests
@@ -1433,29 +1899,28 @@ async function checkRequestStatus(){
           );
 
 
-        let statusClass = "";
+        let statusClass =
+          "new";
 
 
         if(status === "Accepted"){
-
           statusClass = "accepted";
+        }
 
-        }else if(status === "Assigned"){
-
+        else if(status === "Assigned"){
           statusClass = "assigned";
+        }
 
-        }else if(status === "Completed"){
-
+        else if(status === "Completed"){
           statusClass = "completed";
+        }
 
-        }else if(status === "In Progress"){
-
+        else if(status === "In Progress"){
           statusClass = "inprogress";
+        }
 
-        }else if(status === "Cancelled"){
-
+        else if(status === "Cancelled"){
           statusClass = "cancelled";
-
         }
 
 
@@ -1478,20 +1943,15 @@ async function checkRequestStatus(){
 
 
         return `
-
           <div class="request-card">
 
             <h3>
-              📋 Request #${escapeHtml(
-                request.id
-              )}
+              📋 Request #${escapeHtml(request.id)}
             </h3>
 
             <p>
               <strong>Customer:</strong>
-              ${escapeHtml(
-                customerName
-              )}
+              ${escapeHtml(customerName)}
             </p>
 
             <p>
@@ -1504,42 +1964,31 @@ async function checkRequestStatus(){
 
             <p>
               <strong>Location:</strong>
-              ${escapeHtml(
-                address
-              )}
+              ${escapeHtml(address)}
             </p>
 
             <p>
               <strong>Service:</strong>
               ${escapeHtml(
-                request.service ||
-                ""
+                request.service || ""
               )}
             </p>
 
             <p>
               <strong>Problem:</strong>
-              ${escapeHtml(
-                description
-              )}
+              ${escapeHtml(description)}
             </p>
 
             <p>
-
               <strong>Status:</strong>
-
               <br>
 
-              <span
-                class="status ${statusClass}"
-              >
+              <span class="status ${statusClass}">
                 ${escapeHtml(status)}
               </span>
-
             </p>
 
           </div>
-
         `;
 
       })
@@ -1555,7 +2004,6 @@ async function checkRequestStatus(){
 
 
     trackingContent.innerHTML = `
-
       <div
         class="request-card"
         style="border-color:#f5c2c2"
@@ -1573,11 +2021,10 @@ async function checkRequestStatus(){
         <br><br>
 
         Please dobara
-        <strong>Status Check Karein</strong>
+        <strong>Status Refresh Karein</strong>
         dabayein.
 
       </div>
-
     `;
 
   }
@@ -1596,13 +2043,9 @@ async function loadKarigarRequests(){
 
 
   box.innerHTML = `
-
     <div class="loading">
-
       ⏳ Requests load ho rahi hain...
-
     </div>
-
   `;
 
 
@@ -1636,16 +2079,40 @@ async function loadKarigarRequests(){
       : [];
 
 
+    /* Dashboard numbers */
+
+    document.getElementById(
+      "totalRequests"
+    ).textContent =
+      requests.length;
+
+
+    document.getElementById(
+      "newRequests"
+    ).textContent =
+      requests.filter(
+        r =>
+          String(r.status || "New")
+          .toLowerCase() === "new"
+      ).length;
+
+
+    document.getElementById(
+      "completedRequests"
+    ).textContent =
+      requests.filter(
+        r =>
+          String(r.status || "")
+          .toLowerCase() === "completed"
+      ).length;
+
+
     if(requests.length === 0){
 
       box.innerHTML = `
-
         <div class="empty">
-
           📭 Abhi koi service request nahi hai.
-
         </div>
-
       `;
 
       return;
@@ -1662,14 +2129,36 @@ async function loadKarigarRequests(){
           "New";
 
 
-        return `
+        let statusClass =
+          "new";
 
+
+        if(status === "Accepted"){
+          statusClass = "accepted";
+        }
+
+        else if(status === "Assigned"){
+          statusClass = "assigned";
+        }
+
+        else if(status === "Completed"){
+          statusClass = "completed";
+        }
+
+        else if(status === "In Progress"){
+          statusClass = "inprogress";
+        }
+
+        else if(status === "Cancelled"){
+          statusClass = "cancelled";
+        }
+
+
+        return `
           <div class="request-card">
 
             <h3>
-              📋 Request #${escapeHtml(
-                request.id
-              )}
+              📋 Request #${escapeHtml(request.id)}
             </h3>
 
             <p>
@@ -1711,22 +2200,17 @@ async function loadKarigarRequests(){
               ${escapeHtml(
                 request.details ||
                 request.description ||
-                ""
+                "Details nahi di gayi"
               )}
             </p>
 
             <p>
-
               <strong>Status:</strong>
-
               <br>
 
-              <span class="status">
-
+              <span class="status ${statusClass}">
                 ${escapeHtml(status)}
-
               </span>
-
             </p>
 
 
@@ -1737,17 +2221,18 @@ async function loadKarigarRequests(){
                 'Accepted'
               )"
             >
-              ✅ Accept
+              ✅ Accept Request
             </button>
 
 
             <button
+              class="warning"
               onclick="updateRequestStatus(
                 ${Number(request.id)},
                 'In Progress'
               )"
             >
-              🔄 In Progress
+              🔄 Kaam Shuru
             </button>
 
 
@@ -1758,7 +2243,7 @@ async function loadKarigarRequests(){
                 'Completed'
               )"
             >
-              ✔️ Completed
+              ✔️ Kaam Complete
             </button>
 
 
@@ -1769,11 +2254,10 @@ async function loadKarigarRequests(){
                 'Cancelled'
               )"
             >
-              ❌ Cancel
+              ❌ Cancel Request
             </button>
 
           </div>
-
         `;
 
       })
@@ -1786,7 +2270,6 @@ async function loadKarigarRequests(){
 
 
     box.innerHTML = `
-
       <div class="request-card">
 
         ❌ Requests load nahi hui.
@@ -1799,7 +2282,6 @@ async function loadKarigarRequests(){
         )}
 
       </div>
-
     `;
 
   }
@@ -1809,10 +2291,7 @@ async function loadKarigarRequests(){
 
 /* ================= UPDATE STATUS ================= */
 
-async function updateRequestStatus(
-  id,
-  status
-){
+async function updateRequestStatus(id,status){
 
   try{
 
@@ -1850,23 +2329,14 @@ async function updateRequestStatus(
     }
 
 
-    /*
-      Karigar list refresh
-    */
-
     await loadKarigarRequests();
 
-
-    /*
-      Customer status bhi refresh
-      agar same browser mein customer
-      dashboard active ho.
-    */
 
     if(
       !document
         .getElementById("customerSection")
-        .classList.contains("hidden")
+        .classList
+        .contains("hidden")
     ){
 
       checkRequestStatus();
@@ -1923,6 +2393,11 @@ function logout(){
   document
     .getElementById("authPassword")
     .value = "";
+
+
+  document
+    .getElementById("authMessage")
+    .innerHTML = "";
 
 }
 
