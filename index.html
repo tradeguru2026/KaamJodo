@@ -11,585 +11,203 @@
   box-sizing:border-box;
   margin:0;
   padding:0;
-}
-
-:root{
-  --green:#087f5b;
-  --green-dark:#056246;
-  --green-light:#e9f8f2;
-  --blue:#0d6efd;
-  --red:#dc3545;
-  --orange:#fd7e14;
-  --text:#17221c;
-  --muted:#68756f;
-  --bg:#f4f8f6;
-  --white:#fff;
-  --border:#e1e9e5;
-  --shadow:0 6px 22px rgba(0,0,0,.07);
+  font-family:Arial,sans-serif;
 }
 
 body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.5;
+  background:#f4f7f6;
+  color:#17221c;
 }
-
-button,
-input,
-textarea,
-select{
-  font-family:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-/* ================= HEADER ================= */
 
 header{
-  background:linear-gradient(135deg,#087f5b,#0aa873);
+  background:#087f5b;
   color:white;
-  padding:22px 16px 26px;
+  padding:18px;
   text-align:center;
-  box-shadow:0 3px 15px rgba(0,0,0,.12);
 }
 
-.logo{
-  font-size:31px;
-  font-weight:800;
-  letter-spacing:.2px;
+header h1{
+  font-size:28px;
 }
 
-.tagline{
-  margin-top:5px;
+header p{
+  margin-top:6px;
   font-size:14px;
-  opacity:.94;
 }
-
-.header-badge{
-  display:inline-block;
-  margin-top:13px;
-  padding:6px 12px;
-  border-radius:30px;
-  background:rgba(255,255,255,.16);
-  font-size:12px;
-}
-
-/* ================= CONTAINER ================= */
 
 .container{
-  width:100%;
-  max-width:950px;
+  max-width:900px;
   margin:auto;
-  padding:16px;
+  padding:15px;
 }
-
-/* ================= HERO ================= */
-
-.hero{
-  background:linear-gradient(135deg,#ffffff,#effaf5);
-  border:1px solid #dceee6;
-  border-radius:20px;
-  padding:22px 18px;
-  margin-bottom:16px;
-  box-shadow:var(--shadow);
-}
-
-.hero h2{
-  color:var(--green);
-  font-size:23px;
-  margin-bottom:6px;
-}
-
-.hero p{
-  color:var(--muted);
-  font-size:14px;
-}
-
-.hero-points{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-top:17px;
-}
-
-.hero-point{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:10px 6px;
-  text-align:center;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.hero-point span{
-  display:block;
-  font-size:21px;
-  margin-bottom:3px;
-}
-
-/* ================= CARD ================= */
 
 .card{
-  background:var(--white);
-  padding:20px;
-  border-radius:18px;
+  background:white;
+  border-radius:14px;
+  padding:18px;
   margin-bottom:16px;
-  box-shadow:var(--shadow);
-  border:1px solid #e7eeeb;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
-.card-title{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  margin-bottom:5px;
+h2{
+  color:#087f5b;
+  margin-bottom:15px;
 }
 
-.card-title h2{
-  color:var(--green);
-  font-size:21px;
-}
-
-.card-subtitle{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:17px;
-}
-
-/* ================= AUTH ================= */
-
-.auth-card{
-  max-width:600px;
-  margin:20px auto;
-}
-
-.auth-tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-bottom:18px;
-}
-
-.auth-tab{
-  padding:11px;
-  border-radius:10px;
-  background:#eef3f1;
-  color:#51605a;
-  text-align:center;
-  font-weight:bold;
-}
-
-.auth-tab.active{
-  background:var(--green);
-  color:white;
-}
-
-/* ================= FORM ================= */
-
-label{
-  display:block;
-  font-size:13px;
-  font-weight:bold;
-  margin:11px 0 5px;
-  color:#39463f;
+h3{
+  margin-bottom:10px;
 }
 
 input,
-textarea,
-select{
+select,
+textarea{
   width:100%;
-  padding:13px 14px;
-  border:1px solid #d3ded9;
-  border-radius:11px;
-  background:#fbfdfc;
-  color:var(--text);
+  padding:13px;
+  margin:7px 0;
+  border:1px solid #ccd7d2;
+  border-radius:9px;
   font-size:15px;
-  outline:none;
-  transition:.2s;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-  border-color:var(--green);
-  box-shadow:0 0 0 3px rgba(8,127,91,.09);
-  background:white;
 }
 
 textarea{
-  min-height:105px;
+  min-height:100px;
   resize:vertical;
 }
 
-.form-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-/* ================= BUTTONS ================= */
-
 button{
   width:100%;
-  padding:13px 15px;
-  border:0;
-  border-radius:11px;
-  background:var(--green);
-  color:white;
-  font-size:15px;
-  font-weight:700;
+  border:none;
+  padding:13px;
+  border-radius:9px;
   margin-top:8px;
-  transition:.15s;
-}
-
-button:active{
-  transform:scale(.98);
+  background:#087f5b;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 button:hover{
-  filter:brightness(.96);
+  opacity:.92;
 }
 
-.secondary{
-  background:#68756f;
+.btn-secondary{
+  background:#455a64;
 }
 
-.success{
-  background:#198754;
+.btn-location{
+  background:#1565c0;
 }
 
-.danger{
-  background:#dc3545;
+.btn-danger{
+  background:#c62828;
 }
 
-.warning{
-  background:#fd7e14;
+.hidden{
+  display:none!important;
 }
 
-.outline{
-  background:white;
-  color:var(--green);
-  border:1px solid #b9ddd0;
+.small{
+  font-size:13px;
+  color:#66756f;
 }
 
-/* ================= SERVICE GRID ================= */
+.location-box{
+  background:#f0f7f4;
+  border:1px solid #cfe4db;
+  border-radius:10px;
+  padding:12px;
+  margin-top:8px;
+}
 
-.service-heading{
-  margin:18px 0 10px;
-  font-size:15px;
-  color:#34433c;
+.location-status{
+  margin-top:8px;
+  font-size:13px;
+  color:#087f5b;
+  font-weight:bold;
 }
 
 .service-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:10px;
 }
 
 .service-btn{
-  min-height:83px;
-  background:#f5faf8;
-  color:#145d48;
-  border:1px solid #d7ebe3;
-  border-radius:13px;
-  padding:10px 5px;
-  cursor:pointer;
-  text-align:center;
-  font-weight:bold;
-  font-size:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:5px;
-  transition:.15s;
-}
-
-.service-btn .icon{
-  font-size:25px;
-}
-
-.service-btn:hover{
-  border-color:#8bcdb7;
-  transform:translateY(-1px);
+  background:#eef7f3;
+  color:#087f5b;
+  border:1px solid #c9e2d8;
+  font-size:14px;
+  padding:11px 5px;
+  margin:0;
 }
 
 .service-btn.selected{
-  background:var(--green);
-  border-color:var(--green);
+  background:#087f5b;
   color:white;
-  box-shadow:0 4px 12px rgba(8,127,91,.2);
 }
-
-/* ================= USER ================= */
-
-.top-user{
-  background:linear-gradient(135deg,#087f5b,#0aa873);
-  color:white;
-  padding:18px;
-  border-radius:18px;
-  margin-bottom:16px;
-  box-shadow:var(--shadow);
-}
-
-.top-user h2{
-  font-size:21px;
-  margin-bottom:5px;
-}
-
-.top-user p{
-  font-size:14px;
-  opacity:.95;
-}
-
-.top-user button{
-  background:rgba(255,255,255,.16);
-  border:1px solid rgba(255,255,255,.3);
-  margin-top:14px;
-}
-
-/* ================= REQUEST ================= */
 
 .request-card{
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:16px;
-  margin-bottom:12px;
-  background:#fff;
-}
-
-.request-card h3{
-  color:var(--green);
-  font-size:17px;
-  margin-bottom:11px;
+  border:1px solid #dce5e1;
+  border-radius:12px;
+  padding:14px;
+  margin-top:12px;
 }
 
 .request-card p{
-  margin:7px 0;
-  line-height:1.5;
-  font-size:14px;
+  margin:6px 0;
 }
-
-.request-card strong{
-  color:#39463f;
-}
-
-.request-card button{
-  margin-top:8px;
-}
-
-/* ================= STATUS ================= */
 
 .status{
   display:inline-block;
-  padding:6px 12px;
-  border-radius:30px;
-  background:#6c757d;
-  color:white;
+  padding:5px 10px;
+  border-radius:20px;
+  background:#e7f5ee;
+  color:#087f5b;
   font-size:12px;
   font-weight:bold;
-  margin-top:4px;
 }
 
-.status.new{
-  background:#6c757d;
-}
-
-.status.accepted{
-  background:#198754;
-}
-
-.status.assigned{
-  background:#6f42c1;
-}
-
-.status.inprogress{
-  background:#fd7e14;
-}
-
-.status.completed{
-  background:#20c997;
-}
-
-.status.cancelled{
-  background:#dc3545;
-}
-
-/* ================= MESSAGE ================= */
-
-.message{
-  padding:12px 14px;
-  border-radius:11px;
-  margin-top:12px;
-  background:#eef7f3;
-  border:1px solid #d7ebe3;
-  font-size:14px;
-}
-
-.loading{
-  text-align:center;
-  padding:25px 10px;
-  color:#68756f;
-}
-
-.loading-icon{
-  font-size:25px;
-}
-
-.empty{
-  text-align:center;
-  padding:25px 10px;
-  color:#68756f;
-}
-
-/* ================= DASHBOARD ================= */
-
-.dashboard-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.connection{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  background:#e8fff2;
-  color:#087f5b;
-  border:1px solid #c8eadb;
-  border-radius:30px;
-  padding:6px 10px;
-  font-size:11px;
-  font-weight:bold;
-}
-
-.dashboard-stats{
+.stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:9px;
-  margin:15px 0;
+  gap:8px;
+  margin-bottom:15px;
 }
 
 .stat{
-  background:#f5faf8;
-  border:1px solid #dfebe6;
-  border-radius:12px;
-  padding:12px 8px;
+  background:#f0f7f4;
+  border-radius:10px;
+  padding:12px;
   text-align:center;
 }
 
-.stat-number{
-  font-size:20px;
-  font-weight:800;
-  color:var(--green);
+.stat strong{
+  display:block;
+  font-size:22px;
+  color:#087f5b;
 }
 
-.stat-label{
-  font-size:11px;
-  color:#68756f;
+.logout{
+  background:#c62828;
 }
-
-/* ================= FOOTER ================= */
 
 footer{
   text-align:center;
-  padding:30px 15px;
-  color:#7a8580;
-  font-size:12px;
+  padding:20px;
+  color:#68756f;
+  font-size:13px;
 }
 
-.footer-brand{
-  color:var(--green);
-  font-weight:bold;
-}
-
-/* ================= HIDDEN ================= */
-
-.hidden{
-  display:none !important;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:700px){
-
-  .container{
-    padding:12px;
-  }
-
-  .service-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-}
-
-@media(max-width:480px){
-
-  header{
-    padding:19px 12px 22px;
-  }
-
-  .logo{
-    font-size:27px;
-  }
-
-  .hero{
-    padding:18px 14px;
-  }
-
-  .hero h2{
-    font-size:20px;
-  }
-
-  .hero-points{
-    grid-template-columns:1fr 1fr 1fr;
-  }
-
-  .hero-point{
-    font-size:10px;
-    padding:8px 3px;
-  }
-
-  .hero-point span{
-    font-size:18px;
-  }
-
-  .card{
-    padding:15px;
-    border-radius:15px;
-  }
-
+@media(max-width:600px){
   .service-grid{
     grid-template-columns:repeat(2,1fr);
   }
 
-  .service-btn{
-    min-height:78px;
+  .stats{
+    grid-template-columns:repeat(3,1fr);
   }
-
-  .form-row{
-    grid-template-columns:1fr;
-  }
-
-  .dashboard-stats{
-    grid-template-columns:1fr 1fr 1fr;
-  }
-
-}
-
-/* ================= SMALL PHONE ================= */
-
-@media(max-width:350px){
-
-  .service-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
 }
 </style>
 </head>
@@ -597,390 +215,214 @@ footer{
 <body>
 
 <header>
-
-  <div class="logo">
-    🛠️ Hey Karigar
-  </div>
-
-  <div class="tagline">
-    Apne ghar ke har kaam ke liye karigar ek jagah
-  </div>
-
-  <div class="header-badge">
-    🟢 Local Services • Easy Booking
-  </div>
-
+  <h1>🛠️ Hey Karigar</h1>
+  <p>Apne ghar ke har kaam ke liye karigar ek jagah</p>
 </header>
-
 
 <div class="container">
 
-  <!-- ================= HERO ================= -->
+<!-- AUTH -->
+<div id="authSection" class="card">
 
-  <div class="hero">
+  <h2>🔐 Account</h2>
 
-    <h2>🏠 Ghar ka kaam? Karigar yahan milega.</h2>
+  <input id="name" type="text" placeholder="Aapka naam">
 
-    <p>
-      Plumber se lekar electrician, carpenter aur cleaning tak
-      apni zarurat ka service request bhejein.
+  <input id="phone" type="tel" placeholder="Mobile number">
+
+  <input id="email" type="email" placeholder="Email">
+
+  <input id="password" type="password" placeholder="Password">
+
+  <select id="role" onchange="roleChanged()">
+    <option value="customer">Customer</option>
+    <option value="karigar">Karigar</option>
+  </select>
+
+  <div id="karigarServiceBox" class="hidden">
+    <input id="karigarService" type="text"
+      placeholder="Aap kaun sa kaam karte hain? e.g. Plumber">
+  </div>
+
+  <!-- LOCATION -->
+  <div class="location-box">
+
+    <h3>📍 Aapki Location</h3>
+
+    <p class="small">
+      Apna City/Area likhein ya GPS se current location lein.
     </p>
 
-    <div class="hero-points">
+    <input id="location"
+      type="text"
+      placeholder="Area / City e.g. Agra">
 
-      <div class="hero-point">
-        <span>🔎</span>
-        Service Chunein
-      </div>
+    <input id="state"
+      type="text"
+      placeholder="State e.g. Uttar Pradesh">
 
-      <div class="hero-point">
-        <span>📩</span>
-        Request Bhejein
-      </div>
+    <button class="btn-location" onclick="getCurrentLocation()">
+      📍 Current Location Use Karein
+    </button>
 
-      <div class="hero-point">
-        <span>👷</span>
-        Karigar Payein
-      </div>
-
+    <div id="locationStatus" class="location-status">
+      Location abhi set nahi hai
     </div>
+
+    <input id="latitude" type="hidden">
+    <input id="longitude" type="hidden">
 
   </div>
 
+  <button onclick="signup()">
+    📝 Signup
+  </button>
 
-  <!-- ================= AUTH ================= -->
+  <button class="btn-secondary" onclick="login()">
+    🔑 Login
+  </button>
 
-  <div id="authSection" class="card auth-card">
+  <p id="authMessage" class="small" style="margin-top:10px;"></p>
 
-    <div class="card-title">
-      <span>🔐</span>
-      <h2>Login / Signup</h2>
-    </div>
-
-    <div class="card-subtitle">
-      Customer ya Karigar ke roop mein account banayein.
-    </div>
-
-    <div id="authMessage"></div>
-
-    <label>Aapka naam</label>
-
-    <input
-      type="text"
-      id="authName"
-      placeholder="Jaise: Sarfaraz"
-    >
+</div>
 
 
-    <label>Mobile number</label>
+<!-- LOGGED USER -->
+<div id="userSection" class="hidden">
 
-    <input
-      type="tel"
-      id="authPhone"
-      placeholder="10 digit mobile number"
-    >
+  <div class="card">
 
+    <h2>👋 Welcome <span id="userName"></span></h2>
 
-    <label>Email</label>
+    <p>
+      📱 <span id="userPhone"></span>
+    </p>
 
-    <input
-      type="email"
-      id="authEmail"
-      placeholder="Aapka email"
-    >
+    <p>
+      📍 <span id="userLocation"></span>
+    </p>
 
+    <p id="userRole" class="small"></p>
 
-    <label>Password</label>
-
-    <input
-      type="password"
-      id="authPassword"
-      placeholder="Password"
-    >
-
-
-    <label>Account type</label>
-
-    <select id="authRole">
-
-      <option value="customer">
-        👤 Customer
-      </option>
-
-      <option value="karigar">
-        👷 Karigar
-      </option>
-
-    </select>
-
-
-    <input
-      type="text"
-      id="authService"
-      placeholder="Karigar ki service — jaise Plumber"
-      class="hidden"
-    >
-
-
-    <label>Location</label>
-
-    <input
-      type="text"
-      id="authLocation"
-      placeholder="Area / City"
-    >
-
-
-    <button onclick="signup()">
-      📝 Naya Account Banayein
-    </button>
-
-    <button
-      class="secondary"
-      onclick="login()"
-    >
-      🔑 Login Karein
+    <button class="logout" onclick="logout()">
+      Logout
     </button>
 
   </div>
 
 
-  <!-- ================= LOGGED IN ================= -->
+  <!-- CUSTOMER -->
+  <div id="customerSection">
 
-  <div
-    id="userSection"
-    class="hidden"
-  >
+    <div class="card">
 
-    <div class="top-user">
+      <h2>🛠️ Kaunsa kaam karwana hai?</h2>
 
-      <h2>
-        👋 Welcome
-      </h2>
+      <div class="service-grid">
 
-      <p id="userInfo"></p>
+        <button class="service-btn" onclick="selectService(this,'Plumber')">🚰 Plumber</button>
 
-      <button
-        onclick="logout()"
-      >
-        🚪 Logout
+        <button class="service-btn" onclick="selectService(this,'Electrician')">⚡ Electrician</button>
+
+        <button class="service-btn" onclick="selectService(this,'Carpenter')">🪚 Carpenter</button>
+
+        <button class="service-btn" onclick="selectService(this,'Painter')">🎨 Painter</button>
+
+        <button class="service-btn" onclick="selectService(this,'AC Repair')">❄️ AC Repair</button>
+
+        <button class="service-btn" onclick="selectService(this,'Washing Machine Repair')">🧺 Washing Machine</button>
+
+        <button class="service-btn" onclick="selectService(this,'TV Repair')">📺 TV Repair</button>
+
+        <button class="service-btn" onclick="selectService(this,'Gardener/Mali')">🌱 Mali</button>
+
+        <button class="service-btn" onclick="selectService(this,'Generator Mechanic')">🔧 Generator</button>
+
+        <button class="service-btn" onclick="selectService(this,'Puncture/Tyre Replacement')">🛞 Puncture/Tyre</button>
+
+        <button class="service-btn" onclick="selectService(this,'Barber')">💈 Barber</button>
+
+        <button class="service-btn" onclick="selectService(this,'Physiotherapist')">🧑‍⚕️ Physiotherapist</button>
+
+        <button class="service-btn" onclick="selectService(this,'Mehndi Artist')">🌸 Mehndi Artist</button>
+
+        <button class="service-btn" onclick="selectService(this,'Carpet Cleaning')">🧹 Carpet Cleaning</button>
+
+        <button class="service-btn" onclick="selectService(this,'Gutter Cleaning')">🧽 Gutter Cleaning</button>
+
+        <button class="service-btn" onclick="selectService(this,'Home Cleaning')">🏠 Home Cleaning</button>
+
+        <button class="service-btn" onclick="selectService(this,'Other')">🔨 Other</button>
+
+      </div>
+
+      <input id="selectedService"
+        type="hidden">
+
+      <textarea id="details"
+        placeholder="Kaam ke baare mein thoda detail likhein..."></textarea>
+
+      <button onclick="submitRequest()">
+        📩 Karigar Bulayein
       </button>
 
+      <p id="requestMessage" class="small"></p>
+
     </div>
 
 
-    <!-- ================= CUSTOMER ================= -->
+    <!-- TRACK -->
+    <div class="card">
 
-    <div id="customerSection">
+      <h2>📋 Mere Requests</h2>
 
-      <div class="card">
+      <button class="btn-secondary" onclick="loadCustomerRequests()">
+        🔄 Status Check Karein
+      </button>
 
-        <div class="card-title">
-          <span>🛠️</span>
-          <h2>Service Request</h2>
+      <div id="customerRequests"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- KARIGAR -->
+  <div id="karigarSection" class="hidden">
+
+    <div class="card">
+
+      <h2>🔧 Karigar Dashboard</h2>
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong id="totalRequests">0</strong>
+          Total
         </div>
 
-        <div class="card-subtitle">
-          Apne kaam ki details bharein aur request bhejein.
+        <div class="stat">
+          <strong id="newRequests">0</strong>
+          New
         </div>
 
-
-        <label>Naam</label>
-
-        <input
-          type="text"
-          id="name"
-          placeholder="Aapka naam"
-        >
-
-
-        <label>Mobile number</label>
-
-        <input
-          type="tel"
-          id="phone"
-          placeholder="Mobile number"
-        >
-
-
-        <label>Location / Address</label>
-
-        <input
-          type="text"
-          id="location"
-          placeholder="Area, mohalla ya address"
-        >
-
-
-        <div class="service-heading">
-          🔧 Kis service ki zarurat hai?
+        <div class="stat">
+          <strong id="completedRequests">0</strong>
+          Completed
         </div>
-
-
-        <div class="service-grid">
-
-          <div class="service-btn"
-               onclick="selectService(this,'Plumber')">
-            <span class="icon">🔧</span>
-            Plumber
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Electrician')">
-            <span class="icon">⚡</span>
-            Electrician
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Carpenter')">
-            <span class="icon">🪚</span>
-            Carpenter
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Painter')">
-            <span class="icon">🎨</span>
-            Painter
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'AC Repair')">
-            <span class="icon">❄️</span>
-            AC Repair
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Washing Machine Repair')">
-            <span class="icon">🧺</span>
-            Washing Machine
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'TV Repair')">
-            <span class="icon">📺</span>
-            TV Repair
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Mali')">
-            <span class="icon">🌱</span>
-            Mali
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Generator Mechanic')">
-            <span class="icon">🔋</span>
-            Generator Mechanic
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Puncture / Tyre')">
-            <span class="icon">🚗</span>
-            Puncture / Tyre
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Barber')">
-            <span class="icon">💈</span>
-            Barber
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Physiotherapist')">
-            <span class="icon">🧑‍⚕️</span>
-            Physiotherapist
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Mehndi Artist')">
-            <span class="icon">🌿</span>
-            Mehndi Artist
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Carpet Cleaning')">
-            <span class="icon">🧹</span>
-            Carpet Cleaning
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Gutter Cleaning')">
-            <span class="icon">🧽</span>
-            Gutter Cleaning
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Home Cleaning')">
-            <span class="icon">🏠</span>
-            Home Cleaning
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Gardener / Mali')">
-            <span class="icon">🌳</span>
-            Gardener
-          </div>
-
-          <div class="service-btn"
-               onclick="selectService(this,'Other')">
-            <span class="icon">🔨</span>
-            Other
-          </div>
-
-        </div>
-
-
-        <input
-          type="hidden"
-          id="service"
-        >
-
-
-        <label>Kaam ki details</label>
-
-        <textarea
-          id="details"
-          placeholder="Problem kya hai? Jaise: bathroom ka pipe leak ho raha hai..."
-        ></textarea>
-
-
-        <button
-          class="success"
-          onclick="submitRequest()"
-        >
-          📩 Service Request Bhejein
-        </button>
-
-
-        <div id="requestMessage"></div>
 
       </div>
 
+      <div class="location-box">
 
-      <!-- ================= TRACKING ================= -->
+        <h3>📍 Aapki Service Location</h3>
 
-      <div
-        id="trackingBox"
-        class="card"
-        style="display:none"
-      >
+        <p id="karigarLocation">
+          Location load ho rahi hai...
+        </p>
 
-        <div class="card-title">
-          <span>📋</span>
-          <h2>Meri Requests</h2>
-        </div>
-
-        <div class="card-subtitle">
-          Aapki service requests ka current status.
-        </div>
-
-        <div id="trackingContent"></div>
-
-        <button
-          class="secondary"
-          onclick="checkRequestStatus()"
-        >
-          🔄 Status Refresh Karein
+        <button class="btn-location" onclick="updateKarigarLocation()">
+          📍 Location Update Karein
         </button>
 
       </div>
@@ -988,92 +430,15 @@ footer{
     </div>
 
 
-    <!-- ================= KARIGAR ================= -->
+    <div class="card">
 
-    <div
-      id="karigarSection"
-      class="hidden"
-    >
+      <h2>📋 Service Requests</h2>
 
-      <div class="card">
+      <p class="small">
+        Aapke area/city ke requests ko priority ke saath dikhaya jayega.
+      </p>
 
-        <div class="dashboard-title">
-
-          <div class="card-title">
-            <span>👷</span>
-            <h2>Karigar Dashboard</h2>
-          </div>
-
-          <span class="connection">
-            🟢 Connected
-          </span>
-
-        </div>
-
-        <div class="card-subtitle">
-          Customers ki service requests yahan dekhein.
-        </div>
-
-
-        <div class="dashboard-stats">
-
-          <div class="stat">
-            <div
-              class="stat-number"
-              id="totalRequests"
-            >
-              -
-            </div>
-            <div class="stat-label">
-              Requests
-            </div>
-          </div>
-
-          <div class="stat">
-            <div
-              class="stat-number"
-              id="newRequests"
-            >
-              -
-            </div>
-            <div class="stat-label">
-              New
-            </div>
-          </div>
-
-          <div class="stat">
-            <div
-              class="stat-number"
-              id="completedRequests"
-            >
-              -
-            </div>
-            <div class="stat-label">
-              Completed
-            </div>
-          </div>
-
-        </div>
-
-
-        <button
-          class="secondary"
-          onclick="loadKarigarRequests()"
-        >
-          🔄 Requests Refresh Karein
-        </button>
-
-
-        <div id="karigarRequests">
-
-          <div class="loading">
-            <div class="loading-icon">⏳</div>
-            Requests load ho rahi hain...
-          </div>
-
-        </div>
-
-      </div>
+      <div id="karigarRequests"></div>
 
     </div>
 
@@ -1081,21 +446,12 @@ footer{
 
 </div>
 
+</div>
+
 
 <footer>
-
-  <div class="footer-brand">
-    🛠️ Hey Karigar
-  </div>
-
-  <div>
-    Apne ghar ke har kaam ke liye karigar ek jagah
-  </div>
-
-  <br>
-
-  © 2026 Hey Karigar • Made for local services
-
+  © 2026 Hey Karigar ❤️<br>
+  Ghar Ka Har Kaam Ek Jagah
 </footer>
 
 
@@ -1105,373 +461,430 @@ const API_BASE = window.location.origin;
 
 let selectedService = "";
 
+let currentProfile = null;
 
-/* ================= HELPER ================= */
 
-function escapeHtml(value){
+/* =========================
+   ROLE
+========================= */
 
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function roleChanged(){
 
+  const role = document.getElementById("role").value;
+
+  document
+    .getElementById("karigarServiceBox")
+    .classList.toggle("hidden", role !== "karigar");
 }
 
 
-/* ================= ROLE CHANGE ================= */
+/* =========================
+   LOCATION
+========================= */
 
-document
-  .getElementById("authRole")
-  .addEventListener("change",function(){
+function getCurrentLocation(){
 
-    const serviceInput =
-      document.getElementById("authService");
+  const status = document.getElementById("locationStatus");
 
-    if(this.value === "karigar"){
+  if(!navigator.geolocation){
 
-      serviceInput.classList.remove("hidden");
+    status.innerText =
+      "❌ Is phone/browser mein GPS available nahi hai.";
 
-    }else{
+    return;
+  }
 
-      serviceInput.classList.add("hidden");
+  status.innerText =
+    "📍 Location mil rahi hai... Please wait.";
 
+  navigator.geolocation.getCurrentPosition(
+
+    async function(position){
+
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      document.getElementById("latitude").value = lat;
+      document.getElementById("longitude").value = lng;
+
+      status.innerText =
+        "✅ GPS Location mil gayi.";
+
+      /*
+       Reverse geocoding.
+       OpenStreetMap Nominatim ka use.
+      */
+
+      try{
+
+        const response = await fetch(
+          "https://nominatim.openstreetmap.org/reverse?format=json&lat="
+          + lat
+          + "&lon="
+          + lng
+          + "&zoom=10&addressdetails=1"
+        );
+
+        const data = await response.json();
+
+        if(data && data.address){
+
+          const city =
+            data.address.city ||
+            data.address.town ||
+            data.address.village ||
+            data.address.municipality ||
+            "";
+
+          const state =
+            data.address.state || "";
+
+          if(city){
+
+            document.getElementById("location").value =
+              city;
+          }
+
+          if(state){
+
+            document.getElementById("state").value =
+              state;
+          }
+
+          status.innerText =
+            "✅ Location set: "
+            + (city || "Current Location")
+            + (state ? ", " + state : "");
+
+        }
+
+      }catch(error){
+
+        status.innerText =
+          "✅ GPS mil gaya. City manually bhi likh sakte hain.";
+
+      }
+
+    },
+
+    function(error){
+
+      status.innerText =
+        "❌ Location permission allow karein.";
+
+    },
+
+    {
+      enableHighAccuracy:true,
+      timeout:15000,
+      maximumAge:0
     }
-
-  });
-
-
-/* ================= MESSAGE ================= */
-
-function showAuthMessage(message,success=false){
-
-  const box =
-    document.getElementById("authMessage");
-
-  box.innerHTML = `
-    <div
-      class="message"
-      style="
-        background:${success ? "#e8fff1" : "#fff3cd"};
-      "
-    >
-      ${escapeHtml(message)}
-    </div>
-  `;
-
+  );
 }
 
 
-/* ================= SIGNUP ================= */
+/* =========================
+   SIGNUP
+========================= */
 
 async function signup(){
 
-  const full_name =
-    document.getElementById("authName").value.trim();
+  const name =
+    document.getElementById("name").value.trim();
 
   const phone =
-    document.getElementById("authPhone").value.trim();
+    document.getElementById("phone").value.trim();
 
   const email =
-    document.getElementById("authEmail").value.trim();
+    document.getElementById("email").value.trim();
 
   const password =
-    document.getElementById("authPassword").value;
+    document.getElementById("password").value;
 
   const role =
-    document.getElementById("authRole").value;
+    document.getElementById("role").value;
 
   const service =
-    document.getElementById("authService").value.trim();
+    document.getElementById("karigarService").value.trim();
 
   const location =
-    document.getElementById("authLocation").value.trim();
+    document.getElementById("location").value.trim();
+
+  const state =
+    document.getElementById("state").value.trim();
+
+  const latitude =
+    document.getElementById("latitude").value;
+
+  const longitude =
+    document.getElementById("longitude").value;
+
+  const msg =
+    document.getElementById("authMessage");
 
 
-  if(!full_name || !email || !password || !role){
+  if(!name || !phone || !email || !password){
 
-    showAuthMessage(
-      "Please naam, email, password aur role bhar dein."
-    );
+    msg.innerText =
+      "❌ Naam, mobile, email aur password zaroori hai.";
 
     return;
-
   }
+
+  if(!location){
+
+    msg.innerText =
+      "❌ Apni Area/City location zaroor likhein.";
+
+    return;
+  }
+
+
+  msg.innerText =
+    "⏳ Account ban raha hai...";
 
 
   try{
 
-    const response =
-      await fetch(
-        API_BASE + "/api/auth/signup",
-        {
-          method:"POST",
+    const response = await fetch(
+      API_BASE + "/api/auth/signup",
+      {
+        method:"POST",
 
-          headers:{
-            "Content-Type":"application/json"
-          },
+        headers:{
+          "Content-Type":"application/json"
+        },
 
-          body:JSON.stringify({
+        body:JSON.stringify({
 
-            name:full_name,
-            full_name:full_name,
-            phone,
-            email,
-            password,
-            role,
-            service,
-            location
+          name:name,
+          full_name:name,
 
-          })
-        }
-      );
+          phone:phone,
+
+          email:email,
+
+          password:password,
+
+          role:role,
+
+          service:service,
+
+          location:location,
+
+          state:state,
+
+          latitude:latitude
+            ? Number(latitude)
+            : null,
+
+          longitude:longitude
+            ? Number(longitude)
+            : null
+
+        })
+      }
+    );
 
 
-    const data =
-      await response.json();
-
+    const data = await response.json();
 
     if(!response.ok || data.success === false){
 
-      throw new Error(
-        data.message ||
-        "Signup failed"
-      );
+      msg.innerText =
+        "❌ " +
+        (data.message || "Signup failed.");
 
+      return;
     }
 
 
-    showAuthMessage(
-      data.message ||
-      "Signup successful. Ab login karein.",
-      true
-    );
-
+    msg.innerText =
+      "✅ Signup successful! Ab Login karein.";
 
   }catch(error){
 
-    console.error(error);
-
-    showAuthMessage(
-      error.message ||
-      "Signup nahi ho saka."
-    );
+    msg.innerText =
+      "❌ Server error: " + error.message;
 
   }
 
 }
 
 
-/* ================= LOGIN ================= */
+/* =========================
+   LOGIN
+========================= */
 
 async function login(){
 
   const email =
-    document.getElementById("authEmail").value.trim();
+    document.getElementById("email").value.trim();
 
   const password =
-    document.getElementById("authPassword").value;
+    document.getElementById("password").value;
+
+  const msg =
+    document.getElementById("authMessage");
 
 
   if(!email || !password){
 
-    showAuthMessage(
-      "Email aur password bhar dein."
-    );
+    msg.innerText =
+      "❌ Email aur password zaroori hai.";
 
     return;
-
   }
+
+
+  msg.innerText =
+    "⏳ Login ho raha hai...";
 
 
   try{
 
-    const response =
-      await fetch(
-        API_BASE + "/api/auth/login",
-        {
-          method:"POST",
+    const response = await fetch(
+      API_BASE + "/api/auth/login",
+      {
+        method:"POST",
 
-          headers:{
-            "Content-Type":"application/json"
-          },
+        headers:{
+          "Content-Type":"application/json"
+        },
 
-          body:JSON.stringify({
-            email,
-            password
-          })
-        }
-      );
+        body:JSON.stringify({
+
+          email:email,
+
+          password:password
+
+        })
+      }
+    );
 
 
-    const data =
-      await response.json();
+    const data = await response.json();
 
 
     if(!response.ok || data.success === false){
 
-      throw new Error(
-        data.message ||
-        "Login failed"
-      );
+      msg.innerText =
+        "❌ " +
+        (data.message || "Login failed.");
 
+      return;
     }
 
 
     const token =
       data.access_token ||
-      data.accessToken ||
-      data.token ||
       data.session?.access_token ||
       "";
 
     const refreshToken =
       data.refresh_token ||
-      data.refreshToken ||
       data.session?.refresh_token ||
       "";
 
-    const profile =
+
+    currentProfile =
       data.profile ||
       data.user ||
-      data.data ||
-      null;
+      data.data?.profile;
 
 
-    if(token){
+    if(!currentProfile){
 
-      localStorage.setItem(
-        "heyKarigarAccessToken",
-        token
-      );
+      msg.innerText =
+        "❌ Profile nahi mila.";
 
+      return;
     }
 
 
-    if(refreshToken){
-
-      localStorage.setItem(
-        "heyKarigarRefreshToken",
-        refreshToken
-      );
-
-    }
+    localStorage.setItem(
+      "heyKarigarProfile",
+      JSON.stringify(currentProfile)
+    );
 
 
-    if(profile){
-
-      localStorage.setItem(
-        "heyKarigarProfile",
-        JSON.stringify(profile)
-      );
-
-    }
+    localStorage.setItem(
+      "heyKarigarToken",
+      token
+    );
 
 
-    showLoggedInUser(profile);
+    localStorage.setItem(
+      "heyKarigarRefreshToken",
+      refreshToken
+    );
+
+
+    showLoggedInUser(currentProfile);
 
 
   }catch(error){
 
-    console.error(error);
-
-    showAuthMessage(
-      error.message ||
-      "Login nahi ho saka."
-    );
+    msg.innerText =
+      "❌ Server error: " + error.message;
 
   }
 
 }
 
 
-/* ================= SHOW LOGGED USER ================= */
+/* =========================
+   SHOW USER
+========================= */
 
 function showLoggedInUser(profile){
 
-  if(!profile){
-
-    try{
-
-      const saved =
-        localStorage.getItem(
-          "heyKarigarProfile"
-        );
-
-      if(saved){
-
-        profile =
-          JSON.parse(saved);
-
-      }
-
-    }catch(error){
-
-      console.error(error);
-
-    }
-
-  }
-
-
-  if(!profile){
-
-    showAuthMessage(
-      "Profile nahi mila. Dobara login karein."
-    );
-
-    return;
-
-  }
-
-
-  localStorage.setItem(
-    "heyKarigarProfile",
-    JSON.stringify(profile)
-  );
+  currentProfile = profile;
 
 
   document
     .getElementById("authSection")
     .classList.add("hidden");
 
+
   document
     .getElementById("userSection")
     .classList.remove("hidden");
 
 
-  const displayName =
-    profile.full_name ||
+  document.getElementById("userName").innerText =
     profile.name ||
+    profile.full_name ||
     "User";
 
-  const displayPhone =
+
+  document.getElementById("userPhone").innerText =
     profile.phone ||
     "";
 
 
-  document
-    .getElementById("userInfo")
-    .innerHTML = `
-      <strong>
-        ${escapeHtml(displayName)}
-      </strong>
-      ${
-        displayPhone
-        ? "<br>📱 " + escapeHtml(displayPhone)
-        : ""
-      }
-    `;
+  const location =
+    profile.location ||
+    "Location not set";
 
 
-  const role =
-    String(
-      profile.role || "customer"
-    ).toLowerCase();
+  const state =
+    profile.state ||
+    "";
 
 
-  if(role === "karigar"){
+  document.getElementById("userLocation").innerText =
+    location +
+    (state ? ", " + state : "");
+
+
+  document.getElementById("userRole").innerText =
+    profile.role === "karigar"
+      ? "🔧 Karigar Account"
+      : "👤 Customer Account";
+
+
+  if(profile.role === "karigar"){
 
     document
       .getElementById("customerSection")
@@ -1481,62 +894,34 @@ function showLoggedInUser(profile){
       .getElementById("karigarSection")
       .classList.remove("hidden");
 
+
+    document.getElementById("karigarLocation").innerText =
+      location +
+      (state ? ", " + state : "");
+
+
     loadKarigarRequests();
 
-    return;
-
-  }
-
-
-  document
-    .getElementById("customerSection")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("karigarSection")
-    .classList.add("hidden");
-
-
-  if(profile.full_name || profile.name){
+  }else{
 
     document
-      .getElementById("name")
-      .value =
-        profile.full_name ||
-        profile.name ||
-        "";
-
-  }
-
-
-  if(profile.phone){
+      .getElementById("customerSection")
+      .classList.remove("hidden");
 
     document
-      .getElementById("phone")
-      .value =
-        profile.phone;
+      .getElementById("karigarSection")
+      .classList.add("hidden");
 
   }
-
-
-  if(profile.location){
-
-    document
-      .getElementById("location")
-      .value =
-        profile.location;
-
-  }
-
-
-  checkRequestStatus();
 
 }
 
 
-/* ================= SELECT SERVICE ================= */
+/* =========================
+   SERVICE
+========================= */
 
-function selectService(element,service){
+function selectService(button, service){
 
   document
     .querySelectorAll(".service-btn")
@@ -1545,508 +930,284 @@ function selectService(element,service){
     );
 
 
-  element.classList.add("selected");
+  button.classList.add("selected");
 
   selectedService = service;
 
-  document
-    .getElementById("service")
-    .value = service;
-
+  document.getElementById("selectedService").value =
+    service;
 }
 
 
-/* ================= SUBMIT REQUEST ================= */
+/* =========================
+   CUSTOMER REQUEST
+========================= */
 
 async function submitRequest(){
 
-  const name =
-    document.getElementById("name").value.trim();
+  if(!currentProfile){
 
-  const phone =
-    document.getElementById("phone").value.trim();
+    alert("Pehle login karein.");
 
-  const location =
-    document.getElementById("location").value.trim();
+    return;
+  }
+
+
+  const service =
+    selectedService ||
+    document.getElementById("selectedService").value;
+
 
   const details =
     document.getElementById("details").value.trim();
 
-  const service =
-    document.getElementById("service").value.trim();
+
+  const location =
+    currentProfile.location ||
+    document.getElementById("location").value.trim();
 
 
-  if(!name || !phone || !location || !service){
+  const state =
+    currentProfile.state ||
+    document.getElementById("state").value.trim();
 
-    document
-      .getElementById("requestMessage")
-      .innerHTML = `
-        <div class="message">
-          ⚠️ Naam, phone, location aur service
-          zaroor bhar/select karein.
-        </div>
-      `;
+
+  const latitude =
+    currentProfile.latitude ||
+    document.getElementById("latitude").value;
+
+
+  const longitude =
+    currentProfile.longitude ||
+    document.getElementById("longitude").value;
+
+
+  const msg =
+    document.getElementById("requestMessage");
+
+
+  if(!service){
+
+    msg.innerText =
+      "❌ Pehle service select karein.";
 
     return;
-
   }
+
+
+  if(!location){
+
+    msg.innerText =
+      "❌ Location zaroori hai.";
+
+    return;
+  }
+
+
+  msg.innerText =
+    "⏳ Request bheji ja rahi hai...";
 
 
   try{
 
-    document
-      .getElementById("requestMessage")
-      .innerHTML = `
-        <div class="message">
-          ⏳ Request submit ho rahi hai...
-        </div>
-      `;
+    const response = await fetch(
+      API_BASE + "/api/requests",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json",
+
+          "Authorization":
+            "Bearer " +
+            (localStorage.getItem("heyKarigarToken") || "")
+        },
+
+        body:JSON.stringify({
+
+          name:
+            currentProfile.name ||
+            currentProfile.full_name ||
+            "",
+
+          phone:
+            currentProfile.phone ||
+            "",
+
+          location:location,
+
+          state:state,
+
+          latitude:
+            latitude
+              ? Number(latitude)
+              : null,
+
+          longitude:
+            longitude
+              ? Number(longitude)
+              : null,
+
+          service:service,
+
+          details:details
+
+        })
+      }
+    );
 
 
-    const response =
-      await fetch(
-        API_BASE + "/api/requests",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":"application/json"
-          },
-
-          body:JSON.stringify({
-
-            name,
-            phone,
-            location,
-            service,
-            details
-
-          })
-
-        }
-      );
-
-
-    const text =
-      await response.text();
-
-
-    let data = {};
-
-
-    try{
-
-      data =
-        text
-        ? JSON.parse(text)
-        : {};
-
-    }catch{
-
-      data = {
-        success:false,
-        message:text
-      };
-
-    }
+    const data = await response.json();
 
 
     if(!response.ok || data.success === false){
 
-      throw new Error(
-        data.message ||
-        "Request submit nahi hui."
-      );
+      msg.innerText =
+        "❌ " +
+        (data.message || "Request failed.");
 
+      return;
     }
 
 
-    if(data.request?.id){
-
-      let ids = [];
-
-      try{
-
-        ids =
-          JSON.parse(
-            localStorage.getItem(
-              "heyKarigarRequestIds"
-            ) || "[]"
-          );
-
-      }catch{
-
-        ids = [];
-
-      }
+    msg.innerText =
+      "✅ Request successfully bhej di gayi!";
 
 
-      const id =
-        String(data.request.id);
+    document.getElementById("details").value = "";
 
 
-      if(!ids.includes(id)){
-
-        ids.push(id);
-
-      }
-
-
-      localStorage.setItem(
-        "heyKarigarRequestIds",
-        JSON.stringify(ids)
+    document
+      .querySelectorAll(".service-btn")
+      .forEach(btn =>
+        btn.classList.remove("selected")
       );
 
-    }
+
+    selectedService = "";
 
 
-    document
-      .getElementById("requestMessage")
-      .innerHTML = `
-        <div
-          class="message"
-          style="background:#e8fff1"
-        >
-          ✅ Request successfully submit ho gayi!
-
-          <br><br>
-
-          ${
-            data.request?.id
-            ? "Request ID: #" +
-              escapeHtml(data.request.id)
-            : ""
-          }
-
-          <br>
-          Status:
-          <strong>New</strong>
-        </div>
-      `;
-
-
-    document
-      .getElementById("details")
-      .value = "";
-
-
-    checkRequestStatus();
+    loadCustomerRequests();
 
 
   }catch(error){
 
-    console.error(error);
-
-    document
-      .getElementById("requestMessage")
-      .innerHTML = `
-        <div
-          class="message"
-          style="background:#fff0f0"
-        >
-          ❌ ${escapeHtml(
-            error.message ||
-            "Request submit nahi hui."
-          )}
-        </div>
-      `;
+    msg.innerText =
+      "❌ Server error: " + error.message;
 
   }
 
 }
 
 
-/* ================= CUSTOMER STATUS ================= */
+/* =========================
+   CUSTOMER REQUESTS
+========================= */
 
-async function checkRequestStatus(){
+async function loadCustomerRequests(){
 
-  const trackingBox =
-    document.getElementById("trackingBox");
-
-  const trackingContent =
-    document.getElementById("trackingContent");
-
-
-  let profile = null;
-
-
-  try{
-
-    const profileText =
-      localStorage.getItem(
-        "heyKarigarProfile"
-      );
-
-
-    if(profileText){
-
-      profile =
-        JSON.parse(profileText);
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "PROFILE READ ERROR:",
-      error
-    );
-
-  }
+  if(!currentProfile) return;
 
 
   const phone =
-    String(
-      profile?.phone ||
-      ""
-    ).trim();
+    currentProfile.phone;
 
 
-  if(!phone){
-
-    trackingBox.style.display =
-      "none";
-
-    return;
-
-  }
+  const box =
+    document.getElementById("customerRequests");
 
 
-  trackingBox.style.display =
-    "block";
-
-
-  trackingContent.innerHTML = `
-    <div class="loading">
-      ⏳ Aapki requests load ho rahi hain...
-    </div>
-  `;
+  box.innerHTML =
+    "<p>⏳ Requests load ho rahi hain...</p>";
 
 
   try{
 
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/customer-requests?phone=" +
-        encodeURIComponent(phone)
-      );
+    const response = await fetch(
+      API_BASE +
+      "/api/customer-requests?phone=" +
+      encodeURIComponent(phone)
+    );
 
 
-    const text =
-      await response.text();
-
-
-    let data = {};
-
-
-    try{
-
-      data =
-        text
-        ? JSON.parse(text)
-        : {};
-
-    }catch{
-
-      data = {
-        success:false,
-        message:
-          text ||
-          "Invalid server response"
-      };
-
-    }
-
-
-    if(!response.ok || !data.success){
-
-      throw new Error(
-        data.message ||
-        "Requests load nahi hui"
-      );
-
-    }
+    const data =
+      await response.json();
 
 
     const requests =
-      Array.isArray(data.requests)
-      ? data.requests
-      : [];
+      data.requests ||
+      data.data ||
+      [];
 
 
-    if(requests.length === 0){
+    if(!requests.length){
 
-      trackingContent.innerHTML = `
-        <div class="empty">
-          📭 Abhi koi request nahi mili.
-        </div>
-      `;
+      box.innerHTML =
+        "<p class='small'>Abhi koi request nahi hai.</p>";
 
       return;
-
     }
 
 
-    trackingContent.innerHTML =
-      requests
-      .map(request => {
+    box.innerHTML =
+      requests.map(request => `
 
-        const status =
-          String(
-            request.status ||
-            "New"
-          );
+        <div class="request-card">
 
+          <h3>
+            ${escapeHtml(request.service || "Service")}
+          </h3>
 
-        let statusClass =
-          "new";
+          <p>
+            📍 ${escapeHtml(
+              request.location || "Location"
+            )}
+          </p>
 
+          <p>
+            📝 ${escapeHtml(
+              request.details ||
+              request.description ||
+              "Details nahi di gayi"
+            )}
+          </p>
 
-        if(status === "Accepted"){
-          statusClass = "accepted";
-        }
-
-        else if(status === "Assigned"){
-          statusClass = "assigned";
-        }
-
-        else if(status === "Completed"){
-          statusClass = "completed";
-        }
-
-        else if(status === "In Progress"){
-          statusClass = "inprogress";
-        }
-
-        else if(status === "Cancelled"){
-          statusClass = "cancelled";
-        }
-
-
-        const customerName =
-          request.name ||
-          request.customer_name ||
-          "Naam nahi mila";
-
-
-        const address =
-          request.location ||
-          request.address ||
-          "Location nahi mili";
-
-
-        const description =
-          request.details ||
-          request.description ||
-          "Details nahi di gayi";
-
-
-        return `
-          <div class="request-card">
-
-            <h3>
-              📋 Request #${escapeHtml(request.id)}
-            </h3>
-
-            <p>
-              <strong>Customer:</strong>
-              ${escapeHtml(customerName)}
-            </p>
-
-            <p>
-              <strong>Phone:</strong>
+          <p>
+            Status:
+            <span class="status">
               ${escapeHtml(
-                request.phone ||
-                "Phone nahi mila"
+                request.status || "New"
               )}
-            </p>
+            </span>
+          </p>
 
-            <p>
-              <strong>Location:</strong>
-              ${escapeHtml(address)}
-            </p>
+        </div>
 
-            <p>
-              <strong>Service:</strong>
-              ${escapeHtml(
-                request.service || ""
-              )}
-            </p>
-
-            <p>
-              <strong>Problem:</strong>
-              ${escapeHtml(description)}
-            </p>
-
-            <p>
-              <strong>Status:</strong>
-              <br>
-
-              <span class="status ${statusClass}">
-                ${escapeHtml(status)}
-              </span>
-            </p>
-
-          </div>
-        `;
-
-      })
-      .join("");
+      `).join("");
 
 
   }catch(error){
 
-    console.error(
-      "CUSTOMER REQUEST ERROR:",
-      error
-    );
-
-
-    trackingContent.innerHTML = `
-      <div
-        class="request-card"
-        style="border-color:#f5c2c2"
-      >
-
-        ❌ Requests load nahi ho saki.
-
-        <br><br>
-
-        ${escapeHtml(
-          error.message ||
-          "Unknown error"
-        )}
-
-        <br><br>
-
-        Please dobara
-        <strong>Status Refresh Karein</strong>
-        dabayein.
-
-      </div>
-    `;
+    box.innerHTML =
+      "<p>❌ Requests load nahi hui.</p>";
 
   }
 
 }
 
 
-/* ================= KARIGAR REQUESTS ================= */
+/* =========================
+   KARIGAR REQUESTS
+========================= */
 
 async function loadKarigarRequests(){
 
   const box =
-    document.getElementById(
-      "karigarRequests"
-    );
+    document.getElementById("karigarRequests");
 
 
-  box.innerHTML = `
-    <div class="loading">
-      ⏳ Requests load ho rahi hain...
-    </div>
-  `;
+  box.innerHTML =
+    "<p>⏳ Requests load ho rahi hain...</p>";
 
 
   try{
@@ -2061,235 +1222,221 @@ async function loadKarigarRequests(){
       await response.json();
 
 
-    if(!response.ok || data.success === false){
-
-      throw new Error(
-        data.message ||
-        "Requests load nahi hui."
-      );
-
-    }
+    let requests =
+      data.requests ||
+      data.data ||
+      [];
 
 
-    const requests =
-      Array.isArray(data.requests)
-      ? data.requests
-      : Array.isArray(data)
-      ? data
-      : [];
+    /*
+      Location priority:
+      Pehle same city/state wale requests.
+      Uske baad baaki requests.
+
+      Final secure filtering server-side mein
+      bhi add karenge.
+    */
+
+    const myLocation =
+      String(
+        currentProfile?.location || ""
+      ).toLowerCase().trim();
 
 
-    /* Dashboard numbers */
-
-    document.getElementById(
-      "totalRequests"
-    ).textContent =
-      requests.length;
+    const myState =
+      String(
+        currentProfile?.state || ""
+      ).toLowerCase().trim();
 
 
-    document.getElementById(
-      "newRequests"
-    ).textContent =
-      requests.filter(
-        r =>
-          String(r.status || "New")
-          .toLowerCase() === "new"
-      ).length;
+    requests.sort(function(a,b){
+
+      const aLocation =
+        String(
+          a.location || ""
+        ).toLowerCase();
+
+      const bLocation =
+        String(
+          b.location || ""
+        ).toLowerCase();
 
 
-    document.getElementById(
-      "completedRequests"
-    ).textContent =
-      requests.filter(
-        r =>
-          String(r.status || "")
-          .toLowerCase() === "completed"
-      ).length;
+      const aState =
+        String(
+          a.state || ""
+        ).toLowerCase();
+
+      const bState =
+        String(
+          b.state || ""
+        ).toLowerCase();
 
 
-    if(requests.length === 0){
+      const aSame =
+        (myLocation &&
+         aLocation.includes(myLocation)) ||
+        (myState &&
+         aState.includes(myState));
 
-      box.innerHTML = `
-        <div class="empty">
-          📭 Abhi koi service request nahi hai.
-        </div>
-      `;
+
+      const bSame =
+        (myLocation &&
+         bLocation.includes(myLocation)) ||
+        (myState &&
+         bState.includes(myState));
+
+
+      if(aSame && !bSame) return -1;
+
+      if(!aSame && bSame) return 1;
+
+      return 0;
+
+    });
+
+
+    updateKarigarStats(requests);
+
+
+    if(!requests.length){
+
+      box.innerHTML =
+        "<p class='small'>Abhi koi service request nahi hai.</p>";
 
       return;
-
     }
 
 
     box.innerHTML =
-      requests
-      .map(request => {
+      requests.map(request => `
 
-        const status =
-          request.status ||
-          "New";
+        <div class="request-card">
 
+          <h3>
+            #${request.id || ""}
+            ${escapeHtml(
+              request.service || "Service"
+            )}
+          </h3>
 
-        let statusClass =
-          "new";
+          <p>
+            👤 Customer:
+            ${escapeHtml(
+              request.name ||
+              request.customer_name ||
+              "Not provided"
+            )}
+          </p>
 
+          <p>
+            📞 Phone:
+            ${escapeHtml(
+              request.phone || ""
+            )}
+          </p>
 
-        if(status === "Accepted"){
-          statusClass = "accepted";
-        }
+          <p>
+            📍 Location:
+            ${escapeHtml(
+              request.location ||
+              "Not provided"
+            )}
+          </p>
 
-        else if(status === "Assigned"){
-          statusClass = "assigned";
-        }
+          <p>
+            📝 Problem:
+            ${escapeHtml(
+              request.details ||
+              request.description ||
+              "Not provided"
+            )}
+          </p>
 
-        else if(status === "Completed"){
-          statusClass = "completed";
-        }
-
-        else if(status === "In Progress"){
-          statusClass = "inprogress";
-        }
-
-        else if(status === "Cancelled"){
-          statusClass = "cancelled";
-        }
-
-
-        return `
-          <div class="request-card">
-
-            <h3>
-              📋 Request #${escapeHtml(request.id)}
-            </h3>
-
-            <p>
-              <strong>Name:</strong>
+          <p>
+            Status:
+            <span class="status">
               ${escapeHtml(
-                request.name ||
-                request.customer_name ||
-                ""
+                request.status || "New"
               )}
-            </p>
-
-            <p>
-              <strong>Phone:</strong>
-              ${escapeHtml(
-                request.phone ||
-                ""
-              )}
-            </p>
-
-            <p>
-              <strong>Location:</strong>
-              ${escapeHtml(
-                request.location ||
-                request.address ||
-                ""
-              )}
-            </p>
-
-            <p>
-              <strong>Service:</strong>
-              ${escapeHtml(
-                request.service ||
-                ""
-              )}
-            </p>
-
-            <p>
-              <strong>Details:</strong>
-              ${escapeHtml(
-                request.details ||
-                request.description ||
-                "Details nahi di gayi"
-              )}
-            </p>
-
-            <p>
-              <strong>Status:</strong>
-              <br>
-
-              <span class="status ${statusClass}">
-                ${escapeHtml(status)}
-              </span>
-            </p>
+            </span>
+          </p>
 
 
-            <button
-              class="success"
-              onclick="updateRequestStatus(
-                ${Number(request.id)},
-                'Accepted'
-              )"
-            >
-              ✅ Accept Request
-            </button>
+          <button onclick="updateRequestStatus(${request.id},'Accepted')">
+            ✅ Accept
+          </button>
 
+          <button
+            class="btn-secondary"
+            onclick="updateRequestStatus(${request.id},'In Progress')">
+            🔧 In Progress
+          </button>
 
-            <button
-              class="warning"
-              onclick="updateRequestStatus(
-                ${Number(request.id)},
-                'In Progress'
-              )"
-            >
-              🔄 Kaam Shuru
-            </button>
+          <button
+            onclick="updateRequestStatus(${request.id},'Completed')">
+            ✔️ Completed
+          </button>
 
+          <button
+            class="btn-danger"
+            onclick="updateRequestStatus(${request.id},'Cancelled')">
+            ❌ Cancel
+          </button>
 
-            <button
-              class="success"
-              onclick="updateRequestStatus(
-                ${Number(request.id)},
-                'Completed'
-              )"
-            >
-              ✔️ Kaam Complete
-            </button>
+        </div>
 
-
-            <button
-              class="danger"
-              onclick="updateRequestStatus(
-                ${Number(request.id)},
-                'Cancelled'
-              )"
-            >
-              ❌ Cancel Request
-            </button>
-
-          </div>
-        `;
-
-      })
-      .join("");
+      `).join("");
 
 
   }catch(error){
 
-    console.error(error);
-
-
-    box.innerHTML = `
-      <div class="request-card">
-
-        ❌ Requests load nahi hui.
-
-        <br><br>
-
-        ${escapeHtml(
-          error.message ||
-          "Unknown error"
-        )}
-
-      </div>
-    `;
+    box.innerHTML =
+      "<p>❌ Requests load nahi hui.</p>";
 
   }
 
 }
 
 
-/* ================= UPDATE STATUS ================= */
+/* =========================
+   STATS
+========================= */
+
+function updateKarigarStats(requests){
+
+  const total =
+    requests.length;
+
+
+  const newCount =
+    requests.filter(
+      r => String(r.status).toLowerCase() === "new"
+    ).length;
+
+
+  const completed =
+    requests.filter(
+      r => String(r.status).toLowerCase() === "completed"
+    ).length;
+
+
+  document.getElementById("totalRequests").innerText =
+    total;
+
+
+  document.getElementById("newRequests").innerText =
+    newCount;
+
+
+  document.getElementById("completedRequests").innerText =
+    completed;
+}
+
+
+/* =========================
+   STATUS UPDATE
+========================= */
 
 async function updateRequestStatus(id,status){
 
@@ -2299,17 +1446,21 @@ async function updateRequestStatus(id,status){
       await fetch(
         API_BASE +
         "/api/requests/" +
-        encodeURIComponent(id) +
+        id +
         "/status",
         {
           method:"PATCH",
 
           headers:{
-            "Content-Type":"application/json"
+            "Content-Type":"application/json",
+
+            "Authorization":
+              "Bearer " +
+              (localStorage.getItem("heyKarigarToken") || "")
           },
 
           body:JSON.stringify({
-            status
+            status:status
           })
         }
       );
@@ -2321,36 +1472,28 @@ async function updateRequestStatus(id,status){
 
     if(!response.ok || data.success === false){
 
-      throw new Error(
-        data.message ||
-        "Status update failed."
+      alert(
+        "❌ " +
+        (data.message || "Status update failed.")
       );
 
+      return;
     }
 
 
-    await loadKarigarRequests();
+    alert(
+      "✅ Status: " + status
+    );
 
 
-    if(
-      !document
-        .getElementById("customerSection")
-        .classList
-        .contains("hidden")
-    ){
-
-      checkRequestStatus();
-
-    }
+    loadKarigarRequests();
 
 
   }catch(error){
 
-    console.error(error);
-
     alert(
-      error.message ||
-      "Status update nahi ho saka."
+      "❌ Server error: " +
+      error.message
     );
 
   }
@@ -2358,80 +1501,216 @@ async function updateRequestStatus(id,status){
 }
 
 
-/* ================= LOGOUT ================= */
+/* =========================
+   UPDATE KARIGAR LOCATION
+========================= */
+
+async function updateKarigarLocation(){
+
+  if(!currentProfile){
+
+    return;
+  }
+
+
+  getCurrentLocation();
+
+
+  setTimeout(async function(){
+
+    const location =
+      document.getElementById("location").value.trim();
+
+    const state =
+      document.getElementById("state").value.trim();
+
+    const latitude =
+      document.getElementById("latitude").value;
+
+    const longitude =
+      document.getElementById("longitude").value;
+
+
+    if(!location){
+
+      alert(
+        "❌ Pehle location set karein."
+      );
+
+      return;
+    }
+
+
+    /*
+      Profile update endpoint agar server par
+      available hai to location update hogi.
+    */
+
+    try{
+
+      const response =
+        await fetch(
+          API_BASE +
+          "/api/profile/" +
+          currentProfile.id,
+          {
+            method:"PATCH",
+
+            headers:{
+              "Content-Type":"application/json",
+
+              "Authorization":
+                "Bearer " +
+                (localStorage.getItem("heyKarigarToken") || "")
+            },
+
+            body:JSON.stringify({
+
+              location:location,
+
+              state:state,
+
+              latitude:
+                latitude
+                  ? Number(latitude)
+                  : null,
+
+              longitude:
+                longitude
+                  ? Number(longitude)
+                  : null
+
+            })
+          }
+        );
+
+
+      if(response.ok){
+
+        currentProfile.location =
+          location;
+
+        currentProfile.state =
+          state;
+
+        currentProfile.latitude =
+          latitude;
+
+        currentProfile.longitude =
+          longitude;
+
+
+        localStorage.setItem(
+          "heyKarigarProfile",
+          JSON.stringify(currentProfile)
+        );
+
+
+        document.getElementById(
+          "karigarLocation"
+        ).innerText =
+          location +
+          (state ? ", " + state : "");
+
+
+        alert(
+          "✅ Karigar location update ho gayi."
+        );
+
+      }else{
+
+        alert(
+          "⚠️ Location server par update endpoint abhi available nahi hai."
+        );
+
+      }
+
+    }catch(error){
+
+      alert(
+        "❌ Location update error."
+      );
+
+    }
+
+  },2000);
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
 
 function logout(){
 
   localStorage.removeItem(
-    "heyKarigarAccessToken"
+    "heyKarigarProfile"
+  );
+
+  localStorage.removeItem(
+    "heyKarigarToken"
   );
 
   localStorage.removeItem(
     "heyKarigarRefreshToken"
   );
 
-  localStorage.removeItem(
-    "heyKarigarProfile"
-  );
+
+  currentProfile = null;
 
 
-  document
-    .getElementById("userSection")
-    .classList.add("hidden");
-
-
-  document
-    .getElementById("authSection")
-    .classList.remove("hidden");
-
-
-  document
-    .getElementById("trackingBox")
-    .style.display = "none";
-
-
-  document
-    .getElementById("authPassword")
-    .value = "";
-
-
-  document
-    .getElementById("authMessage")
-    .innerHTML = "";
-
+  location.reload();
 }
 
 
-/* ================= AUTO LOGIN ================= */
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+/* =========================
+   AUTO LOGIN
+========================= */
 
 window.addEventListener(
-  "DOMContentLoaded",
+  "load",
   function(){
 
-    try{
+    const savedProfile =
+      localStorage.getItem(
+        "heyKarigarProfile"
+      );
 
-      const savedProfile =
-        localStorage.getItem(
+
+    if(savedProfile){
+
+      try{
+
+        currentProfile =
+          JSON.parse(savedProfile);
+
+        showLoggedInUser(
+          currentProfile
+        );
+
+      }catch(error){
+
+        localStorage.removeItem(
           "heyKarigarProfile"
         );
 
-
-      if(savedProfile){
-
-        const profile =
-          JSON.parse(savedProfile);
-
-
-        showLoggedInUser(profile);
-
       }
-
-    }catch(error){
-
-      console.error(
-        "AUTO LOGIN ERROR:",
-        error
-      );
 
     }
 
