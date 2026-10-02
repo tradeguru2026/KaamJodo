@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Hey Karigar - Ghar Ka Har Kaam</title>
+<title>Hey Karigar</title>
 
 <style>
 *{
@@ -22,130 +21,114 @@ body{
 header{
   background:#087f5b;
   color:white;
-  padding:18px;
+  padding:18px 15px;
   text-align:center;
 }
 
 header h1{
-  font-size:28px;
+  font-size:26px;
 }
 
 header p{
-  margin-top:6px;
+  margin-top:5px;
   font-size:14px;
 }
 
 .container{
-  max-width:900px;
+  max-width:700px;
   margin:auto;
   padding:15px;
 }
 
 .card{
   background:white;
-  border-radius:14px;
   padding:18px;
-  margin-bottom:16px;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
+  margin-bottom:15px;
+  border-radius:14px;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
 h2{
+  margin-bottom:14px;
   color:#087f5b;
-  margin-bottom:15px;
 }
 
-h3{
-  margin-bottom:10px;
-}
-
-input,
-select,
-textarea{
+input,select,textarea{
   width:100%;
   padding:13px;
   margin:7px 0;
-  border:1px solid #ccd7d2;
+  border:1px solid #ccc;
   border-radius:9px;
   font-size:15px;
 }
 
 textarea{
-  min-height:120px;
+  min-height:90px;
   resize:vertical;
-  display:block;
 }
 
 button{
-  width:100%;
-  border:none;
-  padding:13px;
+  border:0;
   border-radius:9px;
-  margin-top:8px;
+  padding:12px 16px;
+  margin:5px 3px;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:bold;
+}
+
+.primary{
   background:#087f5b;
   color:white;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
 }
 
-button:hover{
-  opacity:.92;
+.secondary{
+  background:#e8f5f0;
+  color:#087f5b;
 }
 
-.btn-secondary{
-  background:#455a64;
+.danger{
+  background:#dc3545;
+  color:white;
 }
 
-.btn-location{
-  background:#1565c0;
+.warning{
+  background:#ffc107;
+  color:#222;
 }
 
-.btn-danger{
-  background:#c62828;
-}
-
-.btn-reset{
-  background:#6a1b9a;
+.success{
+  background:#198754;
+  color:white;
 }
 
 .hidden{
-  display:none!important;
+  display:none !important;
 }
 
-.small{
-  font-size:13px;
-  color:#66756f;
+.message{
+  padding:10px;
+  border-radius:8px;
+  margin:10px 0;
+  background:#eef8f4;
 }
 
-.location-box{
-  background:#f0f7f4;
-  border:1px solid #cfe4db;
-  border-radius:10px;
-  padding:12px;
-  margin-top:8px;
-}
-
-.location-status{
-  margin-top:8px;
-  font-size:13px;
-  color:#087f5b;
-  font-weight:bold;
+.error{
+  background:#ffecec;
+  color:#a00000;
 }
 
 .service-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:8px;
-  margin-top:10px;
+  gap:9px;
 }
 
 .service-btn{
-  background:#eef7f3;
+  background:#f0f7f4;
   color:#087f5b;
-  border:1px solid #c9e2d8;
-  font-size:14px;
-  padding:11px 5px;
-  margin:0;
+  border:1px solid #cde6dc;
+  min-height:48px;
 }
 
 .service-btn.selected{
@@ -153,67 +136,55 @@ button:hover{
   color:white;
 }
 
-.request-card{
-  border:1px solid #dce5e1;
-  border-radius:12px;
-  padding:14px;
-  margin-top:12px;
+.profile-box{
+  background:#e8f5f0;
+  padding:12px;
+  border-radius:10px;
+  line-height:1.7;
 }
 
-.request-card p{
-  margin:6px 0;
+.request{
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:14px;
+  margin:10px 0;
 }
 
 .status{
   display:inline-block;
-  padding:5px 10px;
+  padding:5px 9px;
   border-radius:20px;
-  background:#e7f5ee;
+  background:#e8f5f0;
   color:#087f5b;
-  font-size:12px;
   font-weight:bold;
+  font-size:13px;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:8px;
-  margin-bottom:15px;
+  margin-bottom:12px;
 }
 
 .stat{
   background:#f0f7f4;
-  border-radius:10px;
-  padding:12px;
+  padding:12px 5px;
   text-align:center;
+  border-radius:10px;
 }
 
 .stat strong{
   display:block;
-  font-size:22px;
+  font-size:20px;
   color:#087f5b;
-}
-
-.logout{
-  background:#c62828;
 }
 
 footer{
   text-align:center;
   padding:20px;
-  color:#68756f;
+  color:#777;
   font-size:13px;
-}
-
-@media(max-width:600px){
-
-  .service-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .stats{
-    grid-template-columns:repeat(3,1fr);
-  }
 }
 </style>
 </head>
@@ -227,2769 +198,850 @@ footer{
 
 <div class="container">
 
-<!-- =========================
-     AUTH
-========================= -->
+<!-- ================= AUTH ================= -->
 
 <div id="authSection" class="card">
 
   <h2>🔐 Account</h2>
 
-  <input
-    id="name"
-    type="text"
-    placeholder="Aapka naam">
+  <div id="authMessage" class="message hidden"></div>
 
-  <input
-    id="phone"
-    type="tel"
-    placeholder="Mobile number">
+  <input id="name" type="text" placeholder="Aapka naam">
 
-  <input
-    id="email"
-    type="email"
-    placeholder="Email">
+  <input id="phone" type="tel" placeholder="Mobile Number">
 
-  <input
-    id="password"
-    type="password"
-    placeholder="Password">
+  <input id="email" type="email" placeholder="Email (optional)">
 
-  <select id="role" onchange="roleChanged()">
+  <input id="password" type="password" placeholder="Password (minimum 6 characters)">
+
+  <select id="role">
     <option value="customer">Customer</option>
     <option value="karigar">Karigar</option>
   </select>
 
   <div id="karigarServiceBox" class="hidden">
-
-    <input
-      id="karigarService"
-      type="text"
-      placeholder="Aap kaun sa kaam karte hain? e.g. Plumber">
-
+    <input id="karigarService" type="text" placeholder="Aap kaun sa kaam karte hain? e.g. Plumber">
   </div>
 
-  <!-- LOCATION -->
+  <button class="primary" onclick="signup()">📝 Signup</button>
 
-  <div class="location-box">
+  <button class="secondary" onclick="login()">🔑 Login</button>
 
-    <h3>📍 Aapki Location</h3>
-
-    <p class="small">
-      Apna City/Area likhein ya GPS se current location lein.
-    </p>
-
-    <input
-      id="location"
-      type="text"
-      placeholder="Area / City e.g. Agra">
-
-    <input
-      id="state"
-      type="text"
-      placeholder="State e.g. Uttar Pradesh">
-
-    <button
-      class="btn-location"
-      onclick="getCurrentLocation()">
-      📍 Current Location Use Karein
-    </button>
-
-    <div
-      id="locationStatus"
-      class="location-status">
-      Location abhi set nahi hai
-    </div>
-
-    <input
-      id="latitude"
-      type="hidden">
-
-    <input
-      id="longitude"
-      type="hidden">
-
-  </div>
-
-  <button onclick="signup()">
-    📝 Signup
-  </button>
-
-  <button
-    class="btn-secondary"
-    onclick="login()">
-    🔑 Login
-  </button>
-
-  <button
-    class="btn-reset"
-    onclick="showForgotPassword()">
-    🔐 Password Bhool Gaye?
-  </button>
-
-  <p
-    id="authMessage"
-    class="small"
-    style="margin-top:10px;">
+  <p style="font-size:13px;color:#666;margin-top:8px;">
+    Login ke liye Mobile Number + Password use karein.
   </p>
 
 </div>
 
 
-<!-- =========================
-     FORGOT PASSWORD
-========================= -->
+<!-- ================= LOGGED USER ================= -->
 
-<div
-  id="forgotPasswordSection"
-  class="card hidden">
+<div id="userSection" class="card hidden">
 
-  <h2>🔐 Password Reset</h2>
+  <h2>👤 My Profile</h2>
 
-  <p class="small">
-    Apne registered email par password reset link mangwayein.
-  </p>
+  <div id="profileBox" class="profile-box"></div>
 
-  <input
-    id="resetEmail"
-    type="email"
-    placeholder="Registered Email">
-
-  <button onclick="sendPasswordReset()">
-    📩 Reset Link Bhejein
+  <button class="secondary" onclick="getCurrentLocation()">
+    📍 Location Update Karein
   </button>
 
-  <button
-    class="btn-secondary"
-    onclick="hideForgotPassword()">
-    ⬅️ Login Par Wapas
+  <button class="danger" onclick="logout()">
+    Logout
   </button>
-
-  <p
-    id="resetMessage"
-    class="small"
-    style="margin-top:10px;">
-  </p>
 
 </div>
 
 
-<!-- =========================
-     NEW PASSWORD
-========================= -->
+<!-- ================= CUSTOMER ================= -->
 
-<div
-  id="newPasswordSection"
-  class="card hidden">
+<div id="customerSection" class="card hidden">
 
-  <h2>🔑 Naya Password Set Karein</h2>
+  <h2>🔧 Service Request</h2>
 
-  <p class="small">
-    Apna naya password enter karein.
+  <div id="requestMessage" class="message hidden"></div>
+
+  <p style="margin-bottom:10px;">
+    Apko kis kaam ke liye karigar chahiye?
   </p>
 
-  <input
-    id="newPassword"
-    type="password"
-    placeholder="Naya Password">
+  <div class="service-grid">
 
-  <input
-    id="confirmNewPassword"
-    type="password"
-    placeholder="Naya Password Dobara">
+    <button class="service-btn" onclick="selectService(this,'Plumber')">🚰 Plumber</button>
 
-  <button onclick="resetPassword()">
-    ✅ Password Change Karein
-  </button>
+    <button class="service-btn" onclick="selectService(this,'Electrician')">⚡ Electrician</button>
 
-  <p
-    id="newPasswordMessage"
-    class="small"
-    style="margin-top:10px;">
-  </p>
+    <button class="service-btn" onclick="selectService(this,'Carpenter')">🪚 Carpenter</button>
 
-</div>
+    <button class="service-btn" onclick="selectService(this,'Painter')">🎨 Painter</button>
 
+    <button class="service-btn" onclick="selectService(this,'AC Repair')">❄️ AC Repair</button>
 
-<!-- =========================
-     LOGGED USER
-========================= -->
+    <button class="service-btn" onclick="selectService(this,'Washing Machine Repair')">🧺 Washing Machine</button>
 
-<div
-  id="userSection"
-  class="hidden">
+    <button class="service-btn" onclick="selectService(this,'TV Repair')">📺 TV Repair</button>
 
-  <div class="card">
+    <button class="service-btn" onclick="selectService(this,'Gardener/Mali')">🌱 Gardener/Mali</button>
 
-    <h2>
-      👋 Welcome
-      <span id="userName"></span>
-    </h2>
+    <button class="service-btn" onclick="selectService(this,'Generator Mechanic')">⚙️ Generator Mechanic</button>
 
-    <p>
-      📱 <span id="userPhone"></span>
-    </p>
+    <button class="service-btn" onclick="selectService(this,'Puncture/Tyre Replacement')">🛞 Puncture/Tyre</button>
 
-    <p>
-      📍 <span id="userLocation">Location not set</span>
-    </p>
+    <button class="service-btn" onclick="selectService(this,'Barber')">💈 Barber</button>
 
-    <!-- LOCATION UPDATE -->
+    <button class="service-btn" onclick="selectService(this,'Physiotherapist')">🧑‍⚕️ Physiotherapist</button>
 
-    <button
-      class="btn-location"
-      onclick="getCurrentLocation()">
-      📍 Location Set / Update Karein
-    </button>
+    <button class="service-btn" onclick="selectService(this,'Mehndi Artist')">🌿 Mehndi Artist</button>
 
-    <p
-      id="loggedLocationStatus"
-      class="location-status">
-    </p>
+    <button class="service-btn" onclick="selectService(this,'Carpet Cleaning')">🧹 Carpet Cleaning</button>
 
-    <p
-      id="userRole"
-      class="small">
-    </p>
+    <button class="service-btn" onclick="selectService(this,'Gutter Cleaning')">🧽 Gutter Cleaning</button>
 
-    <button
-      class="logout"
-      onclick="logout()">
-      Logout
-    </button>
+    <button class="service-btn" onclick="selectService(this,'Home Cleaning')">🏠 Home Cleaning</button>
+
+    <button class="service-btn" onclick="selectService(this,'Other')">➕ Other</button>
 
   </div>
 
+  <input id="requestAddress" type="text" placeholder="Address / Area">
 
-  <!-- =========================
-       CUSTOMER
-  ========================= -->
+  <textarea id="requestDescription" placeholder="Problem ke baare mein batayein"></textarea>
 
-  <div id="customerSection">
+  <button class="primary" onclick="createRequest()">
+    📩 Request Bhejein
+  </button>
 
-    <div class="card">
+  <button class="secondary" onclick="getCurrentLocation()">
+    📍 Current Location
+  </button>
 
-      <h2>
-        🛠️ Kaunsa kaam karwana hai?
-      </h2>
+</div>
 
-      <div class="service-grid">
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Plumber')">
-          🚰 Plumber
-        </button>
+<!-- ================= CUSTOMER REQUESTS ================= -->
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Electrician')">
-          ⚡ Electrician
-        </button>
+<div id="customerRequestsSection" class="card hidden">
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Carpenter')">
-          🪚 Carpenter
-        </button>
+  <h2>📋 Meri Requests</h2>
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Painter')">
-          🎨 Painter
-        </button>
+  <div id="customerRequests"></div>
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'AC Repair')">
-          ❄️ AC Repair
-        </button>
+</div>
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Washing Machine Repair')">
-          🧺 Washing Machine
-        </button>
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'TV Repair')">
-          📺 TV Repair
-        </button>
+<!-- ================= KARIGAR ================= -->
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Gardener/Mali')">
-          🌱 Mali
-        </button>
+<div id="karigarSection" class="card hidden">
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Generator Mechanic')">
-          🔧 Generator
-        </button>
+  <h2>🛠️ Karigar Dashboard</h2>
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Puncture/Tyre Replacement')">
-          🛞 Puncture/Tyre
-        </button>
+  <div class="stats">
 
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Barber')">
-          💈 Barber
-        </button>
-
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Physiotherapist')">
-          🧑‍⚕️ Physiotherapist
-        </button>
-
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Mehndi Artist')">
-          🌸 Mehndi Artist
-        </button>
-
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Carpet Cleaning')">
-          🧹 Carpet Cleaning
-        </button>
-
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Gutter Cleaning')">
-          🧽 Gutter Cleaning
-        </button>
-
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Home Cleaning')">
-          🏠 Home Cleaning
-        </button>
-
-        <button
-          class="service-btn"
-          onclick="selectService(this,'Other')">
-          🔨 Other
-        </button>
-
-      </div>
-
-      <input
-        id="selectedService"
-        type="hidden">
-
-      <textarea
-        id="details"
-        rows="5"
-        placeholder="Kaam ke baare mein detail likhein..."></textarea>
-
-      <button onclick="submitRequest()">
-        📩 Karigar Bulayein
-      </button>
-
-      <p
-        id="requestMessage"
-        class="small">
-      </p>
-
+    <div class="stat">
+      <strong id="totalRequests">0</strong>
+      Total
     </div>
 
+    <div class="stat">
+      <strong id="newRequests">0</strong>
+      New
+    </div>
 
-    <!-- TRACK -->
-
-    <div class="card">
-
-      <h2>📋 Mere Requests</h2>
-
-      <button
-        class="btn-secondary"
-        onclick="loadCustomerRequests()">
-        🔄 Status Check Karein
-      </button>
-
-      <div id="customerRequests"></div>
-
+    <div class="stat">
+      <strong id="completedRequests">0</strong>
+      Completed
     </div>
 
   </div>
 
+  <div id="karigarMessage" class="message hidden"></div>
 
-  <!-- =========================
-       KARIGAR
-  ========================= -->
-
-  <div
-    id="karigarSection"
-    class="hidden">
-
-    <div class="card">
-
-      <h2>🔧 Karigar Dashboard</h2>
-
-      <div class="stats">
-
-        <div class="stat">
-          <strong id="totalRequests">0</strong>
-          Total
-        </div>
-
-        <div class="stat">
-          <strong id="newRequests">0</strong>
-          New
-        </div>
-
-        <div class="stat">
-          <strong id="completedRequests">0</strong>
-          Completed
-        </div>
-
-      </div>
-
-      <div class="location-box">
-
-        <h3>📍 Aapki Service Location</h3>
-
-        <p id="karigarLocation">
-          Location load ho rahi hai...
-        </p>
-
-        <button
-          class="btn-location"
-          onclick="getCurrentLocation()">
-          📍 Location Update Karein
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <h2>📋 Service Requests</h2>
-
-      <p class="small">
-        Aapke area/city ke requests ko priority ke saath dikhaya jayega.
-      </p>
-
-      <div id="karigarRequests"></div>
-
-    </div>
-
-  </div>
+  <div id="requestsList"></div>
 
 </div>
 
 </div>
-
 
 <footer>
-  © 2026 Hey Karigar ❤️<br>
-  Ghar Ka Har Kaam Ek Jagah
+  © 2026 Hey Karigar
 </footer>
 
 
 <script>
 
-const API_BASE =
-  window.location.origin;
+const API_BASE = window.location.origin;
 
+let currentUser = null;
 let selectedService = "";
 
-let currentProfile = null;
 
+/* =========================================
+   MESSAGE
+========================================= */
 
-/* =========================
-   ROLE
-========================= */
+function showMessage(id,message,error=false){
 
-function roleChanged(){
+  const el=document.getElementById(id);
 
-  const role =
-    document.getElementById(
-      "role"
-    ).value;
+  el.textContent=message;
 
-  document
-    .getElementById(
-      "karigarServiceBox"
-    )
-    .classList.toggle(
-      "hidden",
-      role !== "karigar"
-    );
-}
+  el.classList.remove("hidden","error");
 
-
-/* =========================
-   LOCATION
-========================= */
-
-async function getCurrentLocation(){
-
-  if(!navigator.geolocation){
-
-    alert(
-      "❌ Is phone/browser mein GPS available nahi hai."
-    );
-
-    return;
+  if(error){
+    el.classList.add("error");
   }
-
-
-  const status =
-    document.getElementById(
-      "locationStatus"
-    );
-
-  const loggedStatus =
-    document.getElementById(
-      "loggedLocationStatus"
-    );
-
-
-  if(status){
-
-    status.innerText =
-      "📍 Location mil rahi hai... Please wait.";
-  }
-
-
-  if(loggedStatus){
-
-    loggedStatus.innerText =
-      "📍 Location mil rahi hai...";
-  }
-
-
-  navigator.geolocation.getCurrentPosition(
-
-    async function(position){
-
-      const lat =
-        position.coords.latitude;
-
-      const lng =
-        position.coords.longitude;
-
-
-      const latInput =
-        document.getElementById(
-          "latitude"
-        );
-
-      const lngInput =
-        document.getElementById(
-          "longitude"
-        );
-
-
-      if(latInput){
-        latInput.value = lat;
-      }
-
-
-      if(lngInput){
-        lngInput.value = lng;
-      }
-
-
-      let city = "";
-      let state = "";
-
-
-      /*
-        GPS coordinates se city/state
-        nikalne ki koshish.
-      */
-
-      try{
-
-        const response =
-          await fetch(
-            "https://nominatim.openstreetmap.org/reverse?format=json&lat="
-            + lat
-            + "&lon="
-            + lng
-            + "&zoom=10&addressdetails=1"
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if(
-          data &&
-          data.address
-        ){
-
-          city =
-            data.address.city ||
-            data.address.town ||
-            data.address.village ||
-            data.address.municipality ||
-            "";
-
-
-          state =
-            data.address.state ||
-            "";
-
-
-          const locationInput =
-            document.getElementById(
-              "location"
-            );
-
-
-          const stateInput =
-            document.getElementById(
-              "state"
-            );
-
-
-          if(
-            locationInput &&
-            city
-          ){
-
-            locationInput.value =
-              city;
-
-          }
-
-
-          if(
-            stateInput &&
-            state
-          ){
-
-            stateInput.value =
-              state;
-
-          }
-
-        }
-
-      }catch(error){
-
-        console.log(
-          "Reverse location error:",
-          error
-        );
-
-      }
-
-
-      /*
-        Agar reverse geocoding se city
-        na mile to manually entered value
-        use karenge.
-      */
-
-      if(!city){
-
-        const locationInput =
-          document.getElementById(
-            "location"
-          );
-
-
-        if(locationInput){
-
-          city =
-            locationInput.value.trim();
-
-        }
-
-      }
-
-
-      if(!state){
-
-        const stateInput =
-          document.getElementById(
-            "state"
-          );
-
-
-        if(stateInput){
-
-          state =
-            stateInput.value.trim();
-
-        }
-
-      }
-
-
-      /*
-        Login ke baad location profile mein
-        save karni hai.
-      */
-
-      if(
-        currentProfile &&
-        currentProfile.id
-      ){
-
-        if(
-          !city
-        ){
-
-          alert(
-            "❌ City/Area nahi mila. Location field mein Area/City likhkar dobara try karein."
-          );
-
-          return;
-        }
-
-
-        try{
-
-          if(loggedStatus){
-
-            loggedStatus.innerText =
-              "⏳ Location profile mein save ho rahi hai...";
-          }
-
-
-          const response =
-            await fetch(
-              API_BASE +
-              "/api/profile/" +
-              currentProfile.id +
-              "/location",
-              {
-                method:"PUT",
-
-                headers:{
-                  "Content-Type":
-                    "application/json",
-
-                  "Authorization":
-                    "Bearer " +
-                    (
-                      localStorage.getItem(
-                        "heyKarigarToken"
-                      ) || ""
-                    )
-                },
-
-                body:JSON.stringify({
-
-                  location:
-                    city,
-
-                  state:
-                    state,
-
-                  latitude:
-                    Number(lat),
-
-                  longitude:
-                    Number(lng)
-
-                })
-              }
-            );
-
-
-          const data =
-            await response.json();
-
-
-          if(
-            !response.ok ||
-            data.success === false
-          ){
-
-            console.error(
-              "Location save error:",
-              data
-            );
-
-
-            if(loggedStatus){
-
-              loggedStatus.innerText =
-                "❌ Location save nahi hui.";
-            }
-
-
-            alert(
-              "❌ Location profile mein save nahi hui."
-            );
-
-            return;
-          }
-
-
-          /*
-            Current profile update.
-          */
-
-          currentProfile.location =
-            city;
-
-          currentProfile.state =
-            state;
-
-          currentProfile.latitude =
-            lat;
-
-          currentProfile.longitude =
-            lng;
-
-
-          localStorage.setItem(
-            "heyKarigarProfile",
-            JSON.stringify(
-              currentProfile
-            )
-          );
-
-
-          /*
-            Screen par location update.
-          */
-
-          const userLocation =
-            document.getElementById(
-              "userLocation"
-            );
-
-
-          if(userLocation){
-
-            userLocation.innerText =
-              city +
-              (
-                state
-                  ? ", " + state
-                  : ""
-              );
-
-          }
-
-
-          const karigarLocation =
-            document.getElementById(
-              "karigarLocation"
-            );
-
-
-          if(karigarLocation){
-
-            karigarLocation.innerText =
-              city +
-              (
-                state
-                  ? ", " + state
-                  : ""
-              );
-
-          }
-
-
-          if(status){
-
-            status.innerText =
-              "✅ Location successfully save ho gayi.";
-          }
-
-
-          if(loggedStatus){
-
-            loggedStatus.innerText =
-              "✅ Location successfully save ho gayi.";
-          }
-
-
-          alert(
-            "✅ Location successfully save ho gayi!"
-          );
-
-
-        }catch(error){
-
-          console.error(
-            "Location save error:",
-            error
-          );
-
-
-          if(loggedStatus){
-
-            loggedStatus.innerText =
-              "❌ Server error.";
-          }
-
-
-          alert(
-            "❌ Location save karte waqt server error aaya."
-          );
-
-        }
-
-      }else{
-
-        /*
-          Signup ke waqt sirf form fields
-          mein GPS values save hongi.
-        */
-
-        if(status){
-
-          status.innerText =
-            "✅ GPS Location mil gayi. Ab signup kar sakte hain.";
-        }
-
-      }
-
-    },
-
-
-    function(error){
-
-      console.error(
-        "GPS Error:",
-        error
-      );
-
-
-      if(status){
-
-        status.innerText =
-          "❌ Location permission allow karein.";
-      }
-
-
-      if(loggedStatus){
-
-        loggedStatus.innerText =
-          "❌ Location permission allow karein.";
-      }
-
-
-      alert(
-        "❌ Browser ko location permission Allow karein."
-      );
-
-    },
-
-
-    {
-      enableHighAccuracy:true,
-      timeout:15000,
-      maximumAge:0
-    }
-
-  );
 
 }
 
 
-/* =========================
+/* =========================================
+   ROLE CHANGE
+========================================= */
+
+document.getElementById("role").addEventListener("change",function(){
+
+  const box=document.getElementById("karigarServiceBox");
+
+  if(this.value==="karigar"){
+    box.classList.remove("hidden");
+  }else{
+    box.classList.add("hidden");
+  }
+
+});
+
+
+/* =========================================
    SIGNUP
-========================= */
+========================================= */
 
 async function signup(){
 
-  const name =
-    document.getElementById(
-      "name"
-    ).value.trim();
+  const name=document.getElementById("name").value.trim();
+  const phone=document.getElementById("phone").value.trim();
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  const role=document.getElementById("role").value;
+  const service=document.getElementById("karigarService").value.trim();
 
-
-  const phone =
-    document.getElementById(
-      "phone"
-    ).value.trim();
-
-
-  const email =
-    document.getElementById(
-      "email"
-    ).value.trim();
-
-
-  const password =
-    document.getElementById(
-      "password"
-    ).value;
-
-
-  const role =
-    document.getElementById(
-      "role"
-    ).value;
-
-
-  const service =
-    document.getElementById(
-      "karigarService"
-    ).value.trim();
-
-
-  const location =
-    document.getElementById(
-      "location"
-    ).value.trim();
-
-
-  const state =
-    document.getElementById(
-      "state"
-    ).value.trim();
-
-
-  const latitude =
-    document.getElementById(
-      "latitude"
-    ).value;
-
-
-  const longitude =
-    document.getElementById(
-      "longitude"
-    ).value;
-
-
-  const msg =
-    document.getElementById(
-      "authMessage"
-    );
-
-
-  if(
-    !name ||
-    !phone ||
-    !email ||
-    !password
-  ){
-
-    msg.innerText =
-      "❌ Naam, mobile, email aur password zaroori hai.";
-
+  if(!name){
+    showMessage("authMessage","Naam zaroori hai",true);
     return;
   }
 
-
-  if(!location){
-
-    msg.innerText =
-      "❌ Apni Area/City location zaroor likhein.";
-
+  if(!phone){
+    showMessage("authMessage","Mobile number zaroori hai",true);
     return;
   }
 
+  if(!password){
+    showMessage("authMessage","Password zaroori hai",true);
+    return;
+  }
 
-  msg.innerText =
-    "⏳ Account ban raha hai...";
+  if(password.length<6){
+    showMessage("authMessage","Password kam se kam 6 characters ka hona chahiye",true);
+    return;
+  }
 
+  if(role==="karigar" && !service){
+    showMessage("authMessage","Karigar ka kaam/service likhein",true);
+    return;
+  }
+
+  showMessage("authMessage","Account create ho raha hai...");
 
   try{
 
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/auth/signup",
-        {
-          method:"POST",
+    const response=await fetch(API_BASE+"/api/auth/signup",{
 
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
+      method:"POST",
 
-          body:JSON.stringify({
+      headers:{
+        "Content-Type":"application/json"
+      },
 
-            name:
-              name,
+      body:JSON.stringify({
 
-            full_name:
-              name,
+        name:name,
+        full_name:name,
+        phone:phone,
+        email:email || null,
+        password:password,
+        role:role,
+        service:service || null
 
-            phone:
-              phone,
+      })
 
-            email:
-              email,
+    });
 
-            password:
-              password,
+    const data=await response.json();
 
-            role:
-              role,
+    if(!response.ok || !data.success){
 
-            service:
-              service,
-
-            location:
-              location,
-
-            state:
-              state,
-
-            latitude:
-              latitude
-                ? Number(latitude)
-                : null,
-
-            longitude:
-              longitude
-                ? Number(longitude)
-                : null
-
-          })
-        }
+      showMessage(
+        "authMessage",
+        data.message || "Signup failed",
+        true
       );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      data.success === false
-    ){
-
-      msg.innerText =
-        "❌ " +
-        (
-          data.message ||
-          "Signup failed."
-        );
 
       return;
     }
 
+    showMessage(
+      "authMessage",
+      "✅ Account ban gaya! Ab Mobile Number + Password se Login karein."
+    );
 
-    msg.innerText =
-      "✅ Signup successful! Ab Login karein.";
-
-
-    document.getElementById(
-      "password"
-    ).value = "";
-
+    document.getElementById("password").value="";
 
   }catch(error){
 
-    msg.innerText =
-      "❌ Server error: " +
-      error.message;
+    showMessage(
+      "authMessage",
+      "Server se connection nahi ho raha.",
+      true
+    );
 
   }
 
 }
 
 
-/* =========================
+/* =========================================
    LOGIN
-========================= */
+========================================= */
 
 async function login(){
 
-  const email =
-    document.getElementById(
-      "email"
-    ).value.trim();
+  const phone=document.getElementById("phone").value.trim();
+  const password=document.getElementById("password").value;
 
-
-  const password =
-    document.getElementById(
-      "password"
-    ).value;
-
-
-  const msg =
-    document.getElementById(
-      "authMessage"
-    );
-
-
-  if(!email || !password){
-
-    msg.innerText =
-      "❌ Email aur password zaroori hai.";
-
+  if(!phone){
+    showMessage("authMessage","Mobile number enter karein",true);
     return;
   }
 
+  if(!password){
+    showMessage("authMessage","Password enter karein",true);
+    return;
+  }
 
-  msg.innerText =
-    "⏳ Login ho raha hai...";
-
+  showMessage("authMessage","Login ho raha hai...");
 
   try{
 
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/auth/login",
-        {
-          method:"POST",
+    const response=await fetch(API_BASE+"/api/auth/login",{
 
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
+      method:"POST",
 
-          body:JSON.stringify({
+      headers:{
+        "Content-Type":"application/json"
+      },
 
-            email:
-              email,
+      body:JSON.stringify({
+        phone:phone,
+        password:password
+      })
 
-            password:
-              password
+    });
 
-          })
-        }
+    const data=await response.json();
+
+    if(!response.ok || !data.success){
+
+      showMessage(
+        "authMessage",
+        data.message || "Login failed",
+        true
       );
 
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      data.success === false
-    ){
-
-      msg.innerText =
-        "❌ " +
-        (
-          data.message ||
-          "Login failed."
-        );
-
       return;
     }
 
-
-    const token =
-      data.access_token ||
-      data.session?.access_token ||
-      "";
-
-
-    const refreshToken =
-      data.refresh_token ||
-      data.session?.refresh_token ||
-      "";
-
-
-    currentProfile =
-      data.profile ||
-      data.user ||
-      data.data?.profile;
-
-
-    if(!currentProfile){
-
-      msg.innerText =
-        "❌ Profile nahi mila.";
-
-      return;
-    }
-
+    currentUser=data.profile;
 
     localStorage.setItem(
       "heyKarigarProfile",
-      JSON.stringify(
-        currentProfile
-      )
+      JSON.stringify(data.profile)
     );
-
 
     localStorage.setItem(
       "heyKarigarToken",
-      token
+      data.access_token || ""
     );
-
 
     localStorage.setItem(
       "heyKarigarRefreshToken",
-      refreshToken
+      data.refresh_token || ""
     );
 
-
-    showLoggedInUser(
-      currentProfile
-    );
-
+    showLoggedInUser();
 
   }catch(error){
 
-    msg.innerText =
-      "❌ Server error: " +
-      error.message;
-
-  }
-
-}
-
-
-/* =========================
-   FORGOT PASSWORD SCREEN
-========================= */
-
-function showForgotPassword(){
-
-  document
-    .getElementById(
-      "authSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "newPasswordSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "forgotPasswordSection"
-    )
-    .classList.remove("hidden");
-
-
-  const currentEmail =
-    document.getElementById(
-      "email"
-    ).value.trim();
-
-
-  if(currentEmail){
-
-    document.getElementById(
-      "resetEmail"
-    ).value =
-      currentEmail;
-
-  }
-
-}
-
-
-/* =========================
-   HIDE FORGOT PASSWORD
-========================= */
-
-function hideForgotPassword(){
-
-  document
-    .getElementById(
-      "forgotPasswordSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "newPasswordSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "authSection"
-    )
-    .classList.remove("hidden");
-
-}
-
-
-/* =========================
-   SEND RESET EMAIL
-========================= */
-
-async function sendPasswordReset(){
-
-  const email =
-    document.getElementById(
-      "resetEmail"
-    ).value.trim();
-
-
-  const msg =
-    document.getElementById(
-      "resetMessage"
+    showMessage(
+      "authMessage",
+      "Server se connection nahi ho raha.",
+      true
     );
 
-
-  if(!email){
-
-    msg.innerText =
-      "❌ Registered email likhein.";
-
-    return;
-  }
-
-
-  msg.innerText =
-    "⏳ Reset link bheja ja raha hai...";
-
-
-  try{
-
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/auth/forgot-password",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:JSON.stringify({
-            email:
-              email
-          })
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      data.success === false
-    ){
-
-      msg.innerText =
-        "❌ " +
-        (
-          data.message ||
-          "Reset request failed."
-        );
-
-      return;
-    }
-
-
-    msg.innerText =
-      "✅ " +
-      (
-        data.message ||
-        "Reset link bhej diya gaya hai."
-      );
-
-
-  }catch(error){
-
-    msg.innerText =
-      "❌ Server error: " +
-      error.message;
-
   }
 
 }
 
 
-/* =========================
-   GET RECOVERY TOKEN
-========================= */
-
-function getRecoveryAccessToken(){
-
-  const hash =
-    window.location.hash.startsWith("#")
-      ? window.location.hash.substring(1)
-      : window.location.hash;
-
-
-  if(!hash){
-
-    return "";
-  }
-
-
-  const params =
-    new URLSearchParams(hash);
-
-
-  if(
-    params.get("type") !==
-    "recovery"
-  ){
-
-    return "";
-  }
-
-
-  return (
-    params.get("access_token") ||
-    ""
-  );
-
-}
-
-
-/* =========================
-   CHECK RECOVERY MODE
-========================= */
-
-function checkRecoveryMode(){
-
-  const token =
-    getRecoveryAccessToken();
-
-
-  if(!token){
-
-    return false;
-  }
-
-
-  localStorage.setItem(
-    "heyKarigarRecoveryToken",
-    token
-  );
-
-
-  document
-    .getElementById(
-      "authSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "forgotPasswordSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "userSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "newPasswordSection"
-    )
-    .classList.remove("hidden");
-
-
-  document.getElementById(
-    "newPasswordMessage"
-  ).innerText =
-    "Naya password set karein.";
-
-
-  return true;
-
-}
-
-
-/* =========================
-   RESET PASSWORD
-========================= */
-
-async function resetPassword(){
-
-  const password =
-    document.getElementById(
-      "newPassword"
-    ).value;
-
-
-  const confirmPassword =
-    document.getElementById(
-      "confirmNewPassword"
-    ).value;
-
-
-  const token =
-    localStorage.getItem(
-      "heyKarigarRecoveryToken"
-    );
-
-
-  const msg =
-    document.getElementById(
-      "newPasswordMessage"
-    );
-
-
-  if(!token){
-
-    msg.innerText =
-      "❌ Reset link invalid ya expire ho gaya.";
-
-    return;
-  }
-
-
-  if(
-    !password ||
-    password.length < 6
-  ){
-
-    msg.innerText =
-      "❌ Password kam se kam 6 characters ka hona chahiye.";
-
-    return;
-  }
-
-
-  if(
-    password !==
-    confirmPassword
-  ){
-
-    msg.innerText =
-      "❌ Dono passwords same hone chahiye.";
-
-    return;
-  }
-
-
-  msg.innerText =
-    "⏳ Password update ho raha hai...";
-
-
-  try{
-
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/auth/reset-password",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:JSON.stringify({
-
-            access_token:
-              token,
-
-            password:
-              password
-
-          })
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      data.success === false
-    ){
-
-      msg.innerText =
-        "❌ " +
-        (
-          data.message ||
-          "Password update failed."
-        );
-
-      return;
-    }
-
-
-    localStorage.removeItem(
-      "heyKarigarRecoveryToken"
-    );
-
-
-    document.getElementById(
-      "newPassword"
-    ).value = "";
-
-
-    document.getElementById(
-      "confirmNewPassword"
-    ).value = "";
-
-
-    window.history.replaceState(
-      {},
-      document.title,
-      window.location.pathname
-    );
-
-
-    msg.innerText =
-      "✅ Password change ho gaya. Ab login karein.";
-
-
-    setTimeout(
-      function(){
-
-        document
-          .getElementById(
-            "newPasswordSection"
-          )
-          .classList.add("hidden");
-
-
-        document
-          .getElementById(
-            "authSection"
-          )
-          .classList.remove("hidden");
-
-      },
-      1500
-    );
-
-
-  }catch(error){
-
-    msg.innerText =
-      "❌ Server error: " +
-      error.message;
-
-  }
-
-}
-
-
-/* =========================
+/* =========================================
    SHOW USER
-========================= */
+========================================= */
 
-function showLoggedInUser(profile){
+function showLoggedInUser(){
 
-  currentProfile =
-    profile;
+  if(!currentUser){
+    return;
+  }
 
-
-  document
-    .getElementById(
-      "authSection"
-    )
+  document.getElementById("authSection")
     .classList.add("hidden");
 
-
-  document
-    .getElementById(
-      "forgotPasswordSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "newPasswordSection"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "userSection"
-    )
+  document.getElementById("userSection")
     .classList.remove("hidden");
 
+  document.getElementById("profileBox").innerHTML=`
 
-  document.getElementById(
-    "userName"
-  ).innerText =
-    profile.name ||
-    profile.full_name ||
-    "User";
+    <b>Naam:</b> ${escapeHtml(currentUser.name || currentUser.full_name || "Nahi diya")}<br>
 
+    <b>Mobile:</b> ${escapeHtml(currentUser.phone || "Nahi diya")}<br>
 
-  document.getElementById(
-    "userPhone"
-  ).innerText =
-    profile.phone ||
-    "";
+    <b>Role:</b> ${currentUser.role==="karigar" ? "🛠️ Karigar" : "👤 Customer"}<br>
 
+    <b>Service:</b> ${escapeHtml(currentUser.service || "—")}<br>
 
-  const location =
-    profile.location ||
-    "Location not set";
+    <b>Location:</b> ${escapeHtml(currentUser.location || "Location update karein")}
 
+  `;
 
-  const state =
-    profile.state ||
-    "";
+  if(currentUser.role==="karigar"){
 
-
-  document.getElementById(
-    "userLocation"
-  ).innerText =
-    location +
-    (
-      state
-        ? ", " + state
-        : ""
-    );
-
-
-  document.getElementById(
-    "userRole"
-  ).innerText =
-    profile.role === "karigar"
-      ? "🔧 Karigar Account"
-      : "👤 Customer Account";
-
-
-  if(
-    profile.role ===
-    "karigar"
-  ){
-
-    document
-      .getElementById(
-        "customerSection"
-      )
-      .classList.add("hidden");
-
-
-    document
-      .getElementById(
-        "karigarSection"
-      )
+    document.getElementById("karigarSection")
       .classList.remove("hidden");
 
+    document.getElementById("customerSection")
+      .classList.add("hidden");
 
-    document.getElementById(
-      "karigarLocation"
-    ).innerText =
-      location +
-      (
-        state
-          ? ", " + state
-          : ""
-      );
+    document.getElementById("customerRequestsSection")
+      .classList.add("hidden");
 
-
-    loadKarigarRequests();
+    loadRequests();
 
   }else{
 
-    document
-      .getElementById(
-        "customerSection"
-      )
+    document.getElementById("customerSection")
       .classList.remove("hidden");
 
+    document.getElementById("customerRequestsSection")
+      .classList.remove("hidden");
 
-    document
-      .getElementById(
-        "karigarSection"
-      )
+    document.getElementById("karigarSection")
       .classList.add("hidden");
-
-  }
-
-}
-
-
-/* =========================
-   SERVICE
-========================= */
-
-function selectService(
-  button,
-  service
-){
-
-  document
-    .querySelectorAll(
-      ".service-btn"
-    )
-    .forEach(
-      btn =>
-        btn.classList.remove(
-          "selected"
-        )
-    );
-
-
-  button.classList.add(
-    "selected"
-  );
-
-
-  selectedService =
-    service;
-
-
-  document.getElementById(
-    "selectedService"
-  ).value =
-    service;
-
-}
-
-
-/* =========================
-   CUSTOMER REQUEST
-========================= */
-
-async function submitRequest(){
-
-  if(!currentProfile){
-
-    alert(
-      "Pehle login karein."
-    );
-
-    return;
-  }
-
-
-  const service =
-    selectedService ||
-    document.getElementById(
-      "selectedService"
-    ).value;
-
-
-  const details =
-    document.getElementById(
-      "details"
-    ).value.trim();
-
-
-  const location =
-    currentProfile.location ||
-    document.getElementById(
-      "location"
-    ).value.trim();
-
-
-  const state =
-    currentProfile.state ||
-    document.getElementById(
-      "state"
-    ).value.trim();
-
-
-  const msg =
-    document.getElementById(
-      "requestMessage"
-    );
-
-
-  if(!service){
-
-    msg.innerText =
-      "❌ Pehle service select karein.";
-
-    return;
-  }
-
-
-  if(!details){
-
-    msg.innerText =
-      "❌ Kaam ki thodi detail zaroor likhein.";
-
-    document.getElementById(
-      "details"
-    ).focus();
-
-    return;
-  }
-
-
-  if(!location){
-
-    msg.innerText =
-      "❌ Location zaroori hai. Pehle Location Set / Update Karein.";
-
-    return;
-  }
-
-
-  msg.innerText =
-    "⏳ Request bheji ja rahi hai...";
-
-
-  try{
-
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/requests",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json",
-
-            "Authorization":
-              "Bearer " +
-              (
-                localStorage.getItem(
-                  "heyKarigarToken"
-                ) || ""
-              )
-          },
-
-          body:JSON.stringify({
-
-            customer_name:
-              currentProfile.name ||
-              currentProfile.full_name ||
-              "",
-
-            customer_id:
-              currentProfile.id ||
-              null,
-
-            phone:
-              currentProfile.phone ||
-              "",
-
-            address:
-              location +
-              (
-                state
-                  ? ", " + state
-                  : ""
-              ),
-
-            service:
-              service,
-
-            description:
-              details
-
-          })
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      data.success === false
-    ){
-
-      msg.innerText =
-        "❌ " +
-        (
-          data.message ||
-          "Request failed."
-        );
-
-      return;
-    }
-
-
-    msg.innerText =
-      "✅ Request successfully bhej di gayi!";
-
-
-    document.getElementById(
-      "details"
-    ).value = "";
-
-
-    document
-      .querySelectorAll(
-        ".service-btn"
-      )
-      .forEach(
-        btn =>
-          btn.classList.remove(
-            "selected"
-          )
-      );
-
-
-    document.getElementById(
-      "selectedService"
-    ).value = "";
-
-
-    selectedService = "";
-
 
     loadCustomerRequests();
 
-
-  }catch(error){
-
-    msg.innerText =
-      "❌ Server error: " +
-      error.message;
-
   }
 
 }
 
 
-/* =========================
-   CUSTOMER REQUESTS
-========================= */
-
-async function loadCustomerRequests(){
-
-  if(!currentProfile){
-
-    return;
-  }
-
-
-  const customerId =
-    currentProfile.id;
-
-
-  const box =
-    document.getElementById(
-      "customerRequests"
-    );
-
-
-  if(!customerId){
-
-    box.innerHTML =
-      "<p>❌ Customer ID nahi mila.</p>";
-
-    return;
-  }
-
-
-  box.innerHTML =
-    "<p>⏳ Requests load ho rahi hain...</p>";
-
-
-  try{
-
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/customer/requests/" +
-        encodeURIComponent(
-          customerId
-        )
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      data.success === false
-    ){
-
-      box.innerHTML =
-        "<p>❌ Requests load nahi hui.</p>";
-
-      return;
-    }
-
-
-    const requests =
-      data.requests || [];
-
-
-    if(!requests.length){
-
-      box.innerHTML =
-        "<p class='small'>Abhi koi request nahi hai.</p>";
-
-      return;
-    }
-
-
-    box.innerHTML =
-      requests.map(
-        request => `
-
-        <div class="request-card">
-
-          <h3>
-            ${escapeHtml(
-              request.service ||
-              "Service"
-            )}
-          </h3>
-
-          <p>
-            📍
-            ${escapeHtml(
-              request.address ||
-              "Location"
-            )}
-          </p>
-
-          <p>
-            📝
-            ${escapeHtml(
-              request.description ||
-              "Details nahi di gayi"
-            )}
-          </p>
-
-          <p>
-            Status:
-            <span class="status">
-              ${escapeHtml(
-                request.status ||
-                "New"
-              )}
-            </span>
-          </p>
-
-        </div>
-
-      `
-      ).join("");
-
-
-  }catch(error){
-
-    box.innerHTML =
-      "<p>❌ Requests load nahi hui.</p>";
-
-  }
-
-}
-
-
-/* =========================
-   KARIGAR REQUESTS
-========================= */
-
-async function loadKarigarRequests(){
-
-  const box =
-    document.getElementById(
-      "karigarRequests"
-    );
-
-
-  box.innerHTML =
-    "<p>⏳ Requests load ho rahi hain...</p>";
-
-
-  try{
-
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/requests"
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      data.success === false
-    ){
-
-      box.innerHTML =
-        "<p>❌ Requests load nahi hui.</p>";
-
-      return;
-    }
-
-
-    let requests =
-      data.requests || [];
-
-
-    const myLocation =
-      String(
-        currentProfile?.location ||
-        ""
-      ).toLowerCase().trim();
-
-
-    const myState =
-      String(
-        currentProfile?.state ||
-        ""
-      ).toLowerCase().trim();
-
-
-    requests.sort(
-      function(a,b){
-
-        const aText =
-          String(
-            a.address || ""
-          ).toLowerCase();
-
-
-        const bText =
-          String(
-            b.address || ""
-          ).toLowerCase();
-
-
-        const aSame =
-          (
-            myLocation &&
-            aText.includes(
-              myLocation
-            )
-          ) ||
-          (
-            myState &&
-            aText.includes(
-              myState
-            )
-          );
-
-
-        const bSame =
-          (
-            myLocation &&
-            bText.includes(
-              myLocation
-            )
-          ) ||
-          (
-            myState &&
-            bText.includes(
-              myState
-            )
-          );
-
-
-        if(
-          aSame &&
-          !bSame
-        ){
-
-          return -1;
-        }
-
-
-        if(
-          !aSame &&
-          bSame
-        ){
-
-          return 1;
-        }
-
-
-        return 0;
-
-      }
-    );
-
-
-    updateKarigarStats(
-      requests
-    );
-
-
-    if(!requests.length){
-
-      box.innerHTML =
-        "<p class='small'>Abhi koi service request nahi hai.</p>";
-
-      return;
-    }
-
-
-    box.innerHTML =
-      requests.map(
-        request => `
-
-        <div class="request-card">
-
-          <h3>
-            #${request.id || ""}
-            ${escapeHtml(
-              request.service ||
-              "Service"
-            )}
-          </h3>
-
-          <p>
-            👤 Customer:
-            ${escapeHtml(
-              request.customer_name ||
-              "Not provided"
-            )}
-          </p>
-
-          <p>
-            📞 Phone:
-            ${escapeHtml(
-              request.phone ||
-              ""
-            )}
-          </p>
-
-          <p>
-            📍 Location:
-            ${escapeHtml(
-              request.address ||
-              "Not provided"
-            )}
-          </p>
-
-          <p>
-            📝 Problem:
-            ${escapeHtml(
-              request.description ||
-              "Not provided"
-            )}
-          </p>
-
-          <p>
-            Status:
-            <span class="status">
-              ${escapeHtml(
-                request.status ||
-                "New"
-              )}
-            </span>
-          </p>
-
-          <button
-            onclick="updateRequestStatus(
-              ${request.id},
-              'Accepted'
-            )">
-            ✅ Accept
-          </button>
-
-          <button
-            class="btn-secondary"
-            onclick="updateRequestStatus(
-              ${request.id},
-              'In Progress'
-            )">
-            🔧 In Progress
-          </button>
-
-          <button
-            onclick="updateRequestStatus(
-              ${request.id},
-              'Completed'
-            )">
-            ✔️ Completed
-          </button>
-
-          <button
-            class="btn-danger"
-            onclick="updateRequestStatus(
-              ${request.id},
-              'Cancelled'
-            )">
-            ❌ Cancel
-          </button>
-
-        </div>
-
-      `
-      ).join("");
-
-
-  }catch(error){
-
-    box.innerHTML =
-      "<p>❌ Requests load nahi hui.</p>";
-
-  }
-
-}
-
-
-/* =========================
-   STATS
-========================= */
-
-function updateKarigarStats(
-  requests
-){
-
-  const total =
-    requests.length;
-
-
-  const newCount =
-    requests.filter(
-      r =>
-        String(
-          r.status || ""
-        ).toLowerCase() ===
-        "new"
-    ).length;
-
-
-  const completed =
-    requests.filter(
-      r =>
-        String(
-          r.status || ""
-        ).toLowerCase() ===
-        "completed"
-    ).length;
-
-
-  document.getElementById(
-    "totalRequests"
-  ).innerText =
-    total;
-
-
-  document.getElementById(
-    "newRequests"
-  ).innerText =
-    newCount;
-
-
-  document.getElementById(
-    "completedRequests"
-  ).innerText =
-    completed;
-
-}
-
-
-/* =========================
-   STATUS UPDATE
-========================= */
-
-async function updateRequestStatus(
-  id,
-  status
-){
-
-  try{
-
-    const response =
-      await fetch(
-        API_BASE +
-        "/api/requests/" +
-        id +
-        "/status",
-        {
-          method:"PUT",
-
-          headers:{
-            "Content-Type":
-              "application/json",
-
-            "Authorization":
-              "Bearer " +
-              (
-                localStorage.getItem(
-                  "heyKarigarToken"
-                ) || ""
-              )
-          },
-
-          body:JSON.stringify({
-            status:
-              status
-          })
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      data.success === false
-    ){
-
-      alert(
-        "❌ " +
-        (
-          data.message ||
-          "Status update failed."
-        )
-      );
-
-      return;
-    }
-
-
-    alert(
-      "✅ Status: " +
-      status
-    );
-
-
-    loadKarigarRequests();
-
-
-  }catch(error){
-
-    alert(
-      "❌ Server error: " +
-      error.message
-    );
-
-  }
-
-}
-
-
-/* =========================
+/* =========================================
    LOGOUT
-========================= */
+========================================= */
 
 function logout(){
 
-  localStorage.removeItem(
-    "heyKarigarProfile"
-  );
+  currentUser=null;
 
-
-  localStorage.removeItem(
-    "heyKarigarToken"
-  );
-
-
-  localStorage.removeItem(
-    "heyKarigarRefreshToken"
-  );
-
-
-  localStorage.removeItem(
-    "heyKarigarRecoveryToken"
-  );
-
-
-  currentProfile =
-    null;
-
+  localStorage.removeItem("heyKarigarProfile");
+  localStorage.removeItem("heyKarigarToken");
+  localStorage.removeItem("heyKarigarRefreshToken");
 
   location.reload();
 
 }
 
 
-/* =========================
-   ESCAPE HTML
-========================= */
+/* =========================================
+   SELECT SERVICE
+========================================= */
 
-function escapeHtml(
-  value
-){
+function selectService(button,service){
 
-  return String(
-    value ?? ""
-  )
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+  document.querySelectorAll(".service-btn")
+    .forEach(btn=>btn.classList.remove("selected"));
+
+  button.classList.add("selected");
+
+  selectedService=service;
 
 }
 
 
-/* =========================
-   AUTO LOGIN + RECOVERY
-========================= */
+/* =========================================
+   CREATE REQUEST
+========================================= */
 
-window.addEventListener(
-  "load",
-  function(){
+async function createRequest(){
 
-    const recoveryMode =
-      checkRecoveryMode();
+  if(!currentUser){
+    showMessage(
+      "requestMessage",
+      "Pehle login karein",
+      true
+    );
+    return;
+  }
 
+  if(!selectedService){
 
-    if(recoveryMode){
+    showMessage(
+      "requestMessage",
+      "Pehle service select karein",
+      true
+    );
+
+    return;
+  }
+
+  const address=document
+    .getElementById("requestAddress")
+    .value.trim();
+
+  const description=document
+    .getElementById("requestDescription")
+    .value.trim();
+
+  if(!address){
+
+    showMessage(
+      "requestMessage",
+      "Address / Area zaroori hai",
+      true
+    );
+
+    return;
+  }
+
+  showMessage(
+    "requestMessage",
+    "Request bheji ja rahi hai..."
+  );
+
+  try{
+
+    const response=await fetch(
+      API_BASE+"/api/requests",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+          customer_name:
+            currentUser.name ||
+            currentUser.full_name,
+
+          customer_id:currentUser.id,
+
+          phone:currentUser.phone,
+
+          service:selectedService,
+
+          address:address,
+
+          description:description
+
+        })
+
+      }
+    );
+
+    const data=await response.json();
+
+    if(!response.ok || !data.success){
+
+      showMessage(
+        "requestMessage",
+        data.message || "Request failed",
+        true
+      );
 
       return;
     }
 
+    showMessage(
+      "requestMessage",
+      "✅ Request successfully bhej di gayi!"
+    );
 
-    const savedProfile =
-      localStorage.getItem(
-        "heyKarigarProfile"
-      );
+    document.getElementById("requestDescription").value="";
 
+    loadCustomerRequests();
 
-    if(savedProfile){
+  }catch(error){
 
-      try{
-
-        currentProfile =
-          JSON.parse(
-            savedProfile
-          );
-
-
-        showLoggedInUser(
-          currentProfile
-        );
-
-
-      }catch(error){
-
-        localStorage.removeItem(
-          "heyKarigarProfile"
-        );
-
-      }
-
-    }
+    showMessage(
+      "requestMessage",
+      "Server error. Dobara try karein.",
+      true
+    );
 
   }
-);
 
-</script>
+}
 
-</body>
-</html>
+
+/* =========================================
+   CUSTOMER REQUESTS
+========================================= */
+
+async function loadCustomerRequests(){
+
+  if(!currentUser) return;
+
+  try{
+
+    const response=await fetch(
+      API_BASE+"/api/customer/requests/"+currentUser.id
+    );
+
+    const data=await response.json();
+
+    const box=document.getElementById("customerRequests");
+
+    if(!data.success){
+
+      box.innerHTML="<p>Requests load nahi hui.</p>";
+
+      return;
+    }
+
+    if(!data.requests || data.requests.length===0){
+
+      box.innerHTML="<p>Abhi koi request nahi hai.</p>";
+
+      return;
+    }
+
+    box.innerHTML=data.requests.map(request=>`
+
+      <div class="request">
+
+        <b>🔧 ${escapeHtml(request.service || "Service")}</b>
+
+        <p>
+          📍 ${escapeHtml(request.address || "Address nahi hai")}
+        </p>
+
+        <p>
+          Problem:
+          ${escapeHtml(
+            request.description ||
+            request.details ||
+            "Not provided"
+          )}
+        </p>
+
+        <p>
+          Status:
+          <span class="status">
+            ${escapeHtml(request.status || "New")}
+          </span>
+        </p>
+
+      </div>
+
+    `).join("");
+
+  }catch(error){
+
+    document.getElementById("customerRequests").innerHTML=
+      "<p>Requests load nahi hui.</p>";
+
+  }
+
+}
+
+
+/* =========================================
+   KARIGAR REQUESTS
+========================================= */
+
+async function loadRequests(){
+
+  try{
+
+    const response=await fetch(
+      API_BASE+"/api/requests"
+    );
+
+    const data=await response.json();
+
+    if(!data.success){
+
+      showMessage(
+        "karigarMessage",
+        "Requests load nahi hui",
+        true
+      );
+
+      return;
+    }
+
+    const requests=data.requests || [];
+
+    document.getElementById("totalRequests")
+      .textContent=requests.length;
+
+    document.getElementById("newRequests")
+      .textContent=
+        requests.filter(r=>r.status==="New").length;
+
+    document.getElementById("completedRequests")
+      .textContent=
+        requests.filter(r=>r.status==="Completed").length;
+
+    const box=document.getElementById("requestsList");
+
+    if(requests.length===0){
+
+      box.innerHTML="<p>Abhi koi service request nahi hai.</p>";
+
+      return;
+    }
+
+    box.innerHTML=requests.map(request=>`
+
+      <div class="request">
+
+        <b>#${request.id} — ${escapeHtml(request.service || "Service")}</b>
+
+        <p>
+          👤 Customer:
+          ${escapeHtml(
+            request.customer_name ||
+            request.name ||
+            "Not provided"
+          )}
+        </p>
+
+        <p>
+          📱 Mobile:
+          ${escapeHtml(request.phone || "Not provided")}
+        </p>
+
+        <p>
+          📍 Location:
+          ${escapeHtml(
+            request.address ||
+            request.location ||
+            "Not provided"
+          )}
+        </p>
+
+        <p>
+          📝 Problem:
+          ${escapeHtml(
+            request.description ||
+            request.details ||
+            "Not provided"
+          )}
+        </p>
+
+        <p>
+          Status:
+          <span class="status">
+            ${escapeHtml(request.status || "New")}
+          </span>
+        </p>
+
+        <div>
+
+          <button
+            class="primary"
+            onclick="updateStatus(${request.id},'Accepted')">
+            Accept
+          </button>
+
+          <button
+            class="warning"
+            onclick="updateStatus(${request.id},'On The Way')">
+            On The Way
+          </button>
+
+          <button
+            class="secondary"
+            onclick="updateStatus(${request.id},'Working')">
+            Working
+          </button>
+
+          <button
+            class="success"
+            onclick="updateStatus(${request.id},'Completed')">
+            Completed
+          </button>
+
+          <button
+            class="danger"
+            onclick="updateStatus(${request.id},'Cancelled')">
+            Cancel
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+  }catch(error){
+
+    showMessage(
+      "karigarMessage",
+      "Server se connection nahi ho raha",
+      true
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   UPDATE STATUS
+========================================= */
+
+async function updateStatus(id,status){
+
+  try{
+
+    const response=await fetch(
+      API_BASE+"/api/requests/"+id+"/status",
+      {
+        method:"PUT",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+          status:status
+        })
+      }
+    );
+
+    const data=await response.json();
+
+    if(!response.ok || !data.success){
+
+      alert(data.message || "Status update failed
