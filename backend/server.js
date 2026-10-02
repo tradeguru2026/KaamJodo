@@ -39,7 +39,7 @@ app.get("/api", (req, res) => {
   res.json({
     app: "Hey Karigar API",
     status: "running",
-    version: "3.0.0"
+    version: "4.0.0"
   });
 });
 
@@ -63,7 +63,7 @@ function internalAuthEmail(phone) {
 }
 
 /* =====================================================
-   AUTH MIDDLEWARE
+   AUTHENTICATE
 ===================================================== */
 
 async function authenticate(req, res, next) {
@@ -130,11 +130,28 @@ async function authenticate(req, res, next) {
 }
 
 /* =====================================================
+   ADMIN ONLY
+===================================================== */
+
+function adminOnly(req, res, next) {
+
+  if (!req.profile || req.profile.role !== "admin") {
+    return res.status(403).json({
+      success: false,
+      message: "Sirf Admin access kar sakta hai"
+    });
+  }
+
+  next();
+}
+
+/* =====================================================
    SIGNUP
 ===================================================== */
 
 app.post("/api/auth/signup", async (req, res) => {
   try {
+
     const {
       name,
       full_name,
@@ -172,19 +189,20 @@ app.post("/api/auth/signup", async (req, res) => {
       });
     }
 
+    /*
+      Public signup se sirf Customer ya Karigar ban sakta hai.
+      Admin manually database se banega.
+    */
+
     const selectedRole =
       role === "karigar" ? "karigar" : "customer";
 
-    const { data: existingProfile, error: existingError } =
+    const { data: existingProfile } =
       await supabase
         .from("profiles")
         .select("id, phone")
         .eq("phone", normalizedPhone)
         .maybeSingle();
-
-    if (existingError) {
-      console.error(existingError);
-    }
 
     if (existingProfile) {
       return res.status(400).json({
@@ -240,7 +258,6 @@ app.post("/api/auth/signup", async (req, res) => {
         .single();
 
     if (profileError) {
-      console.error("Profile error:", profileError);
 
       await supabase.auth.admin.deleteUser(userId);
 
@@ -257,6 +274,7 @@ app.post("/api/auth/signup", async (req, res) => {
     });
 
   } catch (error) {
+
     console.error("Signup error:", error);
 
     return res.status(500).json({
@@ -268,55 +286,139 @@ app.post("/api/auth/signup", async (req, res) => {
 
 /* =====================================================
    LOGIN
+   Mobile OR Email supported
 ===================================================== */
 
 app.post("/api/auth/login", async (req, res) => {
   try {
-    const { phone, password } = req.body;
 
-    if (!phone || !password) {
+    const loginValue =
+      String(
+        req.body.phone ||
+        req.body.email ||
+        ""
+      ).trim();
+
+    const password =
+      String(req.body.password || "");
+
+    if (!loginValue || !password) {
       return res.status(400).json({
         success: false,
-        message: "Mobile number aur password zaroori hain"
+        message: "Mobile number/email aur password zaroori hain"
       });
     }
 
-    const normalizedPhone = normalizePhone(phone);
+    let authEmail = "";
+    let profile = null;
 
-    if (normalizedPhone.length < 10) {
-      return res.status(400).json({
-        success: false,
-        message: "Sahi mobile number enter karein"
-      });
+    /*
+      Agar email diya gaya hai:
+      direct email se login.
+    */
+
+    if (loginValue.includes("@")) {
+
+      const { data: profileByEmail } =
+        await supabase
+          .from("profiles")
+          .select("*")
+          .eq("email", loginValue.toLowerCase())
+          .maybeSingle();
+
+      if (profileByEmail) {
+        profile = profileByEmail;
+      }
+
+      authEmail = loginValue.toLowerCase();
+
+    } else {
+
+      /*
+        Mobile se profile find karo.
+      */
+
+      const normalizedPhone =
+        normalizePhone(loginValue);
+
+      const { data: profileByPhone } =
+        await supabase
+          .from("profiles")
+          .select("*")
+          .eq("phone", normalizedPhone)
+          .maybeSingle();
+
+      if (!profileByPhone) {
+        return res.status(401).json({
+          success: false,
+          message: "Mobile number ya password galat hai"
+        });
+      }
+
+      profile = profileByPhone;
+
+      /*
+        Existing Auth user ka actual email nikaalo.
+        Isse manually-created Admin user bhi login kar sakega.
+      */
+
+      const {
+        data: authUserData,
+        error: authUserError
+      } =
+        await supabase.auth.admin.getUserById(
+          profile.id
+        );
+
+      if (authUserError || !authUserData.user) {
+        return res.status(401).json({
+          success: false,
+          message: "Login account nahi mila"
+        });
+      }
+
+      authEmail =
+        authUserData.user.email;
+
     }
 
-    const authEmail = internalAuthEmail(normalizedPhone);
+    if (!authEmail) {
+      return res.status(401).json({
+        success: false,
+        message: "Login account nahi mila"
+      });
+    }
 
     const { data, error } =
       await supabase.auth.signInWithPassword({
         email: authEmail,
-        password: String(password)
+        password: password
       });
 
     if (error) {
+
       console.error("Login error:", error);
 
       return res.status(401).json({
         success: false,
-        message: "Mobile number ya password galat hai"
+        message: "Mobile number/email ya password galat hai"
       });
     }
 
     const user = data.user;
 
-    const { data: profile, error: profileError } =
+    /*
+      Profile dobara user ID se load karte hain.
+    */
+
+    const { data: finalProfile, error: finalProfileError } =
       await supabase
         .from("profiles")
         .select("*")
         .eq("id", user.id)
         .single();
 
-    if (profileError || !profile) {
+    if (finalProfileError || !finalProfile) {
       return res.status(404).json({
         success: false,
         message: "Profile nahi mili"
@@ -329,12 +431,13 @@ app.post("/api/auth/login", async (req, res) => {
       user: {
         id: user.id
       },
-      profile,
+      profile: finalProfile,
       access_token: data.session.access_token,
       refresh_token: data.session.refresh_token
     });
 
   } catch (error) {
+
     console.error("Login error:", error);
 
     return res.status(500).json({
@@ -345,30 +448,22 @@ app.post("/api/auth/login", async (req, res) => {
 });
 
 /* =====================================================
-   GET PROFILE
+   PROFILE
 ===================================================== */
 
 app.get("/api/profile/:id", authenticate, async (req, res) => {
-  try {
 
-    if (req.params.id !== req.user.id) {
-      return res.status(403).json({
-        success: false,
-        message: "Aap sirf apni profile dekh sakte hain"
-      });
-    }
-
-    return res.json({
-      success: true,
-      profile: req.profile
-    });
-
-  } catch (error) {
-    return res.status(500).json({
+  if (req.params.id !== req.user.id) {
+    return res.status(403).json({
       success: false,
-      message: "Profile load nahi hui"
+      message: "Aap sirf apni profile dekh sakte hain"
     });
   }
+
+  return res.json({
+    success: true,
+    profile: req.profile
+  });
 });
 
 /* =====================================================
@@ -400,7 +495,8 @@ app.put("/api/profile/:id/location", authenticate, async (req, res) => {
           longitude: longitude || null,
           location: location || null,
           state: state || null,
-          location_updated_at: new Date().toISOString()
+          location_updated_at:
+            new Date().toISOString()
         })
         .eq("id", req.user.id)
         .select()
@@ -413,14 +509,13 @@ app.put("/api/profile/:id/location", authenticate, async (req, res) => {
       });
     }
 
-    req.profile = data;
-
     return res.json({
       success: true,
       profile: data
     });
 
   } catch (error) {
+
     return res.status(500).json({
       success: false,
       message: "Location update nahi hui"
@@ -429,7 +524,7 @@ app.put("/api/profile/:id/location", authenticate, async (req, res) => {
 });
 
 /* =====================================================
-   CREATE SERVICE REQUEST
+   CREATE REQUEST
 ===================================================== */
 
 app.post("/api/requests", authenticate, async (req, res) => {
@@ -453,7 +548,8 @@ app.post("/api/requests", authenticate, async (req, res) => {
     if (!customer_name || !phone || !service || !address) {
       return res.status(400).json({
         success: false,
-        message: "Name, mobile, service aur address zaroori hain"
+        message:
+          "Name, mobile, service aur address zaroori hain"
       });
     }
 
@@ -476,8 +572,6 @@ app.post("/api/requests", authenticate, async (req, res) => {
         .single();
 
     if (error) {
-      console.error("Request error:", error);
-
       return res.status(400).json({
         success: false,
         message: error.message
@@ -491,7 +585,6 @@ app.post("/api/requests", authenticate, async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Create request error:", error);
 
     return res.status(500).json({
       success: false,
@@ -501,7 +594,7 @@ app.post("/api/requests", authenticate, async (req, res) => {
 });
 
 /* =====================================================
-   GET REQUESTS FOR KARIGAR
+   KARIGAR REQUESTS
 ===================================================== */
 
 app.get("/api/requests", authenticate, async (req, res) => {
@@ -514,12 +607,6 @@ app.get("/api/requests", authenticate, async (req, res) => {
       });
     }
 
-    /*
-      Karigar ko:
-      1. New requests dikhen
-      2. Apni accepted/working/completed requests dikhen
-    */
-
     const { data, error } =
       await supabase
         .from("service_requests")
@@ -530,8 +617,6 @@ app.get("/api/requests", authenticate, async (req, res) => {
         .order("id", { ascending: false });
 
     if (error) {
-      console.error("Load requests error:", error);
-
       return res.status(400).json({
         success: false,
         message: error.message
@@ -545,7 +630,6 @@ app.get("/api/requests", authenticate, async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Requests error:", error);
 
     return res.status(500).json({
       success: false,
@@ -562,6 +646,7 @@ app.get(
   "/api/customer/requests/:customerId",
   authenticate,
   async (req, res) => {
+
     try {
 
       if (req.profile.role !== "customer") {
@@ -598,6 +683,7 @@ app.get(
       });
 
     } catch (error) {
+
       return res.status(500).json({
         success: false,
         message: "Customer requests load nahi hui"
@@ -611,6 +697,7 @@ app.get(
 ===================================================== */
 
 app.get("/api/requests/:id", async (req, res) => {
+
   try {
 
     const { data, error } =
@@ -627,18 +714,13 @@ app.get("/api/requests/:id", async (req, res) => {
       });
     }
 
-    /*
-      Status tracking ke liye single request
-      public rakhi gayi hai.
-      Isme password/private data nahi hai.
-    */
-
     return res.json({
       success: true,
       request: data
     });
 
   } catch (error) {
+
     return res.status(500).json({
       success: false,
       message: "Request load nahi hui"
@@ -647,27 +729,26 @@ app.get("/api/requests/:id", async (req, res) => {
 });
 
 /* =====================================================
-   UPDATE REQUEST STATUS - SECURE
+   UPDATE STATUS
 ===================================================== */
 
 app.put(
   "/api/requests/:id/status",
   authenticate,
   async (req, res) => {
+
     try {
 
       if (req.profile.role !== "karigar") {
         return res.status(403).json({
           success: false,
-          message: "Sirf Karigar status update kar sakta hai"
+          message:
+            "Sirf Karigar status update kar sakta hai"
         });
       }
 
-      const requestedStatus = req.body.status;
-
-      /*
-        Cancelled intentionally NOT allowed.
-      */
+      const requestedStatus =
+        req.body.status;
 
       const allowedStatuses = [
         "Accepted",
@@ -679,7 +760,8 @@ app.put(
       if (!allowedStatuses.includes(requestedStatus)) {
         return res.status(400).json({
           success: false,
-          message: "Invalid status. Cancel allowed nahi hai."
+          message:
+            "Invalid status. Cancel allowed nahi hai."
         });
       }
 
@@ -697,24 +779,21 @@ app.put(
         });
       }
 
-      /*
-        ACCEPT
-        Sirf New request ko accept kiya ja sakta hai.
-      */
-
       if (requestedStatus === "Accepted") {
 
         if (request.status !== "New") {
           return res.status(400).json({
             success: false,
-            message: "Ye request ab available nahi hai"
+            message:
+              "Ye request ab available nahi hai"
           });
         }
 
         if (request.karigar_id) {
           return res.status(400).json({
             success: false,
-            message: "Ye request kisi Karigar ko already assign hai"
+            message:
+              "Ye request kisi Karigar ko already assign hai"
           });
         }
 
@@ -734,7 +813,8 @@ app.put(
         if (error || !data) {
           return res.status(409).json({
             success: false,
-            message: "Request kisi aur Karigar ne accept kar li ho sakti hai"
+            message:
+              "Request kisi aur Karigar ne accept kar li ho sakti hai"
           });
         }
 
@@ -745,21 +825,13 @@ app.put(
         });
       }
 
-      /*
-        BAQI STATUS
-        Sirf assigned Karigar hi update kar sakta hai.
-      */
-
       if (request.karigar_id !== req.user.id) {
         return res.status(403).json({
           success: false,
-          message: "Ye request aapko assigned nahi hai"
+          message:
+            "Ye request aapko assigned nahi hai"
         });
       }
-
-      /*
-        Proper status order
-      */
 
       const nextStatus = {
         "Accepted": "On The Way",
@@ -767,7 +839,10 @@ app.put(
         "Working": "Completed"
       };
 
-      if (nextStatus[request.status] !== requestedStatus) {
+      if (
+        nextStatus[request.status] !==
+        requestedStatus
+      ) {
         return res.status(400).json({
           success: false,
           message:
@@ -801,11 +876,106 @@ app.put(
       });
 
     } catch (error) {
-      console.error("Status update error:", error);
 
       return res.status(500).json({
         success: false,
         message: "Status update nahi hua"
+      });
+    }
+  }
+);
+
+/* =====================================================
+   ADMIN DASHBOARD
+===================================================== */
+
+app.get(
+  "/api/admin/dashboard",
+  authenticate,
+  adminOnly,
+  async (req, res) => {
+
+    try {
+
+      const {
+        data: profiles,
+        error: profilesError
+      } =
+        await supabase
+          .from("profiles")
+          .select("*")
+          .order("created_at", {
+            ascending: false
+          });
+
+      if (profilesError) {
+        return res.status(400).json({
+          success: false,
+          message: profilesError.message
+        });
+      }
+
+      const {
+        data: requests,
+        error: requestsError
+      } =
+        await supabase
+          .from("service_requests")
+          .select("*")
+          .order("id", {
+            ascending: false
+          });
+
+      if (requestsError) {
+        return res.status(400).json({
+          success: false,
+          message: requestsError.message
+        });
+      }
+
+      const customers =
+        profiles.filter(
+          p => p.role === "customer"
+        );
+
+      const karigars =
+        profiles.filter(
+          p => p.role === "karigar"
+        );
+
+      return res.json({
+        success: true,
+
+        stats: {
+          totalUsers: profiles.length,
+          customers: customers.length,
+          karigars: karigars.length,
+          totalRequests: requests.length,
+          newRequests:
+            requests.filter(
+              r => r.status === "New"
+            ).length,
+          completedRequests:
+            requests.filter(
+              r => r.status === "Completed"
+            ).length
+        },
+
+        profiles,
+        requests
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Admin dashboard error:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Admin dashboard load nahi hua"
       });
     }
   }
@@ -823,11 +993,14 @@ app.use("/api", (req, res) => {
 });
 
 /* =====================================================
-   START SERVER
+   START
 ===================================================== */
 
-const PORT = process.env.PORT || 5000;
+const PORT =
+  process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Hey Karigar server running on port ${PORT}`);
+  console.log(
+    `🚀 Hey Karigar server running on port ${PORT}`
+  );
 });
