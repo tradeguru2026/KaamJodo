@@ -180,6 +180,48 @@ button{
   color:#087f5b;
 }
 
+.admin-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.admin-stat{
+  background:#f0f7f4;
+  padding:15px 8px;
+  text-align:center;
+  border-radius:10px;
+}
+
+.admin-stat strong{
+  display:block;
+  font-size:24px;
+  color:#087f5b;
+  margin-bottom:4px;
+}
+
+.admin-title{
+  margin-top:18px;
+  margin-bottom:8px;
+  color:#087f5b;
+  font-size:19px;
+}
+
+.admin-item{
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:12px;
+  margin:8px 0;
+  line-height:1.6;
+  background:#fff;
+}
+
+.small{
+  font-size:13px;
+  color:#666;
+}
+
 footer{
   text-align:center;
   padding:20px;
@@ -198,6 +240,10 @@ footer{
 
 <div class="container">
 
+<!-- =====================================================
+     AUTH
+===================================================== -->
+
 <div id="authSection" class="card">
 
   <h2>🔐 Account</h2>
@@ -213,8 +259,13 @@ footer{
   <input id="password" type="password" placeholder="Password (minimum 6 characters)">
 
   <select id="role">
+
     <option value="customer">Customer</option>
+
     <option value="karigar">Karigar</option>
+
+    <option value="admin">Admin</option>
+
   </select>
 
   <div id="karigarServiceBox" class="hidden">
@@ -239,8 +290,16 @@ footer{
     Login ke liye Mobile Number + Password use karein.
   </p>
 
+  <p style="font-size:12px;color:#888;margin-top:6px;">
+    Admin account sirf authorized admin ke liye hai.
+  </p>
+
 </div>
 
+
+<!-- =====================================================
+     USER PROFILE
+===================================================== -->
 
 <div id="userSection" class="card hidden">
 
@@ -258,6 +317,10 @@ footer{
 
 </div>
 
+
+<!-- =====================================================
+     CUSTOMER
+===================================================== -->
 
 <div id="customerSection" class="card hidden">
 
@@ -359,6 +422,10 @@ footer{
 </div>
 
 
+<!-- =====================================================
+     CUSTOMER REQUESTS
+===================================================== -->
+
 <div id="customerRequestsSection" class="card hidden">
 
   <h2>📋 Meri Requests</h2>
@@ -367,6 +434,10 @@ footer{
 
 </div>
 
+
+<!-- =====================================================
+     KARIGAR
+===================================================== -->
 
 <div id="karigarSection" class="card hidden">
 
@@ -397,6 +468,74 @@ footer{
 
 </div>
 
+
+<!-- =====================================================
+     ADMIN DASHBOARD
+===================================================== -->
+
+<div id="adminSection" class="card hidden">
+
+  <h2>👑 Admin Dashboard</h2>
+
+  <div id="adminMessage" class="message hidden"></div>
+
+  <div class="admin-grid">
+
+    <div class="admin-stat">
+      <strong id="adminTotalUsers">0</strong>
+      Total Users
+    </div>
+
+    <div class="admin-stat">
+      <strong id="adminCustomers">0</strong>
+      Customers
+    </div>
+
+    <div class="admin-stat">
+      <strong id="adminKarigars">0</strong>
+      Karigars
+    </div>
+
+    <div class="admin-stat">
+      <strong id="adminRequests">0</strong>
+      Requests
+    </div>
+
+  </div>
+
+  <button class="primary" onclick="loadAdminDashboard()">
+    🔄 Dashboard Refresh
+  </button>
+
+
+  <h3 class="admin-title">
+    👤 Customers
+  </h3>
+
+  <div id="adminCustomersList">
+    Loading...
+  </div>
+
+
+  <h3 class="admin-title">
+    🛠️ Karigars
+  </h3>
+
+  <div id="adminKarigarsList">
+    Loading...
+  </div>
+
+
+  <h3 class="admin-title">
+    📋 All Service Requests
+  </h3>
+
+  <div id="adminRequestsList">
+    Loading...
+  </div>
+
+</div>
+
 </div>
 
 
@@ -414,7 +553,7 @@ let selectedService = "";
 
 
 /* =====================================================
-   AUTH TOKEN
+   TOKEN
 ===================================================== */
 
 function getToken(){
@@ -502,6 +641,18 @@ async function signup(){
 
   const service=
     document.getElementById("karigarService").value.trim();
+
+
+  if(role==="admin"){
+
+    showMessage(
+      "authMessage",
+      "Admin account yahan signup nahi hota. Authorized Admin account hi login karein.",
+      true
+    );
+
+    return;
+  }
 
 
   if(!name){
@@ -627,7 +778,7 @@ async function login(){
   if(!phone){
     showMessage(
       "authMessage",
-      "Mobile number enter karein",
+      "Mobile number ya Email enter karein",
       true
     );
     return;
@@ -777,6 +928,8 @@ function showLoggedInUser(){
       ${
         currentUser.role==="karigar"
         ? "🛠️ Karigar"
+        : currentUser.role==="admin"
+        ? "👑 Admin"
         : "👤 Customer"
       }
       <br>
@@ -796,6 +949,38 @@ function showLoggedInUser(){
   `;
 
 
+  /* -------------------------------
+     ADMIN
+  ------------------------------- */
+
+  if(currentUser.role==="admin"){
+
+    document
+      .getElementById("customerSection")
+      .classList.add("hidden");
+
+    document
+      .getElementById("customerRequestsSection")
+      .classList.add("hidden");
+
+    document
+      .getElementById("karigarSection")
+      .classList.add("hidden");
+
+    document
+      .getElementById("adminSection")
+      .classList.remove("hidden");
+
+    loadAdminDashboard();
+
+    return;
+  }
+
+
+  /* -------------------------------
+     KARIGAR
+  ------------------------------- */
+
   if(currentUser.role==="karigar"){
 
     document
@@ -810,9 +995,17 @@ function showLoggedInUser(){
       .getElementById("customerRequestsSection")
       .classList.add("hidden");
 
+    document
+      .getElementById("adminSection")
+      .classList.add("hidden");
+
     loadRequests();
 
   }else{
+
+    /* -------------------------------
+       CUSTOMER
+    ------------------------------- */
 
     document
       .getElementById("customerSection")
@@ -826,7 +1019,409 @@ function showLoggedInUser(){
       .getElementById("karigarSection")
       .classList.add("hidden");
 
+    document
+      .getElementById("adminSection")
+      .classList.add("hidden");
+
     loadCustomerRequests();
+
+  }
+
+}
+
+
+/* =====================================================
+   ADMIN DASHBOARD
+===================================================== */
+
+async function loadAdminDashboard(){
+
+  if(!currentUser || currentUser.role!=="admin"){
+
+    showMessage(
+      "adminMessage",
+      "Admin access required.",
+      true
+    );
+
+    return;
+  }
+
+
+  if(!getToken()){
+
+    showMessage(
+      "adminMessage",
+      "Session expire ho gaya. Dobara login karein.",
+      true
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "adminMessage",
+    "Admin dashboard load ho raha hai..."
+  );
+
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+"/api/admin/dashboard",
+        {
+          method:"GET",
+          headers:authHeaders()
+        }
+      );
+
+
+    const data=
+      await response.json();
+
+
+    if(response.status===401){
+
+      showMessage(
+        "adminMessage",
+        "Admin session expire ho gaya. Dobara login karein.",
+        true
+      );
+
+      return;
+    }
+
+
+    if(response.status===403){
+
+      showMessage(
+        "adminMessage",
+        "❌ Admin access nahi hai.",
+        true
+      );
+
+      return;
+    }
+
+
+    if(!response.ok || !data.success){
+
+      showMessage(
+        "adminMessage",
+        data.message || "Dashboard load nahi hua.",
+        true
+      );
+
+      return;
+    }
+
+
+    const stats=data.stats || {};
+
+    const profiles=data.profiles || [];
+
+    const requests=data.requests || [];
+
+
+    document
+      .getElementById("adminTotalUsers")
+      .textContent=
+        stats.totalUsers ??
+        profiles.length;
+
+
+    document
+      .getElementById("adminCustomers")
+      .textContent=
+        stats.customers ??
+        profiles.filter(
+          p=>p.role==="customer"
+        ).length;
+
+
+    document
+      .getElementById("adminKarigars")
+      .textContent=
+        stats.karigars ??
+        profiles.filter(
+          p=>p.role==="karigar"
+        ).length;
+
+
+    document
+      .getElementById("adminRequests")
+      .textContent=
+        stats.requests ??
+        requests.length;
+
+
+    /* -------------------------------
+       CUSTOMERS
+    ------------------------------- */
+
+    const customers=
+      profiles.filter(
+        p=>p.role==="customer"
+      );
+
+
+    const customersBox=
+      document.getElementById(
+        "adminCustomersList"
+      );
+
+
+    if(customers.length===0){
+
+      customersBox.innerHTML=
+        "<p class='small'>Abhi koi customer nahi hai.</p>";
+
+    }else{
+
+      customersBox.innerHTML=
+        customers.map(customer=>`
+
+          <div class="admin-item">
+
+            <b>
+              👤
+              ${escapeHtml(
+                customer.full_name ||
+                customer.name ||
+                "Nahi diya"
+              )}
+            </b>
+
+            <br>
+
+            📱 Mobile:
+            ${escapeHtml(
+              customer.phone ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            📧 Email:
+            ${escapeHtml(
+              customer.email ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            📍 Location:
+            ${escapeHtml(
+              customer.location ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            <span class="small">
+              ID:
+              ${escapeHtml(
+                customer.id ||
+                ""
+              )}
+            </span>
+
+          </div>
+
+        `).join("");
+
+    }
+
+
+    /* -------------------------------
+       KARIGARS
+    ------------------------------- */
+
+    const karigars=
+      profiles.filter(
+        p=>p.role==="karigar"
+      );
+
+
+    const karigarsBox=
+      document.getElementById(
+        "adminKarigarsList"
+      );
+
+
+    if(karigars.length===0){
+
+      karigarsBox.innerHTML=
+        "<p class='small'>Abhi koi karigar nahi hai.</p>";
+
+    }else{
+
+      karigarsBox.innerHTML=
+        karigars.map(karigar=>`
+
+          <div class="admin-item">
+
+            <b>
+              🛠️
+              ${escapeHtml(
+                karigar.full_name ||
+                karigar.name ||
+                "Nahi diya"
+              )}
+            </b>
+
+            <br>
+
+            📱 Mobile:
+            ${escapeHtml(
+              karigar.phone ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            🔧 Service:
+            ${escapeHtml(
+              karigar.service ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            📍 Location:
+            ${escapeHtml(
+              karigar.location ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            <span class="small">
+              ID:
+              ${escapeHtml(
+                karigar.id ||
+                ""
+              )}
+            </span>
+
+          </div>
+
+        `).join("");
+
+    }
+
+
+    /* -------------------------------
+       ALL REQUESTS
+    ------------------------------- */
+
+    const requestsBox=
+      document.getElementById(
+        "adminRequestsList"
+      );
+
+
+    if(requests.length===0){
+
+      requestsBox.innerHTML=
+        "<p class='small'>Abhi koi service request nahi hai.</p>";
+
+    }else{
+
+      requestsBox.innerHTML=
+        requests.map(request=>`
+
+          <div class="admin-item">
+
+            <b>
+              #${escapeHtml(
+                request.id
+              )}
+              —
+              ${escapeHtml(
+                request.service ||
+                "Service"
+              )}
+            </b>
+
+            <br>
+
+            👤 Customer:
+            ${escapeHtml(
+              request.customer_name ||
+              request.name ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            📱 Mobile:
+            ${escapeHtml(
+              request.phone ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            📍 Address:
+            ${escapeHtml(
+              request.address ||
+              request.location ||
+              "Nahi diya"
+            )}
+
+            <br>
+
+            📝 Problem:
+            ${escapeHtml(
+              request.description ||
+              request.details ||
+              "Not provided"
+            )}
+
+            <br>
+
+            📌 Status:
+            <span class="status">
+              ${escapeHtml(
+                request.status ||
+                "New"
+              )}
+            </span>
+
+            ${
+              request.karigar_id
+              ? `
+                <br>
+                🛠️ Karigar Assigned
+              `
+              : ""
+            }
+
+          </div>
+
+        `).join("");
+
+    }
+
+
+    showMessage(
+      "adminMessage",
+      "✅ Admin dashboard update ho gaya."
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "adminMessage",
+      "Server se connection nahi ho raha.",
+      true
+    );
 
   }
 
@@ -1008,6 +1603,7 @@ async function createRequest(){
 
 
     selectedService="";
+
 
     document
       .querySelectorAll(".service-btn")
@@ -1259,6 +1855,7 @@ async function loadRequests(){
 
         let buttons="";
 
+
         if(request.status==="New"){
 
           buttons=`
@@ -1424,11 +2021,6 @@ async function updateStatus(id,status){
     return;
   }
 
-
-  /*
-    Frontend safety:
-    Cancel intentionally blocked.
-  */
 
   if(status==="Cancelled"){
 
