@@ -103,6 +103,10 @@ button:hover{
   background:#c62828;
 }
 
+.btn-reset{
+  background:#6a1b9a;
+}
+
 .hidden{
   display:none!important;
 }
@@ -221,7 +225,10 @@ footer{
 
 <div class="container">
 
-<!-- AUTH -->
+<!-- =========================
+     AUTH
+========================= -->
+
 <div id="authSection" class="card">
 
   <h2>🔐 Account</h2>
@@ -240,11 +247,14 @@ footer{
   </select>
 
   <div id="karigarServiceBox" class="hidden">
-    <input id="karigarService" type="text"
+    <input
+      id="karigarService"
+      type="text"
       placeholder="Aap kaun sa kaam karte hain? e.g. Plumber">
   </div>
 
   <!-- LOCATION -->
+
   <div class="location-box">
 
     <h3>📍 Aapki Location</h3>
@@ -253,19 +263,25 @@ footer{
       Apna City/Area likhein ya GPS se current location lein.
     </p>
 
-    <input id="location"
+    <input
+      id="location"
       type="text"
       placeholder="Area / City e.g. Agra">
 
-    <input id="state"
+    <input
+      id="state"
       type="text"
       placeholder="State e.g. Uttar Pradesh">
 
-    <button class="btn-location" onclick="getCurrentLocation()">
+    <button
+      class="btn-location"
+      onclick="getCurrentLocation()">
       📍 Current Location Use Karein
     </button>
 
-    <div id="locationStatus" class="location-status">
+    <div
+      id="locationStatus"
+      class="location-status">
       Location abhi set nahi hai
     </div>
 
@@ -278,21 +294,118 @@ footer{
     📝 Signup
   </button>
 
-  <button class="btn-secondary" onclick="login()">
+  <button
+    class="btn-secondary"
+    onclick="login()">
     🔑 Login
   </button>
 
-  <p id="authMessage" class="small" style="margin-top:10px;"></p>
+  <!-- PASSWORD RESET BUTTON -->
+
+  <button
+    class="btn-reset"
+    onclick="showForgotPassword()">
+    🔐 Password Bhool Gaye?
+  </button>
+
+  <p
+    id="authMessage"
+    class="small"
+    style="margin-top:10px;">
+  </p>
 
 </div>
 
 
-<!-- LOGGED USER -->
-<div id="userSection" class="hidden">
+<!-- =========================
+     FORGOT PASSWORD
+========================= -->
+
+<div
+  id="forgotPasswordSection"
+  class="card hidden">
+
+  <h2>🔐 Password Reset</h2>
+
+  <p class="small">
+    Apne registered email par password reset link mangwayein.
+  </p>
+
+  <input
+    id="resetEmail"
+    type="email"
+    placeholder="Registered Email">
+
+  <button onclick="sendPasswordReset()">
+    📩 Reset Link Bhejein
+  </button>
+
+  <button
+    class="btn-secondary"
+    onclick="hideForgotPassword()">
+    ⬅️ Login Par Wapas
+  </button>
+
+  <p
+    id="resetMessage"
+    class="small"
+    style="margin-top:10px;">
+  </p>
+
+</div>
+
+
+<!-- =========================
+     NEW PASSWORD
+========================= -->
+
+<div
+  id="newPasswordSection"
+  class="card hidden">
+
+  <h2>🔑 Naya Password Set Karein</h2>
+
+  <p class="small">
+    Apna naya password enter karein.
+  </p>
+
+  <input
+    id="newPassword"
+    type="password"
+    placeholder="Naya Password">
+
+  <input
+    id="confirmNewPassword"
+    type="password"
+    placeholder="Naya Password Dobara">
+
+  <button onclick="resetPassword()">
+    ✅ Password Change Karein
+  </button>
+
+  <p
+    id="newPasswordMessage"
+    class="small"
+    style="margin-top:10px;">
+  </p>
+
+</div>
+
+
+<!-- =========================
+     LOGGED USER
+========================= -->
+
+<div
+  id="userSection"
+  class="hidden">
 
   <div class="card">
 
-    <h2>👋 Welcome <span id="userName"></span></h2>
+    <h2>
+      👋 Welcome
+      <span id="userName"></span>
+    </h2>
 
     <p>
       📱 <span id="userPhone"></span>
@@ -302,81 +415,168 @@ footer{
       📍 <span id="userLocation"></span>
     </p>
 
-    <p id="userRole" class="small"></p>
+    <p
+      id="userRole"
+      class="small">
+    </p>
 
-    <button class="logout" onclick="logout()">
+    <button
+      class="logout"
+      onclick="logout()">
       Logout
     </button>
 
   </div>
 
 
-  <!-- CUSTOMER -->
+  <!-- =========================
+       CUSTOMER
+  ========================= -->
+
   <div id="customerSection">
 
     <div class="card">
 
-      <h2>🛠️ Kaunsa kaam karwana hai?</h2>
+      <h2>
+        🛠️ Kaunsa kaam karwana hai?
+      </h2>
 
       <div class="service-grid">
 
-        <button class="service-btn" onclick="selectService(this,'Plumber')">🚰 Plumber</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Plumber')">
+          🚰 Plumber
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Electrician')">⚡ Electrician</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Electrician')">
+          ⚡ Electrician
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Carpenter')">🪚 Carpenter</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Carpenter')">
+          🪚 Carpenter
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Painter')">🎨 Painter</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Painter')">
+          🎨 Painter
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'AC Repair')">❄️ AC Repair</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'AC Repair')">
+          ❄️ AC Repair
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Washing Machine Repair')">🧺 Washing Machine</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Washing Machine Repair')">
+          🧺 Washing Machine
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'TV Repair')">📺 TV Repair</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'TV Repair')">
+          📺 TV Repair
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Gardener/Mali')">🌱 Mali</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Gardener/Mali')">
+          🌱 Mali
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Generator Mechanic')">🔧 Generator</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Generator Mechanic')">
+          🔧 Generator
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Puncture/Tyre Replacement')">🛞 Puncture/Tyre</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Puncture/Tyre Replacement')">
+          🛞 Puncture/Tyre
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Barber')">💈 Barber</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Barber')">
+          💈 Barber
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Physiotherapist')">🧑‍⚕️ Physiotherapist</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Physiotherapist')">
+          🧑‍⚕️ Physiotherapist
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Mehndi Artist')">🌸 Mehndi Artist</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Mehndi Artist')">
+          🌸 Mehndi Artist
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Carpet Cleaning')">🧹 Carpet Cleaning</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Carpet Cleaning')">
+          🧹 Carpet Cleaning
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Gutter Cleaning')">🧽 Gutter Cleaning</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Gutter Cleaning')">
+          🧽 Gutter Cleaning
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Home Cleaning')">🏠 Home Cleaning</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Home Cleaning')">
+          🏠 Home Cleaning
+        </button>
 
-        <button class="service-btn" onclick="selectService(this,'Other')">🔨 Other</button>
+        <button
+          class="service-btn"
+          onclick="selectService(this,'Other')">
+          🔨 Other
+        </button>
 
       </div>
 
-      <input id="selectedService"
+      <input
+        id="selectedService"
         type="hidden">
 
-      <textarea id="details"
-        placeholder="Kaam ke baare mein thoda detail likhein..."></textarea>
+      <textarea
+        id="details"
+        placeholder="Kaam ke baare mein thoda detail likhein...">
+      </textarea>
 
       <button onclick="submitRequest()">
         📩 Karigar Bulayein
       </button>
 
-      <p id="requestMessage" class="small"></p>
+      <p
+        id="requestMessage"
+        class="small">
+      </p>
 
     </div>
 
 
     <!-- TRACK -->
+
     <div class="card">
 
       <h2>📋 Mere Requests</h2>
 
-      <button class="btn-secondary" onclick="loadCustomerRequests()">
+      <button
+        class="btn-secondary"
+        onclick="loadCustomerRequests()">
         🔄 Status Check Karein
       </button>
 
@@ -387,8 +587,13 @@ footer{
   </div>
 
 
-  <!-- KARIGAR -->
-  <div id="karigarSection" class="hidden">
+  <!-- =========================
+       KARIGAR
+  ========================= -->
+
+  <div
+    id="karigarSection"
+    class="hidden">
 
     <div class="card">
 
@@ -421,7 +626,9 @@ footer{
           Location load ho rahi hai...
         </p>
 
-        <button class="btn-location" onclick="updateKarigarLocation()">
+        <button
+          class="btn-location"
+          onclick="updateKarigarLocation()">
           📍 Location Update Karein
         </button>
 
@@ -470,11 +677,15 @@ let currentProfile = null;
 
 function roleChanged(){
 
-  const role = document.getElementById("role").value;
+  const role =
+    document.getElementById("role").value;
 
   document
     .getElementById("karigarServiceBox")
-    .classList.toggle("hidden", role !== "karigar");
+    .classList.toggle(
+      "hidden",
+      role !== "karigar"
+    );
 }
 
 
@@ -484,7 +695,10 @@ function roleChanged(){
 
 function getCurrentLocation(){
 
-  const status = document.getElementById("locationStatus");
+  const status =
+    document.getElementById(
+      "locationStatus"
+    );
 
   if(!navigator.geolocation){
 
@@ -497,37 +711,52 @@ function getCurrentLocation(){
   status.innerText =
     "📍 Location mil rahi hai... Please wait.";
 
+
   navigator.geolocation.getCurrentPosition(
 
     async function(position){
 
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
+      const lat =
+        position.coords.latitude;
 
-      document.getElementById("latitude").value = lat;
-      document.getElementById("longitude").value = lng;
+      const lng =
+        position.coords.longitude;
+
+
+      document.getElementById(
+        "latitude"
+      ).value = lat;
+
+
+      document.getElementById(
+        "longitude"
+      ).value = lng;
+
 
       status.innerText =
         "✅ GPS Location mil gayi.";
 
-      /*
-       Reverse geocoding.
-       OpenStreetMap Nominatim ka use.
-      */
 
       try{
 
-        const response = await fetch(
-          "https://nominatim.openstreetmap.org/reverse?format=json&lat="
-          + lat
-          + "&lon="
-          + lng
-          + "&zoom=10&addressdetails=1"
-        );
+        const response =
+          await fetch(
+            "https://nominatim.openstreetmap.org/reverse?format=json&lat="
+            + lat
+            + "&lon="
+            + lng
+            + "&zoom=10&addressdetails=1"
+          );
 
-        const data = await response.json();
 
-        if(data && data.address){
+        const data =
+          await response.json();
+
+
+        if(
+          data &&
+          data.address
+        ){
 
           const city =
             data.address.city ||
@@ -536,25 +765,38 @@ function getCurrentLocation(){
             data.address.municipality ||
             "";
 
+
           const state =
-            data.address.state || "";
+            data.address.state ||
+            "";
+
 
           if(city){
 
-            document.getElementById("location").value =
-              city;
+            document.getElementById(
+              "location"
+            ).value = city;
+
           }
+
 
           if(state){
 
-            document.getElementById("state").value =
-              state;
+            document.getElementById(
+              "state"
+            ).value = state;
+
           }
+
 
           status.innerText =
             "✅ Location set: "
             + (city || "Current Location")
-            + (state ? ", " + state : "");
+            + (
+              state
+                ? ", " + state
+                : ""
+            );
 
         }
 
@@ -567,6 +809,7 @@ function getCurrentLocation(){
 
     },
 
+
     function(error){
 
       status.innerText =
@@ -574,12 +817,15 @@ function getCurrentLocation(){
 
     },
 
+
     {
       enableHighAccuracy:true,
       timeout:15000,
       maximumAge:0
     }
+
   );
+
 }
 
 
@@ -590,46 +836,84 @@ function getCurrentLocation(){
 async function signup(){
 
   const name =
-    document.getElementById("name").value.trim();
+    document.getElementById(
+      "name"
+    ).value.trim();
+
 
   const phone =
-    document.getElementById("phone").value.trim();
+    document.getElementById(
+      "phone"
+    ).value.trim();
+
 
   const email =
-    document.getElementById("email").value.trim();
+    document.getElementById(
+      "email"
+    ).value.trim();
+
 
   const password =
-    document.getElementById("password").value;
+    document.getElementById(
+      "password"
+    ).value;
+
 
   const role =
-    document.getElementById("role").value;
+    document.getElementById(
+      "role"
+    ).value;
+
 
   const service =
-    document.getElementById("karigarService").value.trim();
+    document.getElementById(
+      "karigarService"
+    ).value.trim();
+
 
   const location =
-    document.getElementById("location").value.trim();
+    document.getElementById(
+      "location"
+    ).value.trim();
+
 
   const state =
-    document.getElementById("state").value.trim();
+    document.getElementById(
+      "state"
+    ).value.trim();
+
 
   const latitude =
-    document.getElementById("latitude").value;
+    document.getElementById(
+      "latitude"
+    ).value;
+
 
   const longitude =
-    document.getElementById("longitude").value;
+    document.getElementById(
+      "longitude"
+    ).value;
+
 
   const msg =
-    document.getElementById("authMessage");
+    document.getElementById(
+      "authMessage"
+    );
 
 
-  if(!name || !phone || !email || !password){
+  if(
+    !name ||
+    !phone ||
+    !email ||
+    !password
+  ){
 
     msg.innerText =
       "❌ Naam, mobile, email aur password zaroori hai.";
 
     return;
   }
+
 
   if(!location){
 
@@ -646,54 +930,68 @@ async function signup(){
 
   try{
 
-    const response = await fetch(
-      API_BASE + "/api/auth/signup",
-      {
-        method:"POST",
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/auth/signup",
+        {
+          method:"POST",
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-        body:JSON.stringify({
+          body:JSON.stringify({
 
-          name:name,
-          full_name:name,
+            name:name,
 
-          phone:phone,
+            full_name:name,
 
-          email:email,
+            phone:phone,
 
-          password:password,
+            email:email,
 
-          role:role,
+            password:password,
 
-          service:service,
+            role:role,
 
-          location:location,
+            service:service,
 
-          state:state,
+            location:location,
 
-          latitude:latitude
-            ? Number(latitude)
-            : null,
+            state:state,
 
-          longitude:longitude
-            ? Number(longitude)
-            : null
+            latitude:
+              latitude
+                ? Number(latitude)
+                : null,
 
-        })
-      }
-    );
+            longitude:
+              longitude
+                ? Number(longitude)
+                : null
+
+          })
+        }
+      );
 
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
-    if(!response.ok || data.success === false){
+
+    if(
+      !response.ok ||
+      data.success === false
+    ){
 
       msg.innerText =
         "❌ " +
-        (data.message || "Signup failed.");
+        (
+          data.message ||
+          "Signup failed."
+        );
 
       return;
     }
@@ -702,10 +1000,17 @@ async function signup(){
     msg.innerText =
       "✅ Signup successful! Ab Login karein.";
 
+
+    document.getElementById(
+      "password"
+    ).value = "";
+
+
   }catch(error){
 
     msg.innerText =
-      "❌ Server error: " + error.message;
+      "❌ Server error: " +
+      error.message;
 
   }
 
@@ -719,13 +1024,21 @@ async function signup(){
 async function login(){
 
   const email =
-    document.getElementById("email").value.trim();
+    document.getElementById(
+      "email"
+    ).value.trim();
+
 
   const password =
-    document.getElementById("password").value;
+    document.getElementById(
+      "password"
+    ).value;
+
 
   const msg =
-    document.getElementById("authMessage");
+    document.getElementById(
+      "authMessage"
+    );
 
 
   if(!email || !password){
@@ -743,34 +1056,44 @@ async function login(){
 
   try{
 
-    const response = await fetch(
-      API_BASE + "/api/auth/login",
-      {
-        method:"POST",
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/auth/login",
+        {
+          method:"POST",
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-        body:JSON.stringify({
+          body:JSON.stringify({
 
-          email:email,
+            email:email,
 
-          password:password
+            password:password
 
-        })
-      }
-    );
-
-
-    const data = await response.json();
+          })
+        }
+      );
 
 
-    if(!response.ok || data.success === false){
+    const data =
+      await response.json();
+
+
+    if(
+      !response.ok ||
+      data.success === false
+    ){
 
       msg.innerText =
         "❌ " +
-        (data.message || "Login failed.");
+        (
+          data.message ||
+          "Login failed."
+        );
 
       return;
     }
@@ -780,6 +1103,7 @@ async function login(){
       data.access_token ||
       data.session?.access_token ||
       "";
+
 
     const refreshToken =
       data.refresh_token ||
@@ -804,7 +1128,9 @@ async function login(){
 
     localStorage.setItem(
       "heyKarigarProfile",
-      JSON.stringify(currentProfile)
+      JSON.stringify(
+        currentProfile
+      )
     );
 
 
@@ -820,13 +1146,456 @@ async function login(){
     );
 
 
-    showLoggedInUser(currentProfile);
+    showLoggedInUser(
+      currentProfile
+    );
 
 
   }catch(error){
 
     msg.innerText =
-      "❌ Server error: " + error.message;
+      "❌ Server error: " +
+      error.message;
+
+  }
+
+}
+
+
+/* =========================
+   FORGOT PASSWORD SCREEN
+========================= */
+
+function showForgotPassword(){
+
+  document
+    .getElementById(
+      "authSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "newPasswordSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "forgotPasswordSection"
+    )
+    .classList.remove("hidden");
+
+
+  const currentEmail =
+    document.getElementById(
+      "email"
+    ).value.trim();
+
+
+  if(currentEmail){
+
+    document.getElementById(
+      "resetEmail"
+    ).value =
+      currentEmail;
+
+  }
+
+}
+
+
+/* =========================
+   HIDE FORGOT PASSWORD
+========================= */
+
+function hideForgotPassword(){
+
+  document
+    .getElementById(
+      "forgotPasswordSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "newPasswordSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "authSection"
+    )
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================
+   SEND RESET EMAIL
+========================= */
+
+async function sendPasswordReset(){
+
+  const email =
+    document.getElementById(
+      "resetEmail"
+    ).value.trim();
+
+
+  const msg =
+    document.getElementById(
+      "resetMessage"
+    );
+
+
+  if(!email){
+
+    msg.innerText =
+      "❌ Registered email likhein.";
+
+    return;
+  }
+
+
+  msg.innerText =
+    "⏳ Reset link bheja ja raha hai...";
+
+
+  try{
+
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/auth/forgot-password",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            email:email
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      !response.ok ||
+      data.success === false
+    ){
+
+      msg.innerText =
+        "❌ " +
+        (
+          data.message ||
+          "Reset request failed."
+        );
+
+      return;
+    }
+
+
+    msg.innerText =
+      "✅ " +
+      (
+        data.message ||
+        "Reset link bhej diya gaya hai."
+      );
+
+
+  }catch(error){
+
+    msg.innerText =
+      "❌ Server error: " +
+      error.message;
+
+  }
+
+}
+
+
+/* =========================
+   GET RECOVERY TOKEN
+========================= */
+
+function getRecoveryAccessToken(){
+
+  const hash =
+    window.location.hash.startsWith("#")
+      ? window.location.hash.substring(1)
+      : window.location.hash;
+
+
+  if(!hash){
+
+    return "";
+  }
+
+
+  const params =
+    new URLSearchParams(hash);
+
+
+  if(
+    params.get("type") !==
+    "recovery"
+  ){
+
+    return "";
+  }
+
+
+  return (
+    params.get("access_token") ||
+    ""
+  );
+
+}
+
+
+/* =========================
+   CHECK RECOVERY MODE
+========================= */
+
+function checkRecoveryMode(){
+
+  const token =
+    getRecoveryAccessToken();
+
+
+  if(!token){
+
+    return false;
+  }
+
+
+  localStorage.setItem(
+    "heyKarigarRecoveryToken",
+    token
+  );
+
+
+  document
+    .getElementById(
+      "authSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "forgotPasswordSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "userSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "newPasswordSection"
+    )
+    .classList.remove("hidden");
+
+
+  document.getElementById(
+    "newPasswordMessage"
+  ).innerText =
+    "Naya password set karein.";
+
+
+  return true;
+
+}
+
+
+/* =========================
+   RESET PASSWORD
+========================= */
+
+async function resetPassword(){
+
+  const password =
+    document.getElementById(
+      "newPassword"
+    ).value;
+
+
+  const confirmPassword =
+    document.getElementById(
+      "confirmNewPassword"
+    ).value;
+
+
+  const token =
+    localStorage.getItem(
+      "heyKarigarRecoveryToken"
+    );
+
+
+  const msg =
+    document.getElementById(
+      "newPasswordMessage"
+    );
+
+
+  if(!token){
+
+    msg.innerText =
+      "❌ Reset link invalid ya expire ho gaya.";
+
+    return;
+  }
+
+
+  if(
+    !password ||
+    password.length < 6
+  ){
+
+    msg.innerText =
+      "❌ Password kam se kam 6 characters ka hona chahiye.";
+
+    return;
+  }
+
+
+  if(
+    password !==
+    confirmPassword
+  ){
+
+    msg.innerText =
+      "❌ Dono passwords same hone chahiye.";
+
+    return;
+  }
+
+
+  msg.innerText =
+    "⏳ Password update ho raha hai...";
+
+
+  try{
+
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/auth/reset-password",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+
+            access_token:token,
+
+            password:password
+
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      !response.ok ||
+      data.success === false
+    ){
+
+      msg.innerText =
+        "❌ " +
+        (
+          data.message ||
+          "Password update failed."
+        );
+
+      return;
+    }
+
+
+    localStorage.removeItem(
+      "heyKarigarRecoveryToken"
+    );
+
+
+    document.getElementById(
+      "newPassword"
+    ).value = "";
+
+
+    document.getElementById(
+      "confirmNewPassword"
+    ).value = "";
+
+
+    /*
+      URL se recovery token hata dete hain.
+    */
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+
+
+    msg.innerText =
+      "✅ Password change ho gaya. Ab login karein.";
+
+
+    setTimeout(
+      function(){
+
+        document
+          .getElementById(
+            "newPasswordSection"
+          )
+          .classList.add("hidden");
+
+
+        document
+          .getElementById(
+            "authSection"
+          )
+          .classList.remove("hidden");
+
+
+      },
+      1500
+    );
+
+
+  }catch(error){
+
+    msg.innerText =
+      "❌ Server error: " +
+      error.message;
 
   }
 
@@ -839,26 +1608,49 @@ async function login(){
 
 function showLoggedInUser(profile){
 
-  currentProfile = profile;
+  currentProfile =
+    profile;
 
 
   document
-    .getElementById("authSection")
+    .getElementById(
+      "authSection"
+    )
     .classList.add("hidden");
 
 
   document
-    .getElementById("userSection")
+    .getElementById(
+      "forgotPasswordSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "newPasswordSection"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "userSection"
+    )
     .classList.remove("hidden");
 
 
-  document.getElementById("userName").innerText =
+  document.getElementById(
+    "userName"
+  ).innerText =
     profile.name ||
     profile.full_name ||
     "User";
 
 
-  document.getElementById("userPhone").innerText =
+  document.getElementById(
+    "userPhone"
+  ).innerText =
     profile.phone ||
     "";
 
@@ -873,31 +1665,53 @@ function showLoggedInUser(profile){
     "";
 
 
-  document.getElementById("userLocation").innerText =
+  document.getElementById(
+    "userLocation"
+  ).innerText =
     location +
-    (state ? ", " + state : "");
+    (
+      state
+        ? ", " + state
+        : ""
+    );
 
 
-  document.getElementById("userRole").innerText =
+  document.getElementById(
+    "userRole"
+  ).innerText =
     profile.role === "karigar"
       ? "🔧 Karigar Account"
       : "👤 Customer Account";
 
 
-  if(profile.role === "karigar"){
+  if(
+    profile.role ===
+    "karigar"
+  ){
 
     document
-      .getElementById("customerSection")
+      .getElementById(
+        "customerSection"
+      )
       .classList.add("hidden");
 
+
     document
-      .getElementById("karigarSection")
+      .getElementById(
+        "karigarSection"
+      )
       .classList.remove("hidden");
 
 
-    document.getElementById("karigarLocation").innerText =
+    document.getElementById(
+      "karigarLocation"
+    ).innerText =
       location +
-      (state ? ", " + state : "");
+      (
+        state
+          ? ", " + state
+          : ""
+      );
 
 
     loadKarigarRequests();
@@ -905,11 +1719,16 @@ function showLoggedInUser(profile){
   }else{
 
     document
-      .getElementById("customerSection")
+      .getElementById(
+        "customerSection"
+      )
       .classList.remove("hidden");
 
+
     document
-      .getElementById("karigarSection")
+      .getElementById(
+        "karigarSection"
+      )
       .classList.add("hidden");
 
   }
@@ -921,21 +1740,37 @@ function showLoggedInUser(profile){
    SERVICE
 ========================= */
 
-function selectService(button, service){
+function selectService(
+  button,
+  service
+){
 
   document
-    .querySelectorAll(".service-btn")
-    .forEach(btn =>
-      btn.classList.remove("selected")
+    .querySelectorAll(
+      ".service-btn"
+    )
+    .forEach(
+      btn =>
+        btn.classList.remove(
+          "selected"
+        )
     );
 
 
-  button.classList.add("selected");
+  button.classList.add(
+    "selected"
+  );
 
-  selectedService = service;
 
-  document.getElementById("selectedService").value =
+  selectedService =
     service;
+
+
+  document.getElementById(
+    "selectedService"
+  ).value =
+    service;
+
 }
 
 
@@ -947,7 +1782,9 @@ async function submitRequest(){
 
   if(!currentProfile){
 
-    alert("Pehle login karein.");
+    alert(
+      "Pehle login karein."
+    );
 
     return;
   }
@@ -955,35 +1792,49 @@ async function submitRequest(){
 
   const service =
     selectedService ||
-    document.getElementById("selectedService").value;
+    document.getElementById(
+      "selectedService"
+    ).value;
 
 
   const details =
-    document.getElementById("details").value.trim();
+    document.getElementById(
+      "details"
+    ).value.trim();
 
 
   const location =
     currentProfile.location ||
-    document.getElementById("location").value.trim();
+    document.getElementById(
+      "location"
+    ).value.trim();
 
 
   const state =
     currentProfile.state ||
-    document.getElementById("state").value.trim();
+    document.getElementById(
+      "state"
+    ).value.trim();
 
 
   const latitude =
     currentProfile.latitude ||
-    document.getElementById("latitude").value;
+    document.getElementById(
+      "latitude"
+    ).value;
 
 
   const longitude =
     currentProfile.longitude ||
-    document.getElementById("longitude").value;
+    document.getElementById(
+      "longitude"
+    ).value;
 
 
   const msg =
-    document.getElementById("requestMessage");
+    document.getElementById(
+      "requestMessage"
+    );
 
 
   if(!service){
@@ -1010,61 +1861,75 @@ async function submitRequest(){
 
   try{
 
-    const response = await fetch(
-      API_BASE + "/api/requests",
-      {
-        method:"POST",
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/requests",
+        {
+          method:"POST",
 
-        headers:{
-          "Content-Type":"application/json",
+          headers:{
+            "Content-Type":
+              "application/json",
 
-          "Authorization":
-            "Bearer " +
-            (localStorage.getItem("heyKarigarToken") || "")
-        },
+            "Authorization":
+              "Bearer " +
+              (
+                localStorage.getItem(
+                  "heyKarigarToken"
+                ) || ""
+              )
+          },
 
-        body:JSON.stringify({
+          body:JSON.stringify({
 
-          name:
-            currentProfile.name ||
-            currentProfile.full_name ||
-            "",
+            customer_name:
+              currentProfile.name ||
+              currentProfile.full_name ||
+              "",
 
-          phone:
-            currentProfile.phone ||
-            "",
+            customer_id:
+              currentProfile.id ||
+              null,
 
-          location:location,
+            phone:
+              currentProfile.phone ||
+              "",
 
-          state:state,
+            address:
+              location +
+              (
+                state
+                  ? ", " + state
+                  : ""
+              ),
 
-          latitude:
-            latitude
-              ? Number(latitude)
-              : null,
+            service:
+              service,
 
-          longitude:
-            longitude
-              ? Number(longitude)
-              : null,
+            description:
+              details
 
-          service:service,
-
-          details:details
-
-        })
-      }
-    );
-
-
-    const data = await response.json();
+          })
+        }
+      );
 
 
-    if(!response.ok || data.success === false){
+    const data =
+      await response.json();
+
+
+    if(
+      !response.ok ||
+      data.success === false
+    ){
 
       msg.innerText =
         "❌ " +
-        (data.message || "Request failed.");
+        (
+          data.message ||
+          "Request failed."
+        );
 
       return;
     }
@@ -1074,13 +1939,20 @@ async function submitRequest(){
       "✅ Request successfully bhej di gayi!";
 
 
-    document.getElementById("details").value = "";
+    document.getElementById(
+      "details"
+    ).value = "";
 
 
     document
-      .querySelectorAll(".service-btn")
-      .forEach(btn =>
-        btn.classList.remove("selected")
+      .querySelectorAll(
+        ".service-btn"
+      )
+      .forEach(
+        btn =>
+          btn.classList.remove(
+            "selected"
+          )
       );
 
 
@@ -1093,7 +1965,8 @@ async function submitRequest(){
   }catch(error){
 
     msg.innerText =
-      "❌ Server error: " + error.message;
+      "❌ Server error: " +
+      error.message;
 
   }
 
@@ -1106,15 +1979,29 @@ async function submitRequest(){
 
 async function loadCustomerRequests(){
 
-  if(!currentProfile) return;
+  if(!currentProfile){
+
+    return;
+  }
 
 
-  const phone =
-    currentProfile.phone;
+  const customerId =
+    currentProfile.id;
 
 
   const box =
-    document.getElementById("customerRequests");
+    document.getElementById(
+      "customerRequests"
+    );
+
+
+  if(!customerId){
+
+    box.innerHTML =
+      "<p>❌ Customer ID nahi mila.</p>";
+
+    return;
+  }
 
 
   box.innerHTML =
@@ -1123,21 +2010,34 @@ async function loadCustomerRequests(){
 
   try{
 
-    const response = await fetch(
-      API_BASE +
-      "/api/customer-requests?phone=" +
-      encodeURIComponent(phone)
-    );
+    const response =
+      await fetch(
+        API_BASE +
+        "/api/customer/requests/" +
+        encodeURIComponent(
+          customerId
+        )
+      );
 
 
     const data =
       await response.json();
 
 
+    if(
+      !response.ok ||
+      data.success === false
+    ){
+
+      box.innerHTML =
+        "<p>❌ Requests load nahi hui.</p>";
+
+      return;
+    }
+
+
     const requests =
-      data.requests ||
-      data.data ||
-      [];
+      data.requests || [];
 
 
     if(!requests.length){
@@ -1150,23 +2050,29 @@ async function loadCustomerRequests(){
 
 
     box.innerHTML =
-      requests.map(request => `
+      requests.map(
+        request => `
 
         <div class="request-card">
 
           <h3>
-            ${escapeHtml(request.service || "Service")}
+            ${escapeHtml(
+              request.service ||
+              "Service"
+            )}
           </h3>
 
           <p>
-            📍 ${escapeHtml(
-              request.location || "Location"
+            📍
+            ${escapeHtml(
+              request.address ||
+              "Location"
             )}
           </p>
 
           <p>
-            📝 ${escapeHtml(
-              request.details ||
+            📝
+            ${escapeHtml(
               request.description ||
               "Details nahi di gayi"
             )}
@@ -1176,14 +2082,16 @@ async function loadCustomerRequests(){
             Status:
             <span class="status">
               ${escapeHtml(
-                request.status || "New"
+                request.status ||
+                "New"
               )}
             </span>
           </p>
 
         </div>
 
-      `).join("");
+      `
+      ).join("");
 
 
   }catch(error){
@@ -1203,7 +2111,9 @@ async function loadCustomerRequests(){
 async function loadKarigarRequests(){
 
   const box =
-    document.getElementById("karigarRequests");
+    document.getElementById(
+      "karigarRequests"
+    );
 
 
   box.innerHTML =
@@ -1214,7 +2124,8 @@ async function loadKarigarRequests(){
 
     const response =
       await fetch(
-        API_BASE + "/api/requests"
+        API_BASE +
+        "/api/requests"
       );
 
 
@@ -1222,81 +2133,108 @@ async function loadKarigarRequests(){
       await response.json();
 
 
+    if(
+      !response.ok ||
+      data.success === false
+    ){
+
+      box.innerHTML =
+        "<p>❌ Requests load nahi hui.</p>";
+
+      return;
+    }
+
+
     let requests =
-      data.requests ||
-      data.data ||
-      [];
+      data.requests || [];
 
-
-    /*
-      Location priority:
-      Pehle same city/state wale requests.
-      Uske baad baaki requests.
-
-      Final secure filtering server-side mein
-      bhi add karenge.
-    */
 
     const myLocation =
       String(
-        currentProfile?.location || ""
+        currentProfile?.location ||
+        ""
       ).toLowerCase().trim();
 
 
     const myState =
       String(
-        currentProfile?.state || ""
+        currentProfile?.state ||
+        ""
       ).toLowerCase().trim();
 
 
-    requests.sort(function(a,b){
+    requests.sort(
+      function(a,b){
 
-      const aLocation =
-        String(
-          a.location || ""
-        ).toLowerCase();
-
-      const bLocation =
-        String(
-          b.location || ""
-        ).toLowerCase();
+        const aText =
+          String(
+            a.address || ""
+          ).toLowerCase();
 
 
-      const aState =
-        String(
-          a.state || ""
-        ).toLowerCase();
-
-      const bState =
-        String(
-          b.state || ""
-        ).toLowerCase();
+        const bText =
+          String(
+            b.address || ""
+          ).toLowerCase();
 
 
-      const aSame =
-        (myLocation &&
-         aLocation.includes(myLocation)) ||
-        (myState &&
-         aState.includes(myState));
+        const aSame =
+          (
+            myLocation &&
+            aText.includes(
+              myLocation
+            )
+          ) ||
+          (
+            myState &&
+            aText.includes(
+              myState
+            )
+          );
 
 
-      const bSame =
-        (myLocation &&
-         bLocation.includes(myLocation)) ||
-        (myState &&
-         bState.includes(myState));
+        const bSame =
+          (
+            myLocation &&
+            bText.includes(
+              myLocation
+            )
+          ) ||
+          (
+            myState &&
+            bText.includes(
+              myState
+            )
+          );
 
 
-      if(aSame && !bSame) return -1;
+        if(
+          aSame &&
+          !bSame
+        ){
 
-      if(!aSame && bSame) return 1;
-
-      return 0;
-
-    });
+          return -1;
+        }
 
 
-    updateKarigarStats(requests);
+        if(
+          !aSame &&
+          bSame
+        ){
+
+          return 1;
+        }
+
+
+        return 0;
+
+      }
+    );
+
+
+    updateKarigarStats(
+      requests
+    );
 
 
     if(!requests.length){
@@ -1309,21 +2247,22 @@ async function loadKarigarRequests(){
 
 
     box.innerHTML =
-      requests.map(request => `
+      requests.map(
+        request => `
 
         <div class="request-card">
 
           <h3>
             #${request.id || ""}
             ${escapeHtml(
-              request.service || "Service"
+              request.service ||
+              "Service"
             )}
           </h3>
 
           <p>
             👤 Customer:
             ${escapeHtml(
-              request.name ||
               request.customer_name ||
               "Not provided"
             )}
@@ -1332,14 +2271,15 @@ async function loadKarigarRequests(){
           <p>
             📞 Phone:
             ${escapeHtml(
-              request.phone || ""
+              request.phone ||
+              ""
             )}
           </p>
 
           <p>
             📍 Location:
             ${escapeHtml(
-              request.location ||
+              request.address ||
               "Not provided"
             )}
           </p>
@@ -1347,7 +2287,6 @@ async function loadKarigarRequests(){
           <p>
             📝 Problem:
             ${escapeHtml(
-              request.details ||
               request.description ||
               "Not provided"
             )}
@@ -1357,36 +2296,54 @@ async function loadKarigarRequests(){
             Status:
             <span class="status">
               ${escapeHtml(
-                request.status || "New"
+                request.status ||
+                "New"
               )}
             </span>
           </p>
 
 
-          <button onclick="updateRequestStatus(${request.id},'Accepted')">
+          <button
+            onclick="updateRequestStatus(
+              ${request.id},
+              'Accepted'
+            )">
             ✅ Accept
           </button>
 
+
           <button
             class="btn-secondary"
-            onclick="updateRequestStatus(${request.id},'In Progress')">
+            onclick="updateRequestStatus(
+              ${request.id},
+              'In Progress'
+            )">
             🔧 In Progress
           </button>
 
+
           <button
-            onclick="updateRequestStatus(${request.id},'Completed')">
+            onclick="updateRequestStatus(
+              ${request.id},
+              'Completed'
+            )">
             ✔️ Completed
           </button>
 
+
           <button
             class="btn-danger"
-            onclick="updateRequestStatus(${request.id},'Cancelled')">
+            onclick="updateRequestStatus(
+              ${request.id},
+              'Cancelled'
+            )">
             ❌ Cancel
           </button>
 
         </div>
 
-      `).join("");
+      `
+      ).join("");
 
 
   }catch(error){
@@ -1403,7 +2360,9 @@ async function loadKarigarRequests(){
    STATS
 ========================= */
 
-function updateKarigarStats(requests){
+function updateKarigarStats(
+  requests
+){
 
   const total =
     requests.length;
@@ -1411,26 +2370,41 @@ function updateKarigarStats(requests){
 
   const newCount =
     requests.filter(
-      r => String(r.status).toLowerCase() === "new"
+      r =>
+        String(
+          r.status || ""
+        ).toLowerCase() ===
+        "new"
     ).length;
 
 
   const completed =
     requests.filter(
-      r => String(r.status).toLowerCase() === "completed"
+      r =>
+        String(
+          r.status || ""
+        ).toLowerCase() ===
+        "completed"
     ).length;
 
 
-  document.getElementById("totalRequests").innerText =
+  document.getElementById(
+    "totalRequests"
+  ).innerText =
     total;
 
 
-  document.getElementById("newRequests").innerText =
+  document.getElementById(
+    "newRequests"
+  ).innerText =
     newCount;
 
 
-  document.getElementById("completedRequests").innerText =
+  document.getElementById(
+    "completedRequests"
+  ).innerText =
     completed;
+
 }
 
 
@@ -1438,7 +2412,10 @@ function updateKarigarStats(requests){
    STATUS UPDATE
 ========================= */
 
-async function updateRequestStatus(id,status){
+async function updateRequestStatus(
+  id,
+  status
+){
 
   try{
 
@@ -1449,14 +2426,19 @@ async function updateRequestStatus(id,status){
         id +
         "/status",
         {
-          method:"PATCH",
+          method:"PUT",
 
           headers:{
-            "Content-Type":"application/json",
+            "Content-Type":
+              "application/json",
 
             "Authorization":
               "Bearer " +
-              (localStorage.getItem("heyKarigarToken") || "")
+              (
+                localStorage.getItem(
+                  "heyKarigarToken"
+                ) || ""
+              )
           },
 
           body:JSON.stringify({
@@ -1470,11 +2452,17 @@ async function updateRequestStatus(id,status){
       await response.json();
 
 
-    if(!response.ok || data.success === false){
+    if(
+      !response.ok ||
+      data.success === false
+    ){
 
       alert(
         "❌ " +
-        (data.message || "Status update failed.")
+        (
+          data.message ||
+          "Status update failed."
+        )
       );
 
       return;
@@ -1482,7 +2470,8 @@ async function updateRequestStatus(id,status){
 
 
     alert(
-      "✅ Status: " + status
+      "✅ Status: " +
+      status
     );
 
 
@@ -1516,85 +2505,122 @@ async function updateKarigarLocation(){
   getCurrentLocation();
 
 
-  setTimeout(async function(){
+  setTimeout(
+    async function(){
 
-    const location =
-      document.getElementById("location").value.trim();
-
-    const state =
-      document.getElementById("state").value.trim();
-
-    const latitude =
-      document.getElementById("latitude").value;
-
-    const longitude =
-      document.getElementById("longitude").value;
+      const location =
+        document.getElementById(
+          "location"
+        ).value.trim();
 
 
-    if(!location){
-
-      alert(
-        "❌ Pehle location set karein."
-      );
-
-      return;
-    }
+      const state =
+        document.getElementById(
+          "state"
+        ).value.trim();
 
 
-    /*
-      Profile update endpoint agar server par
-      available hai to location update hogi.
-    */
+      const latitude =
+        document.getElementById(
+          "latitude"
+        ).value;
 
-    try{
 
-      const response =
-        await fetch(
-          API_BASE +
-          "/api/profile/" +
-          currentProfile.id,
-          {
-            method:"PATCH",
+      const longitude =
+        document.getElementById(
+          "longitude"
+        ).value;
 
-            headers:{
-              "Content-Type":"application/json",
 
-              "Authorization":
-                "Bearer " +
-                (localStorage.getItem("heyKarigarToken") || "")
-            },
+      if(!location){
 
-            body:JSON.stringify({
-
-              location:location,
-
-              state:state,
-
-              latitude:
-                latitude
-                  ? Number(latitude)
-                  : null,
-
-              longitude:
-                longitude
-                  ? Number(longitude)
-                  : null
-
-            })
-          }
+        alert(
+          "❌ Pehle location set karein."
         );
 
+        return;
+      }
 
-      if(response.ok){
+
+      try{
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/api/profile/" +
+            currentProfile.id +
+            "/location",
+            {
+              method:"PUT",
+
+              headers:{
+                "Content-Type":
+                  "application/json",
+
+                "Authorization":
+                  "Bearer " +
+                  (
+                    localStorage.getItem(
+                      "heyKarigarToken"
+                    ) || ""
+                  )
+              },
+
+              body:JSON.stringify({
+
+                location:
+                  location,
+
+                state:
+                  state,
+
+                latitude:
+                  latitude
+                    ? Number(latitude)
+                    : null,
+
+                longitude:
+                  longitude
+                    ? Number(longitude)
+                    : null
+
+              })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if(
+          !response.ok ||
+          data.success === false
+        ){
+
+          alert(
+            "❌ " +
+            (
+              data.message ||
+              "Location update failed."
+            )
+          );
+
+          return;
+        }
+
 
         currentProfile.location =
           location;
 
+
         currentProfile.state =
           state;
 
+
         currentProfile.latitude =
           latitude;
+
 
         currentProfile.longitude =
           longitude;
@@ -1602,7 +2628,9 @@ async function updateKarigarLocation(){
 
         localStorage.setItem(
           "heyKarigarProfile",
-          JSON.stringify(currentProfile)
+          JSON.stringify(
+            currentProfile
+          )
         );
 
 
@@ -1610,30 +2638,40 @@ async function updateKarigarLocation(){
           "karigarLocation"
         ).innerText =
           location +
-          (state ? ", " + state : "");
+          (
+            state
+              ? ", " + state
+              : ""
+          );
+
+
+        document.getElementById(
+          "userLocation"
+        ).innerText =
+          location +
+          (
+            state
+              ? ", " + state
+              : ""
+          );
 
 
         alert(
           "✅ Karigar location update ho gayi."
         );
 
-      }else{
+
+      }catch(error){
 
         alert(
-          "⚠️ Location server par update endpoint abhi available nahi hai."
+          "❌ Location update error."
         );
 
       }
 
-    }catch(error){
-
-      alert(
-        "❌ Location update error."
-      );
-
-    }
-
-  },2000);
+    },
+    2500
+  );
 
 }
 
@@ -1648,19 +2686,28 @@ function logout(){
     "heyKarigarProfile"
   );
 
+
   localStorage.removeItem(
     "heyKarigarToken"
   );
+
 
   localStorage.removeItem(
     "heyKarigarRefreshToken"
   );
 
 
-  currentProfile = null;
+  localStorage.removeItem(
+    "heyKarigarRecoveryToken"
+  );
+
+
+  currentProfile =
+    null;
 
 
   location.reload();
+
 }
 
 
@@ -1668,24 +2715,59 @@ function logout(){
    ESCAPE HTML
 ========================= */
 
-function escapeHtml(value){
+function escapeHtml(
+  value
+){
 
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
 }
 
 
 /* =========================
-   AUTO LOGIN
+   AUTO LOGIN + RECOVERY
 ========================= */
 
 window.addEventListener(
   "load",
   function(){
+
+    /*
+      Password recovery ko
+      auto-login se pehle check karenge.
+    */
+
+    const recoveryMode =
+      checkRecoveryMode();
+
+
+    if(recoveryMode){
+
+      return;
+    }
+
 
     const savedProfile =
       localStorage.getItem(
@@ -1698,11 +2780,15 @@ window.addEventListener(
       try{
 
         currentProfile =
-          JSON.parse(savedProfile);
+          JSON.parse(
+            savedProfile
+          );
+
 
         showLoggedInUser(
           currentProfile
         );
+
 
       }catch(error){
 
