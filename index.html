@@ -70,8 +70,9 @@ textarea{
 }
 
 textarea{
-  min-height:100px;
+  min-height:120px;
   resize:vertical;
+  display:block;
 }
 
 button{
@@ -205,6 +206,7 @@ footer{
 }
 
 @media(max-width:600px){
+
   .service-grid{
     grid-template-columns:repeat(2,1fr);
   }
@@ -233,13 +235,25 @@ footer{
 
   <h2>🔐 Account</h2>
 
-  <input id="name" type="text" placeholder="Aapka naam">
+  <input
+    id="name"
+    type="text"
+    placeholder="Aapka naam">
 
-  <input id="phone" type="tel" placeholder="Mobile number">
+  <input
+    id="phone"
+    type="tel"
+    placeholder="Mobile number">
 
-  <input id="email" type="email" placeholder="Email">
+  <input
+    id="email"
+    type="email"
+    placeholder="Email">
 
-  <input id="password" type="password" placeholder="Password">
+  <input
+    id="password"
+    type="password"
+    placeholder="Password">
 
   <select id="role" onchange="roleChanged()">
     <option value="customer">Customer</option>
@@ -247,10 +261,12 @@ footer{
   </select>
 
   <div id="karigarServiceBox" class="hidden">
+
     <input
       id="karigarService"
       type="text"
       placeholder="Aap kaun sa kaam karte hain? e.g. Plumber">
+
   </div>
 
   <!-- LOCATION -->
@@ -285,8 +301,13 @@ footer{
       Location abhi set nahi hai
     </div>
 
-    <input id="latitude" type="hidden">
-    <input id="longitude" type="hidden">
+    <input
+      id="latitude"
+      type="hidden">
+
+    <input
+      id="longitude"
+      type="hidden">
 
   </div>
 
@@ -299,8 +320,6 @@ footer{
     onclick="login()">
     🔑 Login
   </button>
-
-  <!-- PASSWORD RESET BUTTON -->
 
   <button
     class="btn-reset"
@@ -412,7 +431,20 @@ footer{
     </p>
 
     <p>
-      📍 <span id="userLocation"></span>
+      📍 <span id="userLocation">Location not set</span>
+    </p>
+
+    <!-- LOCATION UPDATE -->
+
+    <button
+      class="btn-location"
+      onclick="getCurrentLocation()">
+      📍 Location Set / Update Karein
+    </button>
+
+    <p
+      id="loggedLocationStatus"
+      class="location-status">
     </p>
 
     <p
@@ -553,8 +585,8 @@ footer{
 
       <textarea
         id="details"
-        placeholder="Kaam ke baare mein thoda detail likhein...">
-      </textarea>
+        rows="5"
+        placeholder="Kaam ke baare mein detail likhein..."></textarea>
 
       <button onclick="submitRequest()">
         📩 Karigar Bulayein
@@ -628,7 +660,7 @@ footer{
 
         <button
           class="btn-location"
-          onclick="updateKarigarLocation()">
+          onclick="getCurrentLocation()">
           📍 Location Update Karein
         </button>
 
@@ -664,7 +696,8 @@ footer{
 
 <script>
 
-const API_BASE = window.location.origin;
+const API_BASE =
+  window.location.origin;
 
 let selectedService = "";
 
@@ -678,10 +711,14 @@ let currentProfile = null;
 function roleChanged(){
 
   const role =
-    document.getElementById("role").value;
+    document.getElementById(
+      "role"
+    ).value;
 
   document
-    .getElementById("karigarServiceBox")
+    .getElementById(
+      "karigarServiceBox"
+    )
     .classList.toggle(
       "hidden",
       role !== "karigar"
@@ -693,23 +730,41 @@ function roleChanged(){
    LOCATION
 ========================= */
 
-function getCurrentLocation(){
+async function getCurrentLocation(){
+
+  if(!navigator.geolocation){
+
+    alert(
+      "❌ Is phone/browser mein GPS available nahi hai."
+    );
+
+    return;
+  }
+
 
   const status =
     document.getElementById(
       "locationStatus"
     );
 
-  if(!navigator.geolocation){
+  const loggedStatus =
+    document.getElementById(
+      "loggedLocationStatus"
+    );
+
+
+  if(status){
 
     status.innerText =
-      "❌ Is phone/browser mein GPS available nahi hai.";
-
-    return;
+      "📍 Location mil rahi hai... Please wait.";
   }
 
-  status.innerText =
-    "📍 Location mil rahi hai... Please wait.";
+
+  if(loggedStatus){
+
+    loggedStatus.innerText =
+      "📍 Location mil rahi hai...";
+  }
 
 
   navigator.geolocation.getCurrentPosition(
@@ -723,19 +778,35 @@ function getCurrentLocation(){
         position.coords.longitude;
 
 
-      document.getElementById(
-        "latitude"
-      ).value = lat;
+      const latInput =
+        document.getElementById(
+          "latitude"
+        );
+
+      const lngInput =
+        document.getElementById(
+          "longitude"
+        );
 
 
-      document.getElementById(
-        "longitude"
-      ).value = lng;
+      if(latInput){
+        latInput.value = lat;
+      }
 
 
-      status.innerText =
-        "✅ GPS Location mil gayi.";
+      if(lngInput){
+        lngInput.value = lng;
+      }
 
+
+      let city = "";
+      let state = "";
+
+
+      /*
+        GPS coordinates se city/state
+        nikalne ki koshish.
+      */
 
       try{
 
@@ -758,7 +829,7 @@ function getCurrentLocation(){
           data.address
         ){
 
-          const city =
+          city =
             data.address.city ||
             data.address.town ||
             data.address.village ||
@@ -766,44 +837,319 @@ function getCurrentLocation(){
             "";
 
 
-          const state =
+          state =
             data.address.state ||
             "";
 
 
-          if(city){
-
+          const locationInput =
             document.getElementById(
               "location"
-            ).value = city;
-
-          }
+            );
 
 
-          if(state){
-
+          const stateInput =
             document.getElementById(
               "state"
-            ).value = state;
+            );
+
+
+          if(
+            locationInput &&
+            city
+          ){
+
+            locationInput.value =
+              city;
 
           }
 
 
-          status.innerText =
-            "✅ Location set: "
-            + (city || "Current Location")
-            + (
-              state
-                ? ", " + state
-                : ""
-            );
+          if(
+            stateInput &&
+            state
+          ){
+
+            stateInput.value =
+              state;
+
+          }
 
         }
 
       }catch(error){
 
-        status.innerText =
-          "✅ GPS mil gaya. City manually bhi likh sakte hain.";
+        console.log(
+          "Reverse location error:",
+          error
+        );
+
+      }
+
+
+      /*
+        Agar reverse geocoding se city
+        na mile to manually entered value
+        use karenge.
+      */
+
+      if(!city){
+
+        const locationInput =
+          document.getElementById(
+            "location"
+          );
+
+
+        if(locationInput){
+
+          city =
+            locationInput.value.trim();
+
+        }
+
+      }
+
+
+      if(!state){
+
+        const stateInput =
+          document.getElementById(
+            "state"
+          );
+
+
+        if(stateInput){
+
+          state =
+            stateInput.value.trim();
+
+        }
+
+      }
+
+
+      /*
+        Login ke baad location profile mein
+        save karni hai.
+      */
+
+      if(
+        currentProfile &&
+        currentProfile.id
+      ){
+
+        if(
+          !city
+        ){
+
+          alert(
+            "❌ City/Area nahi mila. Location field mein Area/City likhkar dobara try karein."
+          );
+
+          return;
+        }
+
+
+        try{
+
+          if(loggedStatus){
+
+            loggedStatus.innerText =
+              "⏳ Location profile mein save ho rahi hai...";
+          }
+
+
+          const response =
+            await fetch(
+              API_BASE +
+              "/api/profile/" +
+              currentProfile.id +
+              "/location",
+              {
+                method:"PUT",
+
+                headers:{
+                  "Content-Type":
+                    "application/json",
+
+                  "Authorization":
+                    "Bearer " +
+                    (
+                      localStorage.getItem(
+                        "heyKarigarToken"
+                      ) || ""
+                    )
+                },
+
+                body:JSON.stringify({
+
+                  location:
+                    city,
+
+                  state:
+                    state,
+
+                  latitude:
+                    Number(lat),
+
+                  longitude:
+                    Number(lng)
+
+                })
+              }
+            );
+
+
+          const data =
+            await response.json();
+
+
+          if(
+            !response.ok ||
+            data.success === false
+          ){
+
+            console.error(
+              "Location save error:",
+              data
+            );
+
+
+            if(loggedStatus){
+
+              loggedStatus.innerText =
+                "❌ Location save nahi hui.";
+            }
+
+
+            alert(
+              "❌ Location profile mein save nahi hui."
+            );
+
+            return;
+          }
+
+
+          /*
+            Current profile update.
+          */
+
+          currentProfile.location =
+            city;
+
+          currentProfile.state =
+            state;
+
+          currentProfile.latitude =
+            lat;
+
+          currentProfile.longitude =
+            lng;
+
+
+          localStorage.setItem(
+            "heyKarigarProfile",
+            JSON.stringify(
+              currentProfile
+            )
+          );
+
+
+          /*
+            Screen par location update.
+          */
+
+          const userLocation =
+            document.getElementById(
+              "userLocation"
+            );
+
+
+          if(userLocation){
+
+            userLocation.innerText =
+              city +
+              (
+                state
+                  ? ", " + state
+                  : ""
+              );
+
+          }
+
+
+          const karigarLocation =
+            document.getElementById(
+              "karigarLocation"
+            );
+
+
+          if(karigarLocation){
+
+            karigarLocation.innerText =
+              city +
+              (
+                state
+                  ? ", " + state
+                  : ""
+              );
+
+          }
+
+
+          if(status){
+
+            status.innerText =
+              "✅ Location successfully save ho gayi.";
+          }
+
+
+          if(loggedStatus){
+
+            loggedStatus.innerText =
+              "✅ Location successfully save ho gayi.";
+          }
+
+
+          alert(
+            "✅ Location successfully save ho gayi!"
+          );
+
+
+        }catch(error){
+
+          console.error(
+            "Location save error:",
+            error
+          );
+
+
+          if(loggedStatus){
+
+            loggedStatus.innerText =
+              "❌ Server error.";
+          }
+
+
+          alert(
+            "❌ Location save karte waqt server error aaya."
+          );
+
+        }
+
+      }else{
+
+        /*
+          Signup ke waqt sirf form fields
+          mein GPS values save hongi.
+        */
+
+        if(status){
+
+          status.innerText =
+            "✅ GPS Location mil gayi. Ab signup kar sakte hain.";
+        }
 
       }
 
@@ -812,8 +1158,29 @@ function getCurrentLocation(){
 
     function(error){
 
-      status.innerText =
-        "❌ Location permission allow karein.";
+      console.error(
+        "GPS Error:",
+        error
+      );
+
+
+      if(status){
+
+        status.innerText =
+          "❌ Location permission allow karein.";
+      }
+
+
+      if(loggedStatus){
+
+        loggedStatus.innerText =
+          "❌ Location permission allow karein.";
+      }
+
+
+      alert(
+        "❌ Browser ko location permission Allow karein."
+      );
 
     },
 
@@ -944,23 +1311,32 @@ async function signup(){
 
           body:JSON.stringify({
 
-            name:name,
+            name:
+              name,
 
-            full_name:name,
+            full_name:
+              name,
 
-            phone:phone,
+            phone:
+              phone,
 
-            email:email,
+            email:
+              email,
 
-            password:password,
+            password:
+              password,
 
-            role:role,
+            role:
+              role,
 
-            service:service,
+            service:
+              service,
 
-            location:location,
+            location:
+              location,
 
-            state:state,
+            state:
+              state,
 
             latitude:
               latitude
@@ -1070,9 +1446,11 @@ async function login(){
 
           body:JSON.stringify({
 
-            email:email,
+            email:
+              email,
 
-            password:password
+            password:
+              password
 
           })
         }
@@ -1282,7 +1660,8 @@ async function sendPasswordReset(){
           },
 
           body:JSON.stringify({
-            email:email
+            email:
+              email
           })
         }
       );
@@ -1510,9 +1889,11 @@ async function resetPassword(){
 
           body:JSON.stringify({
 
-            access_token:token,
+            access_token:
+              token,
 
-            password:password
+            password:
+              password
 
           })
         }
@@ -1554,10 +1935,6 @@ async function resetPassword(){
     ).value = "";
 
 
-    /*
-      URL se recovery token hata dete hain.
-    */
-
     window.history.replaceState(
       {},
       document.title,
@@ -1584,7 +1961,6 @@ async function resetPassword(){
             "authSection"
           )
           .classList.remove("hidden");
-
 
       },
       1500
@@ -1817,20 +2193,6 @@ async function submitRequest(){
     ).value.trim();
 
 
-  const latitude =
-    currentProfile.latitude ||
-    document.getElementById(
-      "latitude"
-    ).value;
-
-
-  const longitude =
-    currentProfile.longitude ||
-    document.getElementById(
-      "longitude"
-    ).value;
-
-
   const msg =
     document.getElementById(
       "requestMessage"
@@ -1846,10 +2208,23 @@ async function submitRequest(){
   }
 
 
+  if(!details){
+
+    msg.innerText =
+      "❌ Kaam ki thodi detail zaroor likhein.";
+
+    document.getElementById(
+      "details"
+    ).focus();
+
+    return;
+  }
+
+
   if(!location){
 
     msg.innerText =
-      "❌ Location zaroori hai.";
+      "❌ Location zaroori hai. Pehle Location Set / Update Karein.";
 
     return;
   }
@@ -1954,6 +2329,11 @@ async function submitRequest(){
             "selected"
           )
       );
+
+
+    document.getElementById(
+      "selectedService"
+    ).value = "";
 
 
     selectedService = "";
@@ -2302,7 +2682,6 @@ async function loadKarigarRequests(){
             </span>
           </p>
 
-
           <button
             onclick="updateRequestStatus(
               ${request.id},
@@ -2310,7 +2689,6 @@ async function loadKarigarRequests(){
             )">
             ✅ Accept
           </button>
-
 
           <button
             class="btn-secondary"
@@ -2321,7 +2699,6 @@ async function loadKarigarRequests(){
             🔧 In Progress
           </button>
 
-
           <button
             onclick="updateRequestStatus(
               ${request.id},
@@ -2329,7 +2706,6 @@ async function loadKarigarRequests(){
             )">
             ✔️ Completed
           </button>
-
 
           <button
             class="btn-danger"
@@ -2442,7 +2818,8 @@ async function updateRequestStatus(
           },
 
           body:JSON.stringify({
-            status:status
+            status:
+              status
           })
         }
       );
@@ -2486,192 +2863,6 @@ async function updateRequestStatus(
     );
 
   }
-
-}
-
-
-/* =========================
-   UPDATE KARIGAR LOCATION
-========================= */
-
-async function updateKarigarLocation(){
-
-  if(!currentProfile){
-
-    return;
-  }
-
-
-  getCurrentLocation();
-
-
-  setTimeout(
-    async function(){
-
-      const location =
-        document.getElementById(
-          "location"
-        ).value.trim();
-
-
-      const state =
-        document.getElementById(
-          "state"
-        ).value.trim();
-
-
-      const latitude =
-        document.getElementById(
-          "latitude"
-        ).value;
-
-
-      const longitude =
-        document.getElementById(
-          "longitude"
-        ).value;
-
-
-      if(!location){
-
-        alert(
-          "❌ Pehle location set karein."
-        );
-
-        return;
-      }
-
-
-      try{
-
-        const response =
-          await fetch(
-            API_BASE +
-            "/api/profile/" +
-            currentProfile.id +
-            "/location",
-            {
-              method:"PUT",
-
-              headers:{
-                "Content-Type":
-                  "application/json",
-
-                "Authorization":
-                  "Bearer " +
-                  (
-                    localStorage.getItem(
-                      "heyKarigarToken"
-                    ) || ""
-                  )
-              },
-
-              body:JSON.stringify({
-
-                location:
-                  location,
-
-                state:
-                  state,
-
-                latitude:
-                  latitude
-                    ? Number(latitude)
-                    : null,
-
-                longitude:
-                  longitude
-                    ? Number(longitude)
-                    : null
-
-              })
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if(
-          !response.ok ||
-          data.success === false
-        ){
-
-          alert(
-            "❌ " +
-            (
-              data.message ||
-              "Location update failed."
-            )
-          );
-
-          return;
-        }
-
-
-        currentProfile.location =
-          location;
-
-
-        currentProfile.state =
-          state;
-
-
-        currentProfile.latitude =
-          latitude;
-
-
-        currentProfile.longitude =
-          longitude;
-
-
-        localStorage.setItem(
-          "heyKarigarProfile",
-          JSON.stringify(
-            currentProfile
-          )
-        );
-
-
-        document.getElementById(
-          "karigarLocation"
-        ).innerText =
-          location +
-          (
-            state
-              ? ", " + state
-              : ""
-          );
-
-
-        document.getElementById(
-          "userLocation"
-        ).innerText =
-          location +
-          (
-            state
-              ? ", " + state
-              : ""
-          );
-
-
-        alert(
-          "✅ Karigar location update ho gayi."
-        );
-
-
-      }catch(error){
-
-        alert(
-          "❌ Location update error."
-        );
-
-      }
-
-    },
-    2500
-  );
 
 }
 
@@ -2753,11 +2944,6 @@ function escapeHtml(
 window.addEventListener(
   "load",
   function(){
-
-    /*
-      Password recovery ko
-      auto-login se pehle check karenge.
-    */
 
     const recoveryMode =
       checkRecoveryMode();
