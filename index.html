@@ -198,8 +198,6 @@ footer{
 
 <div class="container">
 
-<!-- ================= ACCOUNT ================= -->
-
 <div id="authSection" class="card">
 
   <h2>🔐 Account</h2>
@@ -266,8 +264,6 @@ footer{
 </div>
 
 
-<!-- ================= PROFILE ================= -->
-
 <div id="userSection" class="card hidden">
 
   <h2>👤 My Profile</h2>
@@ -294,8 +290,6 @@ footer{
 </div>
 
 
-<!-- ================= CUSTOMER ================= -->
-
 <div id="customerSection" class="card hidden">
 
   <h2>🔧 Service Request</h2>
@@ -311,122 +305,71 @@ footer{
 
   <div class="service-grid">
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Plumber')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Plumber')">
       🚰 Plumber
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Electrician')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Electrician')">
       ⚡ Electrician
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Carpenter')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Carpenter')">
       🪚 Carpenter
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Painter')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Painter')">
       🎨 Painter
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'AC Repair')"
-    >
+    <button class="service-btn" onclick="selectService(this,'AC Repair')">
       ❄️ AC Repair
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Washing Machine Repair')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Washing Machine Repair')">
       🧺 Washing Machine
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'TV Repair')"
-    >
+    <button class="service-btn" onclick="selectService(this,'TV Repair')">
       📺 TV Repair
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Gardener/Mali')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Gardener/Mali')">
       🌱 Gardener/Mali
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Generator Mechanic')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Generator Mechanic')">
       ⚙️ Generator Mechanic
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Puncture/Tyre Replacement')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Puncture/Tyre Replacement')">
       🛞 Puncture/Tyre
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Barber')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Barber')">
       💈 Barber
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Physiotherapist')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Physiotherapist')">
       🧑‍⚕️ Physiotherapist
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Mehndi Artist')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Mehndi Artist')">
       🌿 Mehndi Artist
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Carpet Cleaning')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Carpet Cleaning')">
       🧹 Carpet Cleaning
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Gutter Cleaning')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Gutter Cleaning')">
       🧽 Gutter Cleaning
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Home Cleaning')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Home Cleaning')">
       🏠 Home Cleaning
     </button>
 
-    <button
-      class="service-btn"
-      onclick="selectService(this,'Other')"
-    >
+    <button class="service-btn" onclick="selectService(this,'Other')">
       ➕ Other
     </button>
 
@@ -460,12 +403,7 @@ footer{
 </div>
 
 
-<!-- ================= CUSTOMER REQUESTS ================= -->
-
-<div
-  id="customerRequestsSection"
-  class="card hidden"
->
+<div id="customerRequestsSection" class="card hidden">
 
   <h2>📋 Meri Requests</h2>
 
@@ -474,12 +412,7 @@ footer{
 </div>
 
 
-<!-- ================= KARIGAR ================= -->
-
-<div
-  id="karigarSection"
-  class="card hidden"
->
+<div id="karigarSection" class="card hidden">
 
   <h2>🛠️ Karigar Dashboard</h2>
 
@@ -502,10 +435,7 @@ footer{
 
   </div>
 
-  <div
-    id="karigarMessage"
-    class="message hidden"
-  ></div>
+  <div id="karigarMessage" class="message hidden"></div>
 
   <div id="requestsList"></div>
 
@@ -527,9 +457,7 @@ let currentUser = null;
 let selectedService = "";
 
 
-/* =========================================
-   MESSAGE
-========================================= */
+/* MESSAGE */
 
 function showMessage(id,message,error=false){
 
@@ -550,9 +478,7 @@ function showMessage(id,message,error=false){
 }
 
 
-/* =========================================
-   ROLE CHANGE
-========================================= */
+/* ROLE CHANGE */
 
 document
   .getElementById("role")
@@ -562,108 +488,69 @@ document
       document.getElementById("karigarServiceBox");
 
     if(this.value==="karigar"){
-
       box.classList.remove("hidden");
-
     }else{
-
       box.classList.add("hidden");
-
     }
 
   });
 
 
-/* =========================================
-   SIGNUP
-========================================= */
+/* SIGNUP */
 
 async function signup(){
 
   const name=
-    document.getElementById("name")
-    .value.trim();
+    document.getElementById("name").value.trim();
 
   const phone=
-    document.getElementById("phone")
-    .value.trim();
+    document.getElementById("phone").value.trim();
 
   const email=
-    document.getElementById("email")
-    .value.trim();
+    document.getElementById("email").value.trim();
 
   const password=
-    document.getElementById("password")
-    .value;
+    document.getElementById("password").value;
 
   const role=
-    document.getElementById("role")
-    .value;
+    document.getElementById("role").value;
 
   const service=
-    document.getElementById("karigarService")
-    .value.trim();
+    document.getElementById("karigarService").value.trim();
 
 
   if(!name){
-
-    showMessage(
-      "authMessage",
-      "Naam zaroori hai",
-      true
-    );
-
+    showMessage("authMessage","Naam zaroori hai",true);
     return;
   }
-
 
   if(!phone){
-
-    showMessage(
-      "authMessage",
-      "Mobile number zaroori hai",
-      true
-    );
-
+    showMessage("authMessage","Mobile number zaroori hai",true);
     return;
   }
-
 
   if(!password){
-
-    showMessage(
-      "authMessage",
-      "Password zaroori hai",
-      true
-    );
-
+    showMessage("authMessage","Password zaroori hai",true);
     return;
   }
 
-
   if(password.length < 6){
-
     showMessage(
       "authMessage",
       "Password kam se kam 6 characters ka hona chahiye",
       true
     );
-
     return;
   }
 
-
   if(role==="karigar" && !service){
-
     showMessage(
       "authMessage",
       "Karigar ka kaam/service likhein",
       true
     );
-
     return;
   }
-
 
   showMessage(
     "authMessage",
@@ -686,17 +573,11 @@ async function signup(){
           body:JSON.stringify({
 
             name:name,
-
             full_name:name,
-
             phone:phone,
-
             email:email || null,
-
             password:password,
-
             role:role,
-
             service:service || null
 
           })
@@ -727,8 +608,7 @@ async function signup(){
     );
 
 
-    document.getElementById("password")
-      .value="";
+    document.getElementById("password").value="";
 
 
   }catch(error){
@@ -746,41 +626,33 @@ async function signup(){
 }
 
 
-/* =========================================
-   LOGIN
-========================================= */
+/* LOGIN */
 
 async function login(){
 
   const phone=
-    document.getElementById("phone")
-    .value.trim();
+    document.getElementById("phone").value.trim();
 
   const password=
-    document.getElementById("password")
-    .value;
+    document.getElementById("password").value;
 
 
   if(!phone){
-
     showMessage(
       "authMessage",
       "Mobile number enter karein",
       true
     );
-
     return;
   }
 
 
   if(!password){
-
     showMessage(
       "authMessage",
       "Password enter karein",
       true
     );
-
     return;
   }
 
@@ -804,11 +676,8 @@ async function login(){
           },
 
           body:JSON.stringify({
-
             phone:phone,
-
             password:password
-
           })
 
         }
@@ -870,9 +739,7 @@ async function login(){
 }
 
 
-/* =========================================
-   SHOW LOGGED IN USER
-========================================= */
+/* SHOW LOGGED IN USER */
 
 function showLoggedInUser(){
 
@@ -946,16 +813,13 @@ function showLoggedInUser(){
       .getElementById("karigarSection")
       .classList.remove("hidden");
 
-
     document
       .getElementById("customerSection")
       .classList.add("hidden");
 
-
     document
       .getElementById("customerRequestsSection")
       .classList.add("hidden");
-
 
     loadRequests();
 
@@ -965,16 +829,13 @@ function showLoggedInUser(){
       .getElementById("customerSection")
       .classList.remove("hidden");
 
-
     document
       .getElementById("customerRequestsSection")
       .classList.remove("hidden");
 
-
     document
       .getElementById("karigarSection")
       .classList.add("hidden");
-
 
     loadCustomerRequests();
 
@@ -983,9 +844,7 @@ function showLoggedInUser(){
 }
 
 
-/* =========================================
-   LOGOUT
-========================================= */
+/* LOGOUT */
 
 function logout(){
 
@@ -1008,9 +867,7 @@ function logout(){
 }
 
 
-/* =========================================
-   SELECT SERVICE
-========================================= */
+/* SELECT SERVICE */
 
 function selectService(button,service){
 
@@ -1020,7 +877,6 @@ function selectService(button,service){
       btn=>btn.classList.remove("selected")
     );
 
-
   button.classList.add("selected");
 
   selectedService=service;
@@ -1028,9 +884,7 @@ function selectService(button,service){
 }
 
 
-/* =========================================
-   CREATE REQUEST
-========================================= */
+/* CREATE REQUEST */
 
 async function createRequest(){
 
@@ -1172,9 +1026,7 @@ async function createRequest(){
 }
 
 
-/* =========================================
-   CUSTOMER REQUESTS
-========================================= */
+/* CUSTOMER REQUESTS */
 
 async function loadCustomerRequests(){
 
@@ -1285,9 +1137,7 @@ async function loadCustomerRequests(){
 }
 
 
-/* =========================================
-   KARIGAR REQUESTS
-========================================= */
+/* KARIGAR REQUESTS */
 
 async function loadRequests(){
 
@@ -1450,14 +1300,6 @@ async function loadRequests(){
               Completed
             </button>
 
-
-            <button
-              class="danger"
-              onclick="updateStatus(${request.id},'Cancelled')"
-            >
-              Cancel
-            </button>
-
           </div>
 
         </div>
@@ -1481,9 +1323,7 @@ async function loadRequests(){
 }
 
 
-/* =========================================
-   UPDATE STATUS
-========================================= */
+/* UPDATE STATUS */
 
 async function updateStatus(id,status){
 
@@ -1541,9 +1381,7 @@ async function updateStatus(id,status){
 }
 
 
-/* =========================================
-   CURRENT LOCATION
-========================================= */
+/* CURRENT LOCATION */
 
 function getCurrentLocation(){
 
@@ -1722,9 +1560,7 @@ function getCurrentLocation(){
 }
 
 
-/* =========================================
-   ESCAPE HTML
-========================================= */
+/* ESCAPE HTML */
 
 function escapeHtml(value){
 
@@ -1738,9 +1574,7 @@ function escapeHtml(value){
 }
 
 
-/* =========================================
-   AUTO LOGIN
-========================================= */
+/* AUTO LOGIN */
 
 try{
 
