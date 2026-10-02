@@ -198,7 +198,7 @@ footer{
 
 <div class="container">
 
-<!-- ================= AUTH ================= -->
+<!-- ================= ACCOUNT ================= -->
 
 <div id="authSection" class="card">
 
@@ -206,13 +206,29 @@ footer{
 
   <div id="authMessage" class="message hidden"></div>
 
-  <input id="name" type="text" placeholder="Aapka naam">
+  <input
+    id="name"
+    type="text"
+    placeholder="Aapka naam"
+  >
 
-  <input id="phone" type="tel" placeholder="Mobile Number">
+  <input
+    id="phone"
+    type="tel"
+    placeholder="Mobile Number"
+  >
 
-  <input id="email" type="email" placeholder="Email (optional)">
+  <input
+    id="email"
+    type="email"
+    placeholder="Email (optional)"
+  >
 
-  <input id="password" type="password" placeholder="Password (minimum 6 characters)">
+  <input
+    id="password"
+    type="password"
+    placeholder="Password (minimum 6 characters)"
+  >
 
   <select id="role">
     <option value="customer">Customer</option>
@@ -220,12 +236,28 @@ footer{
   </select>
 
   <div id="karigarServiceBox" class="hidden">
-    <input id="karigarService" type="text" placeholder="Aap kaun sa kaam karte hain? e.g. Plumber">
+
+    <input
+      id="karigarService"
+      type="text"
+      placeholder="Aap kaun sa kaam karte hain? e.g. Plumber"
+    >
+
   </div>
 
-  <button class="primary" onclick="signup()">📝 Signup</button>
+  <button
+    class="primary"
+    onclick="signup()"
+  >
+    📝 Signup
+  </button>
 
-  <button class="secondary" onclick="login()">🔑 Login</button>
+  <button
+    class="secondary"
+    onclick="login()"
+  >
+    🔑 Login
+  </button>
 
   <p style="font-size:13px;color:#666;margin-top:8px;">
     Login ke liye Mobile Number + Password use karein.
@@ -234,19 +266,28 @@ footer{
 </div>
 
 
-<!-- ================= LOGGED USER ================= -->
+<!-- ================= PROFILE ================= -->
 
 <div id="userSection" class="card hidden">
 
   <h2>👤 My Profile</h2>
 
-  <div id="profileBox" class="profile-box"></div>
+  <div
+    id="profileBox"
+    class="profile-box"
+  ></div>
 
-  <button class="secondary" onclick="getCurrentLocation()">
+  <button
+    class="secondary"
+    onclick="getCurrentLocation()"
+  >
     📍 Location Update Karein
   </button>
 
-  <button class="danger" onclick="logout()">
+  <button
+    class="danger"
+    onclick="logout()"
+  >
     Logout
   </button>
 
@@ -259,7 +300,10 @@ footer{
 
   <h2>🔧 Service Request</h2>
 
-  <div id="requestMessage" class="message hidden"></div>
+  <div
+    id="requestMessage"
+    class="message hidden"
+  ></div>
 
   <p style="margin-bottom:10px;">
     Apko kis kaam ke liye karigar chahiye?
@@ -267,51 +311,149 @@ footer{
 
   <div class="service-grid">
 
-    <button class="service-btn" onclick="selectService(this,'Plumber')">🚰 Plumber</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Plumber')"
+    >
+      🚰 Plumber
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Electrician')">⚡ Electrician</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Electrician')"
+    >
+      ⚡ Electrician
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Carpenter')">🪚 Carpenter</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Carpenter')"
+    >
+      🪚 Carpenter
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Painter')">🎨 Painter</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Painter')"
+    >
+      🎨 Painter
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'AC Repair')">❄️ AC Repair</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'AC Repair')"
+    >
+      ❄️ AC Repair
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Washing Machine Repair')">🧺 Washing Machine</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Washing Machine Repair')"
+    >
+      🧺 Washing Machine
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'TV Repair')">📺 TV Repair</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'TV Repair')"
+    >
+      📺 TV Repair
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Gardener/Mali')">🌱 Gardener/Mali</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Gardener/Mali')"
+    >
+      🌱 Gardener/Mali
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Generator Mechanic')">⚙️ Generator Mechanic</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Generator Mechanic')"
+    >
+      ⚙️ Generator Mechanic
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Puncture/Tyre Replacement')">🛞 Puncture/Tyre</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Puncture/Tyre Replacement')"
+    >
+      🛞 Puncture/Tyre
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Barber')">💈 Barber</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Barber')"
+    >
+      💈 Barber
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Physiotherapist')">🧑‍⚕️ Physiotherapist</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Physiotherapist')"
+    >
+      🧑‍⚕️ Physiotherapist
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Mehndi Artist')">🌿 Mehndi Artist</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Mehndi Artist')"
+    >
+      🌿 Mehndi Artist
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Carpet Cleaning')">🧹 Carpet Cleaning</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Carpet Cleaning')"
+    >
+      🧹 Carpet Cleaning
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Gutter Cleaning')">🧽 Gutter Cleaning</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Gutter Cleaning')"
+    >
+      🧽 Gutter Cleaning
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Home Cleaning')">🏠 Home Cleaning</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Home Cleaning')"
+    >
+      🏠 Home Cleaning
+    </button>
 
-    <button class="service-btn" onclick="selectService(this,'Other')">➕ Other</button>
+    <button
+      class="service-btn"
+      onclick="selectService(this,'Other')"
+    >
+      ➕ Other
+    </button>
 
   </div>
 
-  <input id="requestAddress" type="text" placeholder="Address / Area">
+  <input
+    id="requestAddress"
+    type="text"
+    placeholder="Address / Area"
+  >
 
-  <textarea id="requestDescription" placeholder="Problem ke baare mein batayein"></textarea>
+  <textarea
+    id="requestDescription"
+    placeholder="Problem ke baare mein batayein"
+  ></textarea>
 
-  <button class="primary" onclick="createRequest()">
+  <button
+    class="primary"
+    onclick="createRequest()"
+  >
     📩 Request Bhejein
   </button>
 
-  <button class="secondary" onclick="getCurrentLocation()">
+  <button
+    class="secondary"
+    onclick="getCurrentLocation()"
+  >
     📍 Current Location
   </button>
 
@@ -320,7 +462,10 @@ footer{
 
 <!-- ================= CUSTOMER REQUESTS ================= -->
 
-<div id="customerRequestsSection" class="card hidden">
+<div
+  id="customerRequestsSection"
+  class="card hidden"
+>
 
   <h2>📋 Meri Requests</h2>
 
@@ -331,7 +476,10 @@ footer{
 
 <!-- ================= KARIGAR ================= -->
 
-<div id="karigarSection" class="card hidden">
+<div
+  id="karigarSection"
+  class="card hidden"
+>
 
   <h2>🛠️ Karigar Dashboard</h2>
 
@@ -354,13 +502,17 @@ footer{
 
   </div>
 
-  <div id="karigarMessage" class="message hidden"></div>
+  <div
+    id="karigarMessage"
+    class="message hidden"
+  ></div>
 
   <div id="requestsList"></div>
 
 </div>
 
 </div>
+
 
 <footer>
   © 2026 Hey Karigar
@@ -383,6 +535,10 @@ function showMessage(id,message,error=false){
 
   const el=document.getElementById(id);
 
+  if(!el){
+    return;
+  }
+
   el.textContent=message;
 
   el.classList.remove("hidden","error");
@@ -398,17 +554,24 @@ function showMessage(id,message,error=false){
    ROLE CHANGE
 ========================================= */
 
-document.getElementById("role").addEventListener("change",function(){
+document
+  .getElementById("role")
+  .addEventListener("change",function(){
 
-  const box=document.getElementById("karigarServiceBox");
+    const box=
+      document.getElementById("karigarServiceBox");
 
-  if(this.value==="karigar"){
-    box.classList.remove("hidden");
-  }else{
-    box.classList.add("hidden");
-  }
+    if(this.value==="karigar"){
 
-});
+      box.classList.remove("hidden");
+
+    }else{
+
+      box.classList.add("hidden");
+
+    }
+
+  });
 
 
 /* =========================================
@@ -417,65 +580,134 @@ document.getElementById("role").addEventListener("change",function(){
 
 async function signup(){
 
-  const name=document.getElementById("name").value.trim();
-  const phone=document.getElementById("phone").value.trim();
-  const email=document.getElementById("email").value.trim();
-  const password=document.getElementById("password").value;
-  const role=document.getElementById("role").value;
-  const service=document.getElementById("karigarService").value.trim();
+  const name=
+    document.getElementById("name")
+    .value.trim();
+
+  const phone=
+    document.getElementById("phone")
+    .value.trim();
+
+  const email=
+    document.getElementById("email")
+    .value.trim();
+
+  const password=
+    document.getElementById("password")
+    .value;
+
+  const role=
+    document.getElementById("role")
+    .value;
+
+  const service=
+    document.getElementById("karigarService")
+    .value.trim();
+
 
   if(!name){
-    showMessage("authMessage","Naam zaroori hai",true);
+
+    showMessage(
+      "authMessage",
+      "Naam zaroori hai",
+      true
+    );
+
     return;
   }
+
 
   if(!phone){
-    showMessage("authMessage","Mobile number zaroori hai",true);
+
+    showMessage(
+      "authMessage",
+      "Mobile number zaroori hai",
+      true
+    );
+
     return;
   }
+
 
   if(!password){
-    showMessage("authMessage","Password zaroori hai",true);
+
+    showMessage(
+      "authMessage",
+      "Password zaroori hai",
+      true
+    );
+
     return;
   }
 
-  if(password.length<6){
-    showMessage("authMessage","Password kam se kam 6 characters ka hona chahiye",true);
+
+  if(password.length < 6){
+
+    showMessage(
+      "authMessage",
+      "Password kam se kam 6 characters ka hona chahiye",
+      true
+    );
+
     return;
   }
+
 
   if(role==="karigar" && !service){
-    showMessage("authMessage","Karigar ka kaam/service likhein",true);
+
+    showMessage(
+      "authMessage",
+      "Karigar ka kaam/service likhein",
+      true
+    );
+
     return;
   }
 
-  showMessage("authMessage","Account create ho raha hai...");
+
+  showMessage(
+    "authMessage",
+    "Account create ho raha hai..."
+  );
+
 
   try{
 
-    const response=await fetch(API_BASE+"/api/auth/signup",{
+    const response=
+      await fetch(
+        API_BASE+"/api/auth/signup",
+        {
+          method:"POST",
 
-      method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
 
-      headers:{
-        "Content-Type":"application/json"
-      },
+          body:JSON.stringify({
 
-      body:JSON.stringify({
+            name:name,
 
-        name:name,
-        full_name:name,
-        phone:phone,
-        email:email || null,
-        password:password,
-        role:role,
-        service:service || null
+            full_name:name,
 
-      })
+            phone:phone,
 
-    });
+            email:email || null,
 
-    const data=await response.json();
+            password:password,
+
+            role:role,
+
+            service:service || null
+
+          })
+
+        }
+      );
+
+
+    const data=
+      await response.json();
+
 
     if(!response.ok || !data.success){
 
@@ -488,14 +720,20 @@ async function signup(){
       return;
     }
 
+
     showMessage(
       "authMessage",
       "✅ Account ban gaya! Ab Mobile Number + Password se Login karein."
     );
 
-    document.getElementById("password").value="";
+
+    document.getElementById("password")
+      .value="";
+
 
   }catch(error){
+
+    console.error(error);
 
     showMessage(
       "authMessage",
@@ -514,39 +752,72 @@ async function signup(){
 
 async function login(){
 
-  const phone=document.getElementById("phone").value.trim();
-  const password=document.getElementById("password").value;
+  const phone=
+    document.getElementById("phone")
+    .value.trim();
+
+  const password=
+    document.getElementById("password")
+    .value;
+
 
   if(!phone){
-    showMessage("authMessage","Mobile number enter karein",true);
+
+    showMessage(
+      "authMessage",
+      "Mobile number enter karein",
+      true
+    );
+
     return;
   }
+
 
   if(!password){
-    showMessage("authMessage","Password enter karein",true);
+
+    showMessage(
+      "authMessage",
+      "Password enter karein",
+      true
+    );
+
     return;
   }
 
-  showMessage("authMessage","Login ho raha hai...");
+
+  showMessage(
+    "authMessage",
+    "Login ho raha hai..."
+  );
+
 
   try{
 
-    const response=await fetch(API_BASE+"/api/auth/login",{
+    const response=
+      await fetch(
+        API_BASE+"/api/auth/login",
+        {
+          method:"POST",
 
-      method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
 
-      headers:{
-        "Content-Type":"application/json"
-      },
+          body:JSON.stringify({
 
-      body:JSON.stringify({
-        phone:phone,
-        password:password
-      })
+            phone:phone,
 
-    });
+            password:password
 
-    const data=await response.json();
+          })
+
+        }
+      );
+
+
+    const data=
+      await response.json();
+
 
     if(!response.ok || !data.success){
 
@@ -559,26 +830,34 @@ async function login(){
       return;
     }
 
+
     currentUser=data.profile;
+
 
     localStorage.setItem(
       "heyKarigarProfile",
       JSON.stringify(data.profile)
     );
 
+
     localStorage.setItem(
       "heyKarigarToken",
       data.access_token || ""
     );
+
 
     localStorage.setItem(
       "heyKarigarRefreshToken",
       data.refresh_token || ""
     );
 
+
     showLoggedInUser();
 
+
   }catch(error){
+
+    console.error(error);
 
     showMessage(
       "authMessage",
@@ -592,7 +871,7 @@ async function login(){
 
 
 /* =========================================
-   SHOW USER
+   SHOW LOGGED IN USER
 ========================================= */
 
 function showLoggedInUser(){
@@ -601,49 +880,101 @@ function showLoggedInUser(){
     return;
   }
 
-  document.getElementById("authSection")
+
+  document
+    .getElementById("authSection")
     .classList.add("hidden");
 
-  document.getElementById("userSection")
+
+  document
+    .getElementById("userSection")
     .classList.remove("hidden");
 
-  document.getElementById("profileBox").innerHTML=`
 
-    <b>Naam:</b> ${escapeHtml(currentUser.name || currentUser.full_name || "Nahi diya")}<br>
+  document
+    .getElementById("profileBox")
+    .innerHTML=`
 
-    <b>Mobile:</b> ${escapeHtml(currentUser.phone || "Nahi diya")}<br>
+      <b>Naam:</b>
+      ${escapeHtml(
+        currentUser.name ||
+        currentUser.full_name ||
+        "Nahi diya"
+      )}
+      <br>
 
-    <b>Role:</b> ${currentUser.role==="karigar" ? "🛠️ Karigar" : "👤 Customer"}<br>
+      <b>Mobile:</b>
+      ${escapeHtml(
+        currentUser.phone ||
+        "Nahi diya"
+      )}
+      <br>
 
-    <b>Service:</b> ${escapeHtml(currentUser.service || "—")}<br>
+      <b>Email:</b>
+      ${escapeHtml(
+        currentUser.email ||
+        "Nahi diya"
+      )}
+      <br>
 
-    <b>Location:</b> ${escapeHtml(currentUser.location || "Location update karein")}
+      <b>Role:</b>
+      ${
+        currentUser.role==="karigar"
+        ? "🛠️ Karigar"
+        : "👤 Customer"
+      }
+      <br>
+
+      <b>Service:</b>
+      ${escapeHtml(
+        currentUser.service || "—"
+      )}
+      <br>
+
+      <b>Location:</b>
+      ${escapeHtml(
+        currentUser.location ||
+        "Location update karein"
+      )}
 
   `;
 
+
   if(currentUser.role==="karigar"){
 
-    document.getElementById("karigarSection")
+    document
+      .getElementById("karigarSection")
       .classList.remove("hidden");
 
-    document.getElementById("customerSection")
+
+    document
+      .getElementById("customerSection")
       .classList.add("hidden");
 
-    document.getElementById("customerRequestsSection")
+
+    document
+      .getElementById("customerRequestsSection")
       .classList.add("hidden");
+
 
     loadRequests();
 
   }else{
 
-    document.getElementById("customerSection")
+    document
+      .getElementById("customerSection")
       .classList.remove("hidden");
 
-    document.getElementById("customerRequestsSection")
+
+    document
+      .getElementById("customerRequestsSection")
       .classList.remove("hidden");
 
-    document.getElementById("karigarSection")
+
+    document
+      .getElementById("karigarSection")
       .classList.add("hidden");
+
 
     loadCustomerRequests();
 
@@ -660,9 +991,17 @@ function logout(){
 
   currentUser=null;
 
-  localStorage.removeItem("heyKarigarProfile");
-  localStorage.removeItem("heyKarigarToken");
-  localStorage.removeItem("heyKarigarRefreshToken");
+  localStorage.removeItem(
+    "heyKarigarProfile"
+  );
+
+  localStorage.removeItem(
+    "heyKarigarToken"
+  );
+
+  localStorage.removeItem(
+    "heyKarigarRefreshToken"
+  );
 
   location.reload();
 
@@ -675,8 +1014,12 @@ function logout(){
 
 function selectService(button,service){
 
-  document.querySelectorAll(".service-btn")
-    .forEach(btn=>btn.classList.remove("selected"));
+  document
+    .querySelectorAll(".service-btn")
+    .forEach(
+      btn=>btn.classList.remove("selected")
+    );
+
 
   button.classList.add("selected");
 
@@ -692,13 +1035,16 @@ function selectService(button,service){
 async function createRequest(){
 
   if(!currentUser){
+
     showMessage(
       "requestMessage",
       "Pehle login karein",
       true
     );
+
     return;
   }
+
 
   if(!selectedService){
 
@@ -711,13 +1057,18 @@ async function createRequest(){
     return;
   }
 
-  const address=document
-    .getElementById("requestAddress")
-    .value.trim();
 
-  const description=document
-    .getElementById("requestDescription")
-    .value.trim();
+  const address=
+    document
+      .getElementById("requestAddress")
+      .value.trim();
+
+
+  const description=
+    document
+      .getElementById("requestDescription")
+      .value.trim();
+
 
   if(!address){
 
@@ -730,44 +1081,55 @@ async function createRequest(){
     return;
   }
 
+
   showMessage(
     "requestMessage",
     "Request bheji ja rahi hai..."
   );
 
+
   try{
 
-    const response=await fetch(
-      API_BASE+"/api/requests",
-      {
-        method:"POST",
+    const response=
+      await fetch(
+        API_BASE+"/api/requests",
+        {
+          method:"POST",
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+          headers:{
+            "Content-Type":"application/json"
+          },
 
-        body:JSON.stringify({
+          body:JSON.stringify({
 
-          customer_name:
-            currentUser.name ||
-            currentUser.full_name,
+            customer_name:
+              currentUser.name ||
+              currentUser.full_name,
 
-          customer_id:currentUser.id,
+            customer_id:
+              currentUser.id,
 
-          phone:currentUser.phone,
+            phone:
+              currentUser.phone,
 
-          service:selectedService,
+            service:
+              selectedService,
 
-          address:address,
+            address:
+              address,
 
-          description:description
+            description:
+              description
 
-        })
+          })
 
-      }
-    );
+        }
+      );
 
-    const data=await response.json();
+
+    const data=
+      await response.json();
+
 
     if(!response.ok || !data.success){
 
@@ -780,16 +1142,24 @@ async function createRequest(){
       return;
     }
 
+
     showMessage(
       "requestMessage",
       "✅ Request successfully bhej di gayi!"
     );
 
-    document.getElementById("requestDescription").value="";
+
+    document
+      .getElementById("requestDescription")
+      .value="";
+
 
     loadCustomerRequests();
 
+
   }catch(error){
+
+    console.error(error);
 
     showMessage(
       "requestMessage",
@@ -808,66 +1178,107 @@ async function createRequest(){
 
 async function loadCustomerRequests(){
 
-  if(!currentUser) return;
+  if(!currentUser){
+    return;
+  }
+
 
   try{
 
-    const response=await fetch(
-      API_BASE+"/api/customer/requests/"+currentUser.id
-    );
+    const response=
+      await fetch(
+        API_BASE+
+        "/api/customer/requests/"+
+        currentUser.id
+      );
 
-    const data=await response.json();
 
-    const box=document.getElementById("customerRequests");
+    const data=
+      await response.json();
+
+
+    const box=
+      document.getElementById(
+        "customerRequests"
+      );
+
 
     if(!data.success){
 
-      box.innerHTML="<p>Requests load nahi hui.</p>";
+      box.innerHTML=
+        "<p>Requests load nahi hui.</p>";
 
       return;
     }
 
-    if(!data.requests || data.requests.length===0){
 
-      box.innerHTML="<p>Abhi koi request nahi hai.</p>";
+    if(
+      !data.requests ||
+      data.requests.length===0
+    ){
+
+      box.innerHTML=
+        "<p>Abhi koi request nahi hai.</p>";
 
       return;
     }
 
-    box.innerHTML=data.requests.map(request=>`
 
-      <div class="request">
+    box.innerHTML=
+      data.requests
+      .map(request=>`
 
-        <b>🔧 ${escapeHtml(request.service || "Service")}</b>
+        <div class="request">
 
-        <p>
-          📍 ${escapeHtml(request.address || "Address nahi hai")}
-        </p>
+          <b>
+            🔧
+            ${escapeHtml(
+              request.service ||
+              "Service"
+            )}
+          </b>
 
-        <p>
-          Problem:
-          ${escapeHtml(
-            request.description ||
-            request.details ||
-            "Not provided"
-          )}
-        </p>
+          <p>
+            📍
+            ${escapeHtml(
+              request.address ||
+              "Address nahi hai"
+            )}
+          </p>
 
-        <p>
-          Status:
-          <span class="status">
-            ${escapeHtml(request.status || "New")}
-          </span>
-        </p>
+          <p>
+            Problem:
+            ${escapeHtml(
+              request.description ||
+              request.details ||
+              "Not provided"
+            )}
+          </p>
 
-      </div>
+          <p>
+            Status:
+            <span class="status">
+              ${escapeHtml(
+                request.status ||
+                "New"
+              )}
+            </span>
+          </p>
 
-    `).join("");
+        </div>
+
+      `)
+      .join("");
+
 
   }catch(error){
 
-    document.getElementById("customerRequests").innerHTML=
-      "<p>Requests load nahi hui.</p>";
+    console.error(error);
+
+    document
+      .getElementById("customerRequests")
+      .innerHTML=
+        "<p>Requests load nahi hui.</p>";
 
   }
 
@@ -882,11 +1293,15 @@ async function loadRequests(){
 
   try{
 
-    const response=await fetch(
-      API_BASE+"/api/requests"
-    );
+    const response=
+      await fetch(
+        API_BASE+"/api/requests"
+      );
 
-    const data=await response.json();
+
+    const data=
+      await response.json();
+
 
     if(!data.success){
 
@@ -899,112 +1314,161 @@ async function loadRequests(){
       return;
     }
 
-    const requests=data.requests || [];
 
-    document.getElementById("totalRequests")
-      .textContent=requests.length;
+    const requests=
+      data.requests || [];
 
-    document.getElementById("newRequests")
+
+    document
+      .getElementById("totalRequests")
       .textContent=
-        requests.filter(r=>r.status==="New").length;
+        requests.length;
 
-    document.getElementById("completedRequests")
+
+    document
+      .getElementById("newRequests")
       .textContent=
-        requests.filter(r=>r.status==="Completed").length;
+        requests.filter(
+          r=>r.status==="New"
+        ).length;
 
-    const box=document.getElementById("requestsList");
+
+    document
+      .getElementById("completedRequests")
+      .textContent=
+        requests.filter(
+          r=>r.status==="Completed"
+        ).length;
+
+
+    const box=
+      document.getElementById(
+        "requestsList"
+      );
+
 
     if(requests.length===0){
 
-      box.innerHTML="<p>Abhi koi service request nahi hai.</p>";
+      box.innerHTML=
+        "<p>Abhi koi service request nahi hai.</p>";
 
       return;
     }
 
-    box.innerHTML=requests.map(request=>`
 
-      <div class="request">
+    box.innerHTML=
+      requests
+      .map(request=>`
 
-        <b>#${request.id} — ${escapeHtml(request.service || "Service")}</b>
+        <div class="request">
 
-        <p>
-          👤 Customer:
-          ${escapeHtml(
-            request.customer_name ||
-            request.name ||
-            "Not provided"
-          )}
-        </p>
+          <b>
+            #${request.id}
+            —
+            ${escapeHtml(
+              request.service ||
+              "Service"
+            )}
+          </b>
 
-        <p>
-          📱 Mobile:
-          ${escapeHtml(request.phone || "Not provided")}
-        </p>
+          <p>
+            👤 Customer:
+            ${escapeHtml(
+              request.customer_name ||
+              request.name ||
+              "Not provided"
+            )}
+          </p>
 
-        <p>
-          📍 Location:
-          ${escapeHtml(
-            request.address ||
-            request.location ||
-            "Not provided"
-          )}
-        </p>
+          <p>
+            📱 Mobile:
+            ${escapeHtml(
+              request.phone ||
+              "Not provided"
+            )}
+          </p>
 
-        <p>
-          📝 Problem:
-          ${escapeHtml(
-            request.description ||
-            request.details ||
-            "Not provided"
-          )}
-        </p>
+          <p>
+            📍 Location:
+            ${escapeHtml(
+              request.address ||
+              request.location ||
+              "Not provided"
+            )}
+          </p>
 
-        <p>
-          Status:
-          <span class="status">
-            ${escapeHtml(request.status || "New")}
-          </span>
-        </p>
+          <p>
+            📝 Problem:
+            ${escapeHtml(
+              request.description ||
+              request.details ||
+              "Not provided"
+            )}
+          </p>
 
-        <div>
+          <p>
+            Status:
+            <span class="status">
+              ${escapeHtml(
+                request.status ||
+                "New"
+              )}
+            </span>
+          </p>
 
-          <button
-            class="primary"
-            onclick="updateStatus(${request.id},'Accepted')">
-            Accept
-          </button>
 
-          <button
-            class="warning"
-            onclick="updateStatus(${request.id},'On The Way')">
-            On The Way
-          </button>
+          <div>
 
-          <button
-            class="secondary"
-            onclick="updateStatus(${request.id},'Working')">
-            Working
-          </button>
+            <button
+              class="primary"
+              onclick="updateStatus(${request.id},'Accepted')"
+            >
+              Accept
+            </button>
 
-          <button
-            class="success"
-            onclick="updateStatus(${request.id},'Completed')">
-            Completed
-          </button>
 
-          <button
-            class="danger"
-            onclick="updateStatus(${request.id},'Cancelled')">
-            Cancel
-          </button>
+            <button
+              class="warning"
+              onclick="updateStatus(${request.id},'On The Way')"
+            >
+              On The Way
+            </button>
+
+
+            <button
+              class="secondary"
+              onclick="updateStatus(${request.id},'Working')"
+            >
+              Working
+            </button>
+
+
+            <button
+              class="success"
+              onclick="updateStatus(${request.id},'Completed')"
+            >
+              Completed
+            </button>
+
+
+            <button
+              class="danger"
+              onclick="updateStatus(${request.id},'Cancelled')"
+            >
+              Cancel
+            </button>
+
+          </div>
 
         </div>
 
-      </div>
+      `)
+      .join("");
 
-    `).join("");
 
   }catch(error){
+
+    console.error(error);
 
     showMessage(
       "karigarMessage",
@@ -1025,23 +1489,288 @@ async function updateStatus(id,status){
 
   try{
 
-    const response=await fetch(
-      API_BASE+"/api/requests/"+id+"/status",
-      {
-        method:"PUT",
+    const response=
+      await fetch(
+        API_BASE+
+        "/api/requests/"+
+        id+
+        "/status",
+        {
+          method:"PUT",
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+          headers:{
+            "Content-Type":"application/json"
+          },
 
-        body:JSON.stringify({
-          status:status
-        })
-      }
-    );
+          body:JSON.stringify({
+            status:status
+          })
 
-    const data=await response.json();
+        }
+      );
+
+
+    const data=
+      await response.json();
+
 
     if(!response.ok || !data.success){
 
-      alert(data.message || "Status update failed
+      alert(
+        data.message ||
+        "Status update failed"
+      );
+
+      return;
+    }
+
+
+    loadRequests();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Server error"
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   CURRENT LOCATION
+========================================= */
+
+function getCurrentLocation(){
+
+  if(!navigator.geolocation){
+
+    alert(
+      "Aapke browser me location support nahi hai."
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Location permission Allow karein."
+  );
+
+
+  navigator.geolocation.getCurrentPosition(
+
+    async function(position){
+
+      const latitude=
+        position.coords.latitude;
+
+      const longitude=
+        position.coords.longitude;
+
+
+      let locationText=
+        "Current Location";
+
+
+      try{
+
+        const geoResponse=
+          await fetch(
+            "https://nominatim.openstreetmap.org/reverse?format=json&lat="+
+            latitude+
+            "&lon="+
+            longitude+
+            "&zoom=10&addressdetails=1",
+            {
+              headers:{
+                "Accept":
+                  "application/json"
+              }
+            }
+          );
+
+
+        const geoData=
+          await geoResponse.json();
+
+
+        locationText=
+          geoData.display_name ||
+          "Current Location";
+
+
+      }catch(error){
+
+        locationText=
+          "Current Location";
+
+      }
+
+
+      if(currentUser){
+
+        try{
+
+          const response=
+            await fetch(
+              API_BASE+
+              "/api/profile/"+
+              currentUser.id+
+              "/location",
+              {
+                method:"PUT",
+
+                headers:{
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+
+                  latitude:
+                    latitude,
+
+                  longitude:
+                    longitude,
+
+                  location:
+                    locationText,
+
+                  state:""
+
+                })
+
+              }
+            );
+
+
+          const data=
+            await response.json();
+
+
+          if(data.success){
+
+            currentUser=
+              data.profile;
+
+
+            localStorage.setItem(
+              "heyKarigarProfile",
+              JSON.stringify(
+                currentUser
+              )
+            );
+
+
+            showLoggedInUser();
+
+
+            alert(
+              "✅ Location update ho gayi."
+            );
+
+
+          }else{
+
+            alert(
+              data.message ||
+              "Location update nahi hui."
+            );
+
+          }
+
+
+        }catch(error){
+
+          console.error(error);
+
+          alert(
+            "Location server par save nahi hui."
+          );
+
+        }
+
+      }
+
+    },
+
+
+    function(error){
+
+      console.error(error);
+
+      alert(
+        "Location permission nahi mili. Browser me location Allow karein."
+      );
+
+    },
+
+
+    {
+      enableHighAccuracy:true,
+      timeout:15000,
+      maximumAge:0
+    }
+
+  );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================
+   AUTO LOGIN
+========================================= */
+
+try{
+
+  const savedProfile=
+    localStorage.getItem(
+      "heyKarigarProfile"
+    );
+
+
+  if(savedProfile){
+
+    currentUser=
+      JSON.parse(savedProfile);
+
+
+    showLoggedInUser();
+
+  }
+
+}catch(error){
+
+  console.error(error);
+
+  localStorage.removeItem(
+    "heyKarigarProfile"
+  );
+
+}
+
+</script>
+
+</body>
+</html>
