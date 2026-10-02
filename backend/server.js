@@ -8,7 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
+
+// =====================================
+// SUPABASE
+// =====================================
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY =
@@ -28,36 +31,29 @@ const supabase = createClient(
 // FRONTEND
 // =====================================
 
-const FRONTEND_PATH = path.join(__dirname, "..");
+app.use(express.static(path.join(__dirname, "..")));
 
-app.use(express.static(FRONTEND_PATH));
+
+// =====================================
+// HOME
+// =====================================
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(FRONTEND_PATH, "index.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "index.html")
+  );
 });
 
 
 // =====================================
-// HEALTH
-// =====================================
-
-app.get("/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "Hey Karigar API healthy"
-  });
-});
-
-
-// =====================================
-// API HOME
+// API HEALTH
 // =====================================
 
 app.get("/api", (req, res) => {
   res.json({
     app: "Hey Karigar API",
     status: "running",
-    version: "1.1.0"
+    version: "1.2.0"
   });
 });
 
@@ -67,37 +63,66 @@ app.get("/api", (req, res) => {
 // =====================================
 
 app.post("/api/auth/signup", async (req, res) => {
+
   try {
 
     const {
       name,
-      email,
+      full_name,
       phone,
+      email,
       password,
       role,
       service,
       location,
+      state,
       latitude,
       longitude
     } = req.body;
 
-    if (!name || !email || !password || !role) {
+    if (
+      !email ||
+      !password ||
+      !phone
+    ) {
+
       return res.status(400).json({
         success: false,
         message:
-          "Name, email, password aur role zaroori hain"
+          "Email, mobile aur password zaroori hain"
       });
+
     }
 
-    const cleanEmail =
-      String(email).trim().toLowerCase();
+    if (String(password).length < 6) {
 
-    const { data: userData, error: userError } =
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password kam se kam 6 characters ka hona chahiye"
+      });
+
+    }
+
+
+    // Create Supabase Auth user
+
+    const {
+      data: userData,
+      error: userError
+    } =
       await supabase.auth.admin.createUser({
-        email: cleanEmail,
-        password: password,
+        email:
+          String(email)
+            .trim()
+            .toLowerCase(),
+
+        password:
+          String(password),
+
         email_confirm: true
       });
+
 
     if (userError) {
 
@@ -108,72 +133,19 @@ app.post("/api/auth/signup", async (req, res) => {
 
       return res.status(400).json({
         success: false,
-        message: userError.message,
-        actualError: userError.message,
-        code: userError.code,
-        details: userError.details,
-        hint: userError.hint
+        message:
+          userError.message ||
+          "Signup failed"
       });
+
     }
+
 
     const userId =
       userData.user.id;
 
-    const profileData = {
-      id: userId,
 
-      name:
-        String(name).trim(),
-
-      email:
-        cleanEmail,
-
-      phone:
-        phone
-          ? String(phone).trim()
-          : null,
-
-      role:
-        String(role).trim(),
-
-      service:
-        service
-          ? String(service).trim()
-          : null,
-
-      location:
-        location
-          ? String(location).trim()
-          : null
-    };
-
-
-    // =====================================
-    // LOCATION
-    // =====================================
-
-    const lat =
-      Number(latitude);
-
-    const lng =
-      Number(longitude);
-
-    if (
-      Number.isFinite(lat) &&
-      Number.isFinite(lng) &&
-      lat >= -90 &&
-      lat <= 90 &&
-      lng >= -180 &&
-      lng <= 180
-    ) {
-
-      profileData.latitude = lat;
-      profileData.longitude = lng;
-      profileData.location_updated_at =
-        new Date().toISOString();
-
-    }
-
+    // Insert profile
 
     const {
       data: profile,
@@ -182,7 +154,51 @@ app.post("/api/auth/signup", async (req, res) => {
       await supabase
         .from("profiles")
         .insert([
-          profileData
+          {
+            id: userId,
+
+            name:
+              name ||
+              full_name ||
+              "",
+
+            full_name:
+              full_name ||
+              name ||
+              "",
+
+            phone:
+              String(phone),
+
+            email:
+              String(email)
+                .trim()
+                .toLowerCase(),
+
+            role:
+              role ||
+              "customer",
+
+            service:
+              service ||
+              null,
+
+            location:
+              location ||
+              null,
+
+            state:
+              state ||
+              null,
+
+            latitude:
+              latitude ||
+              null,
+
+            longitude:
+              longitude ||
+              null
+          }
         ])
         .select()
         .single();
@@ -191,31 +207,27 @@ app.post("/api/auth/signup", async (req, res) => {
     if (profileError) {
 
       console.error(
-        "❌ SIGNUP PROFILE ERROR:",
+        "❌ PROFILE INSERT ERROR:",
         profileError
       );
 
       return res.status(400).json({
         success: false,
         message:
-          profileError.message,
-        actualError:
-          profileError.message,
-        code:
-          profileError.code,
-        details:
-          profileError.details,
-        hint:
-          profileError.hint
+          profileError.message ||
+          "Profile create nahi hua"
       });
+
     }
 
 
     return res.json({
       success: true,
-      message: "Signup successful",
-      profile: profile
+      message:
+        "Account successfully create ho gaya",
+      profile
     });
+
 
   } catch (error) {
 
@@ -227,12 +239,11 @@ app.post("/api/auth/signup", async (req, res) => {
     return res.status(500).json({
       success: false,
       message:
-        error.message ||
-        "Signup failed",
-      actualError:
-        error.message
+        "Signup failed"
     });
+
   }
+
 });
 
 
@@ -241,12 +252,14 @@ app.post("/api/auth/signup", async (req, res) => {
 // =====================================
 
 app.post("/api/auth/login", async (req, res) => {
+
   try {
 
     const {
       email,
       password
     } = req.body;
+
 
     if (!email || !password) {
 
@@ -258,19 +271,19 @@ app.post("/api/auth/login", async (req, res) => {
 
     }
 
-    const cleanEmail =
-      String(email)
-        .trim()
-        .toLowerCase();
-
 
     const {
       data,
       error
     } =
       await supabase.auth.signInWithPassword({
-        email: cleanEmail,
-        password: password
+        email:
+          String(email)
+            .trim()
+            .toLowerCase(),
+
+        password:
+          String(password)
       });
 
 
@@ -284,13 +297,17 @@ app.post("/api/auth/login", async (req, res) => {
       return res.status(401).json({
         success: false,
         message:
-          "Email ya password galat hai",
-        actualError:
-          error.message
+          "Email ya password galat hai"
       });
 
     }
 
+
+    const user =
+      data.user;
+
+
+    // Get profile
 
     const {
       data: profile,
@@ -299,42 +316,49 @@ app.post("/api/auth/login", async (req, res) => {
       await supabase
         .from("profiles")
         .select("*")
-        .eq("id", data.user.id)
+        .eq("id", user.id)
         .single();
 
 
     if (profileError) {
 
       console.error(
-        "❌ LOGIN PROFILE ERROR:",
+        "❌ PROFILE LOGIN ERROR:",
         profileError
       );
 
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message:
-          "Profile nahi mili",
-        actualError:
-          profileError.message,
-        code:
-          profileError.code,
-        details:
-          profileError.details,
-        hint:
-          profileError.hint
+          "Profile nahi mili"
       });
 
     }
 
 
     return res.json({
+
       success: true,
+
       message:
         "Login successful",
-      session:
-        data.session,
-      profile:
-        profile
+
+      user: {
+        id:
+          user.id,
+
+        email:
+          user.email
+      },
+
+      profile,
+
+      access_token:
+        data.session.access_token,
+
+      refresh_token:
+        data.session.refresh_token
+
     });
 
 
@@ -348,18 +372,230 @@ app.post("/api/auth/login", async (req, res) => {
     return res.status(500).json({
       success: false,
       message:
-        error.message ||
-        "Login failed",
-      actualError:
-        error.message
+        "Login failed"
     });
 
   }
+
 });
 
 
 // =====================================
-// PROFILE
+// FORGOT PASSWORD
+// =====================================
+
+const RESET_REDIRECT_URL =
+  "https://hey-karigar-2026.onrender.com/";
+
+
+app.post(
+  "/api/auth/forgot-password",
+  async (req, res) => {
+
+    try {
+
+      const email =
+        String(req.body.email || "")
+          .trim()
+          .toLowerCase();
+
+
+      if (!email) {
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "Email zaroori hai"
+        });
+
+      }
+
+
+      const { error } =
+        await supabase.auth.resetPasswordForEmail(
+          email,
+          {
+            redirectTo:
+              RESET_REDIRECT_URL
+          }
+        );
+
+
+      if (error) {
+
+        console.error(
+          "❌ FORGOT PASSWORD ERROR:",
+          error
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "Password reset email bhejne mein problem hui"
+        });
+
+      }
+
+
+      return res.json({
+        success: true,
+        message:
+          "Agar yeh email registered hai to password reset link bhej diya gaya hai."
+      });
+
+
+    } catch (error) {
+
+      console.error(
+        "❌ FORGOT PASSWORD SERVER ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Password reset request failed"
+      });
+
+    }
+
+  }
+);
+
+
+// =====================================
+// RESET PASSWORD
+// =====================================
+
+app.post(
+  "/api/auth/reset-password",
+  async (req, res) => {
+
+    try {
+
+      const {
+        access_token,
+        password
+      } = req.body;
+
+
+      if (
+        !access_token ||
+        !password
+      ) {
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "Reset token aur new password zaroori hain"
+        });
+
+      }
+
+
+      if (
+        String(password).length < 6
+      ) {
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "Password kam se kam 6 characters ka hona chahiye"
+        });
+
+      }
+
+
+      // Verify recovery token
+
+      const {
+        data: userData,
+        error: userError
+      } =
+        await supabase.auth.getUser(
+          access_token
+        );
+
+
+      if (
+        userError ||
+        !userData ||
+        !userData.user
+      ) {
+
+        console.error(
+          "❌ RESET TOKEN ERROR:",
+          userError
+        );
+
+        return res.status(401).json({
+          success: false,
+          message:
+            "Reset link invalid ya expire ho gaya hai"
+        });
+
+      }
+
+
+      // Change password
+
+      const {
+        error: updateError
+      } =
+        await supabase.auth.admin.updateUserById(
+          userData.user.id,
+          {
+            password:
+              String(password)
+          }
+        );
+
+
+      if (updateError) {
+
+        console.error(
+          "❌ PASSWORD UPDATE ERROR:",
+          updateError
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            updateError.message ||
+            "Password update nahi hua"
+        });
+
+      }
+
+
+      return res.json({
+        success: true,
+        message:
+          "Password successfully change ho gaya"
+      });
+
+
+    } catch (error) {
+
+      console.error(
+        "❌ RESET PASSWORD SERVER ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Password reset failed"
+      });
+
+    }
+
+  }
+);
+
+
+// =====================================
+// GET PROFILE
 // =====================================
 
 app.get(
@@ -368,10 +604,6 @@ app.get(
 
     try {
 
-      const { id } =
-        req.params;
-
-
       const {
         data,
         error
@@ -379,29 +611,16 @@ app.get(
         await supabase
           .from("profiles")
           .select("*")
-          .eq("id", id)
+          .eq("id", req.params.id)
           .single();
 
 
       if (error) {
 
-        console.error(
-          "❌ PROFILE ERROR:",
-          error
-        );
-
         return res.status(404).json({
           success: false,
           message:
-            "Profile nahi mili",
-          actualError:
-            error.message,
-          code:
-            error.code,
-          details:
-            error.details,
-          hint:
-            error.hint
+            "Profile nahi mili"
         });
 
       }
@@ -409,94 +628,44 @@ app.get(
 
       return res.json({
         success: true,
-        profile:
-          data
+        profile: data
       });
 
 
     } catch (error) {
 
       console.error(
-        "❌ PROFILE SERVER ERROR:",
+        "❌ GET PROFILE ERROR:",
         error
       );
 
       return res.status(500).json({
         success: false,
         message:
-          error.message,
-        actualError:
-          error.message
+          "Profile load failed"
       });
 
     }
+
   }
 );
 
 
 // =====================================
-// UPDATE PROFILE LOCATION
+// UPDATE LOCATION
 // =====================================
 
-app.patch(
+app.put(
   "/api/profile/:id/location",
   async (req, res) => {
 
     try {
 
-      const { id } =
-        req.params;
-
       const {
-        location,
         latitude,
-        longitude
+        longitude,
+        location
       } = req.body;
-
-
-      const lat =
-        Number(latitude);
-
-      const lng =
-        Number(longitude);
-
-
-      if (
-        !Number.isFinite(lat) ||
-        !Number.isFinite(lng) ||
-        lat < -90 ||
-        lat > 90 ||
-        lng < -180 ||
-        lng > 180
-      ) {
-
-        return res.status(400).json({
-          success: false,
-          message:
-            "Valid latitude aur longitude zaroori hain"
-        });
-
-      }
-
-
-      const updateData = {
-
-        latitude: lat,
-
-        longitude: lng,
-
-        location_updated_at:
-          new Date().toISOString()
-
-      };
-
-
-      if (location) {
-
-        updateData.location =
-          String(location).trim();
-
-      }
 
 
       const {
@@ -505,8 +674,20 @@ app.patch(
       } =
         await supabase
           .from("profiles")
-          .update(updateData)
-          .eq("id", id)
+          .update({
+            latitude:
+              latitude ||
+              null,
+
+            longitude:
+              longitude ||
+              null,
+
+            location:
+              location ||
+              null
+          })
+          .eq("id", req.params.id)
           .select()
           .single();
 
@@ -514,22 +695,14 @@ app.patch(
       if (error) {
 
         console.error(
-          "❌ UPDATE LOCATION ERROR:",
+          "❌ LOCATION UPDATE ERROR:",
           error
         );
 
-        return res.status(500).json({
+        return res.status(400).json({
           success: false,
           message:
-            error.message,
-          actualError:
-            error.message,
-          code:
-            error.code,
-          details:
-            error.details,
-          hint:
-            error.hint
+            error.message
         });
 
       }
@@ -537,30 +710,25 @@ app.patch(
 
       return res.json({
         success: true,
-        message:
-          "Location updated successfully",
-        profile:
-          data
+        profile: data
       });
 
 
     } catch (error) {
 
       console.error(
-        "❌ UPDATE LOCATION SERVER ERROR:",
+        "❌ LOCATION SERVER ERROR:",
         error
       );
 
       return res.status(500).json({
         success: false,
         message:
-          error.message ||
-          "Location update failed",
-        actualError:
-          error.message
+          "Location update failed"
       });
 
     }
+
   }
 );
 
@@ -575,148 +743,14 @@ app.post(
 
     try {
 
-      console.log(
-        "================================="
-      );
-
-      console.log(
-        "📥 NEW REQUEST RECEIVED"
-      );
-
-      console.log(
-        "REQUEST BODY:",
-        JSON.stringify(req.body)
-      );
-
-
       const {
-        name,
+        customer_name,
         phone,
-        location,
         service,
-        details,
-        latitude,
-        longitude
+        address,
+        description,
+        customer_id
       } = req.body;
-
-
-      // =====================================
-      // VALIDATION
-      // =====================================
-
-      if (!name) {
-
-        return res.status(400).json({
-          success: false,
-          message:
-            "Customer name missing",
-          actualError:
-            "name is required"
-        });
-
-      }
-
-
-      if (!phone) {
-
-        return res.status(400).json({
-          success: false,
-          message:
-            "Phone number missing",
-          actualError:
-            "phone is required"
-        });
-
-      }
-
-
-      if (!location) {
-
-        return res.status(400).json({
-          success: false,
-          message:
-            "Location missing",
-          actualError:
-            "location is required"
-        });
-
-      }
-
-
-      if (!service) {
-
-        return res.status(400).json({
-          success: false,
-          message:
-            "Service missing",
-          actualError:
-            "service is required"
-        });
-
-      }
-
-
-      const requestData = {
-
-        name:
-          String(name).trim(),
-
-        phone:
-          String(phone).trim(),
-
-        location:
-          String(location).trim(),
-
-        service:
-          String(service).trim(),
-
-        details:
-          details
-            ? String(details).trim()
-            : "",
-
-        status:
-          "New"
-
-      };
-
-
-      // =====================================
-      // CUSTOMER GPS LOCATION
-      // =====================================
-
-      const lat =
-        Number(latitude);
-
-      const lng =
-        Number(longitude);
-
-
-      if (
-        Number.isFinite(lat) &&
-        Number.isFinite(lng) &&
-        lat >= -90 &&
-        lat <= 90 &&
-        lng >= -180 &&
-        lng <= 180
-      ) {
-
-        requestData.latitude =
-          lat;
-
-        requestData.longitude =
-          lng;
-
-        requestData.location_updated_at =
-          new Date().toISOString();
-
-      }
-
-
-      console.log(
-        "📤 SUPABASE INSERT DATA:",
-        JSON.stringify(requestData)
-      );
 
 
       const {
@@ -726,7 +760,34 @@ app.post(
         await supabase
           .from("service_requests")
           .insert([
-            requestData
+            {
+              customer_name:
+                customer_name ||
+                "",
+
+              phone:
+                phone ||
+                "",
+
+              service:
+                service ||
+                "",
+
+              address:
+                address ||
+                "",
+
+              description:
+                description ||
+                "",
+
+              customer_id:
+                customer_id ||
+                null,
+
+              status:
+                "New"
+            }
           ])
           .select()
           .single();
@@ -735,325 +796,36 @@ app.post(
       if (error) {
 
         console.error(
-          "❌❌❌ SUPABASE INSERT ERROR ❌❌❌"
+          "❌ REQUEST CREATE ERROR:",
+          error
         );
-
-        console.error(
-          "MESSAGE:",
-          error.message
-        );
-
-        console.error(
-          "CODE:",
-          error.code
-        );
-
-        console.error(
-          "DETAILS:",
-          error.details
-        );
-
-        console.error(
-          "HINT:",
-          error.hint
-        );
-
-
-        return res.status(500).json({
-          success: false,
-          message:
-            error.message ||
-            "Request save nahi hui",
-          actualError:
-            error.message ||
-            "Unknown Supabase error",
-          code:
-            error.code ||
-            null,
-          details:
-            error.details ||
-            null,
-          hint:
-            error.hint ||
-            null
-        });
-
-      }
-
-
-      console.log(
-        "✅✅✅ REQUEST SAVED SUCCESSFULLY ✅✅✅"
-      );
-
-
-      console.log(
-        "SAVED REQUEST:",
-        JSON.stringify(data)
-      );
-
-
-      return res.status(201).json({
-        success: true,
-        message:
-          "Request successfully created",
-        request:
-          data
-      });
-
-
-    } catch (error) {
-
-      console.error(
-        "❌❌❌ REQUEST SERVER ERROR ❌❌❌"
-      );
-
-      console.error(error);
-
-
-      return res.status(500).json({
-        success: false,
-        message:
-          error.message ||
-          "Request save nahi hui",
-        actualError:
-          error.message ||
-          "Unknown server error"
-      });
-
-    }
-
-  }
-);
-
-
-// =====================================
-// DISTANCE CALCULATOR
-// =====================================
-
-function calculateDistanceKm(
-  lat1,
-  lon1,
-  lat2,
-  lon2
-) {
-
-  const earthRadiusKm =
-    6371;
-
-
-  const dLat =
-    (lat2 - lat1) *
-    Math.PI /
-    180;
-
-  const dLon =
-    (lon2 - lon1) *
-    Math.PI /
-    180;
-
-
-  const a =
-    Math.sin(dLat / 2) *
-    Math.sin(dLat / 2) +
-
-    Math.cos(
-      lat1 * Math.PI / 180
-    ) *
-    Math.cos(
-      lat2 * Math.PI / 180
-    ) *
-
-    Math.sin(dLon / 2) *
-    Math.sin(dLon / 2);
-
-
-  const c =
-    2 *
-    Math.atan2(
-      Math.sqrt(a),
-      Math.sqrt(1 - a)
-    );
-
-
-  return earthRadiusKm * c;
-
-}
-
-
-// =====================================
-// GET NEARBY REQUESTS FOR KARIGAR
-// =====================================
-
-app.get(
-  "/api/requests/nearby",
-  async (req, res) => {
-
-    try {
-
-      const lat =
-        Number(req.query.latitude);
-
-      const lng =
-        Number(req.query.longitude);
-
-      const service =
-        String(
-          req.query.service || ""
-        ).trim();
-
-      const radius =
-        Number(
-          req.query.radius || 50
-        );
-
-
-      if (
-        !Number.isFinite(lat) ||
-        !Number.isFinite(lng)
-      ) {
 
         return res.status(400).json({
           success: false,
           message:
-            "Karigar latitude aur longitude required hain"
-        });
-
-      }
-
-
-      const {
-        data,
-        error
-      } =
-        await supabase
-          .from("service_requests")
-          .select("*")
-          .order("id", {
-            ascending: false
-          });
-
-
-      if (error) {
-
-        console.error(
-          "❌ NEARBY REQUESTS ERROR:",
-          error
-        );
-
-        return res.status(500).json({
-          success: false,
-          message:
-            error.message,
-          actualError:
             error.message
         });
 
       }
 
 
-      const nearbyRequests =
-        data
-          .filter(request => {
-
-            // Only active requests
-            const status =
-              String(
-                request.status ||
-                "New"
-              );
-
-            if (
-              status === "Completed" ||
-              status === "Cancelled"
-            ) {
-
-              return false;
-
-            }
-
-
-            // Service match
-            if (
-              service &&
-              String(
-                request.service || ""
-              ).toLowerCase() !==
-              service.toLowerCase()
-            ) {
-
-              return false;
-
-            }
-
-
-            // GPS missing
-            if (
-              request.latitude === null ||
-              request.latitude === undefined ||
-              request.longitude === null ||
-              request.longitude === undefined
-            ) {
-
-              return false;
-
-            }
-
-
-            const distance =
-              calculateDistanceKm(
-                lat,
-                lng,
-                Number(request.latitude),
-                Number(request.longitude)
-              );
-
-
-            request.distance_km =
-              Number(
-                distance.toFixed(2)
-              );
-
-
-            return distance <= radius;
-
-          })
-          .sort(
-            (a, b) =>
-              a.distance_km -
-              b.distance_km
-          );
-
-
       return res.json({
-
         success: true,
-
-        count:
-          nearbyRequests.length,
-
-        radius_km:
-          radius,
-
-        requests:
-          nearbyRequests
-
+        request: data
       });
 
 
     } catch (error) {
 
       console.error(
-        "❌ NEARBY REQUESTS SERVER ERROR:",
+        "❌ REQUEST SERVER ERROR:",
         error
       );
 
       return res.status(500).json({
         success: false,
         message:
-          error.message ||
-          "Nearby requests load nahi hui",
-        actualError:
-          error.message
+          "Request create failed"
       });
 
     }
@@ -1079,30 +851,25 @@ app.get(
         await supabase
           .from("service_requests")
           .select("*")
-          .order("id", {
-            ascending: false
-          });
+          .order(
+            "id",
+            {
+              ascending: false
+            }
+          );
 
 
       if (error) {
 
         console.error(
-          "❌ GET REQUESTS ERROR:",
+          "❌ REQUEST LOAD ERROR:",
           error
         );
 
-        return res.status(500).json({
+        return res.status(400).json({
           success: false,
           message:
-            error.message,
-          actualError:
-            error.message,
-          code:
-            error.code,
-          details:
-            error.details,
-          hint:
-            error.hint
+            error.message
         });
 
       }
@@ -1120,16 +887,14 @@ app.get(
     } catch (error) {
 
       console.error(
-        "❌ GET REQUESTS SERVER ERROR:",
+        "❌ REQUEST SERVER ERROR:",
         error
       );
 
       return res.status(500).json({
         success: false,
         message:
-          error.message,
-        actualError:
-          error.message
+          "Could not load service requests"
       });
 
     }
@@ -1139,31 +904,14 @@ app.get(
 
 
 // =====================================
-// GET CUSTOMER REQUESTS BY PHONE
+// CUSTOMER REQUESTS
 // =====================================
 
 app.get(
-  "/api/customer-requests",
+  "/api/customer/requests/:customerId",
   async (req, res) => {
 
     try {
-
-      const phone =
-        String(
-          req.query.phone || ""
-        ).trim();
-
-
-      if (!phone) {
-
-        return res.status(400).json({
-          success: false,
-          message:
-            "Phone number required"
-        });
-
-      }
-
 
       const {
         data,
@@ -1172,31 +920,29 @@ app.get(
         await supabase
           .from("service_requests")
           .select("*")
-          .eq("phone", phone)
-          .order("id", {
-            ascending: false
-          });
+          .eq(
+            "customer_id",
+            req.params.customerId
+          )
+          .order(
+            "id",
+            {
+              ascending: false
+            }
+          );
 
 
       if (error) {
 
         console.error(
-          "❌ CUSTOMER REQUESTS ERROR:",
+          "❌ CUSTOMER REQUEST ERROR:",
           error
         );
 
-        return res.status(500).json({
+        return res.status(400).json({
           success: false,
           message:
-            error.message,
-          actualError:
-            error.message,
-          code:
-            error.code,
-          details:
-            error.details,
-          hint:
-            error.hint
+            error.message
         });
 
       }
@@ -1214,18 +960,14 @@ app.get(
     } catch (error) {
 
       console.error(
-        "❌ CUSTOMER REQUESTS SERVER ERROR:",
+        "❌ CUSTOMER REQUEST SERVER ERROR:",
         error
       );
 
       return res.status(500).json({
         success: false,
         message:
-          error.message ||
-          "Customer requests load nahi hui",
-        actualError:
-          error.message ||
-          "Unknown server error"
+          "Customer requests load failed"
       });
 
     }
@@ -1244,10 +986,6 @@ app.get(
 
     try {
 
-      const id =
-        req.params.id;
-
-
       const {
         data,
         error
@@ -1255,29 +993,19 @@ app.get(
         await supabase
           .from("service_requests")
           .select("*")
-          .eq("id", id)
+          .eq(
+            "id",
+            req.params.id
+          )
           .single();
 
 
       if (error) {
 
-        console.error(
-          "❌ GET SINGLE REQUEST ERROR:",
-          error
-        );
-
         return res.status(404).json({
           success: false,
           message:
-            "Request nahi mili",
-          actualError:
-            error.message,
-          code:
-            error.code,
-          details:
-            error.details,
-          hint:
-            error.hint
+            "Request nahi mili"
         });
 
       }
@@ -1285,24 +1013,21 @@ app.get(
 
       return res.json({
         success: true,
-        request:
-          data
+        request: data
       });
 
 
     } catch (error) {
 
       console.error(
-        "❌ GET SINGLE REQUEST SERVER ERROR:",
+        "❌ SINGLE REQUEST ERROR:",
         error
       );
 
       return res.status(500).json({
         success: false,
         message:
-          error.message,
-        actualError:
-          error.message
+          "Request load failed"
       });
 
     }
@@ -1315,38 +1040,23 @@ app.get(
 // UPDATE REQUEST STATUS
 // =====================================
 
-app.patch(
+app.put(
   "/api/requests/:id/status",
   async (req, res) => {
 
     try {
-
-      const id =
-        req.params.id;
 
       const {
         status
       } = req.body;
 
 
-      const allowedStatuses = [
-        "New",
-        "Accepted",
-        "In Progress",
-        "Assigned",
-        "Completed",
-        "Cancelled"
-      ];
-
-
-      if (
-        !allowedStatuses.includes(status)
-      ) {
+      if (!status) {
 
         return res.status(400).json({
           success: false,
           message:
-            "Invalid status"
+            "Status zaroori hai"
         });
 
       }
@@ -1362,7 +1072,10 @@ app.patch(
             status:
               status
           })
-          .eq("id", id)
+          .eq(
+            "id",
+            req.params.id
+          )
           .select()
           .single();
 
@@ -1370,22 +1083,14 @@ app.patch(
       if (error) {
 
         console.error(
-          "❌ UPDATE STATUS ERROR:",
+          "❌ STATUS UPDATE ERROR:",
           error
         );
 
-        return res.status(500).json({
+        return res.status(400).json({
           success: false,
           message:
-            error.message,
-          actualError:
-            error.message,
-          code:
-            error.code,
-          details:
-            error.details,
-          hint:
-            error.hint
+            error.message
         });
 
       }
@@ -1393,26 +1098,21 @@ app.patch(
 
       return res.json({
         success: true,
-        message:
-          "Status updated",
-        request:
-          data
+        request: data
       });
 
 
     } catch (error) {
 
       console.error(
-        "❌ UPDATE STATUS SERVER ERROR:",
+        "❌ STATUS SERVER ERROR:",
         error
       );
 
       return res.status(500).json({
         success: false,
         message:
-          error.message,
-        actualError:
-          error.message
+          "Status update failed"
       });
 
     }
@@ -1431,7 +1131,7 @@ app.use(
 
     res.status(404).json({
       success: false,
-      error:
+      message:
         "API route not found"
     });
 
@@ -1440,8 +1140,12 @@ app.use(
 
 
 // =====================================
-// SERVER START
+// START SERVER
 // =====================================
+
+const PORT =
+  process.env.PORT || 5000;
+
 
 app.listen(
   PORT,
