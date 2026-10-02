@@ -204,29 +204,13 @@ footer{
 
   <div id="authMessage" class="message hidden"></div>
 
-  <input
-    id="name"
-    type="text"
-    placeholder="Aapka naam"
-  >
+  <input id="name" type="text" placeholder="Aapka naam">
 
-  <input
-    id="phone"
-    type="tel"
-    placeholder="Mobile Number"
-  >
+  <input id="phone" type="tel" placeholder="Mobile Number">
 
-  <input
-    id="email"
-    type="email"
-    placeholder="Email (optional)"
-  >
+  <input id="email" type="email" placeholder="Email (optional)">
 
-  <input
-    id="password"
-    type="password"
-    placeholder="Password (minimum 6 characters)"
-  >
+  <input id="password" type="password" placeholder="Password (minimum 6 characters)">
 
   <select id="role">
     <option value="customer">Customer</option>
@@ -243,17 +227,11 @@ footer{
 
   </div>
 
-  <button
-    class="primary"
-    onclick="signup()"
-  >
+  <button class="primary" onclick="signup()">
     📝 Signup
   </button>
 
-  <button
-    class="secondary"
-    onclick="login()"
-  >
+  <button class="secondary" onclick="login()">
     🔑 Login
   </button>
 
@@ -268,22 +246,13 @@ footer{
 
   <h2>👤 My Profile</h2>
 
-  <div
-    id="profileBox"
-    class="profile-box"
-  ></div>
+  <div id="profileBox" class="profile-box"></div>
 
-  <button
-    class="secondary"
-    onclick="getCurrentLocation()"
-  >
+  <button class="secondary" onclick="getCurrentLocation()">
     📍 Location Update Karein
   </button>
 
-  <button
-    class="danger"
-    onclick="logout()"
-  >
+  <button class="danger" onclick="logout()">
     Logout
   </button>
 
@@ -294,10 +263,7 @@ footer{
 
   <h2>🔧 Service Request</h2>
 
-  <div
-    id="requestMessage"
-    class="message hidden"
-  ></div>
+  <div id="requestMessage" class="message hidden"></div>
 
   <p style="margin-bottom:10px;">
     Apko kis kaam ke liye karigar chahiye?
@@ -375,28 +341,18 @@ footer{
 
   </div>
 
-  <input
-    id="requestAddress"
-    type="text"
-    placeholder="Address / Area"
-  >
+  <input id="requestAddress" type="text" placeholder="Address / Area">
 
   <textarea
     id="requestDescription"
     placeholder="Problem ke baare mein batayein"
   ></textarea>
 
-  <button
-    class="primary"
-    onclick="createRequest()"
-  >
+  <button class="primary" onclick="createRequest()">
     📩 Request Bhejein
   </button>
 
-  <button
-    class="secondary"
-    onclick="getCurrentLocation()"
-  >
+  <button class="secondary" onclick="getCurrentLocation()">
     📍 Current Location
   </button>
 
@@ -457,7 +413,32 @@ let currentUser = null;
 let selectedService = "";
 
 
-/* MESSAGE */
+/* =====================================================
+   AUTH TOKEN
+===================================================== */
+
+function getToken(){
+
+  return localStorage.getItem("heyKarigarToken") || "";
+
+}
+
+
+function authHeaders(){
+
+  const token = getToken();
+
+  return {
+    "Content-Type":"application/json",
+    "Authorization":"Bearer " + token
+  };
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
 
 function showMessage(id,message,error=false){
 
@@ -478,7 +459,9 @@ function showMessage(id,message,error=false){
 }
 
 
-/* ROLE CHANGE */
+/* =====================================================
+   ROLE CHANGE
+===================================================== */
 
 document
   .getElementById("role")
@@ -496,7 +479,9 @@ document
   });
 
 
-/* SIGNUP */
+/* =====================================================
+   SIGNUP
+===================================================== */
 
 async function signup(){
 
@@ -626,7 +611,9 @@ async function signup(){
 }
 
 
-/* LOGIN */
+/* =====================================================
+   LOGIN
+===================================================== */
 
 async function login(){
 
@@ -739,7 +726,9 @@ async function login(){
 }
 
 
-/* SHOW LOGGED IN USER */
+/* =====================================================
+   SHOW LOGGED IN USER
+===================================================== */
 
 function showLoggedInUser(){
 
@@ -844,30 +833,26 @@ function showLoggedInUser(){
 }
 
 
-/* LOGOUT */
+/* =====================================================
+   LOGOUT
+===================================================== */
 
 function logout(){
 
   currentUser=null;
 
-  localStorage.removeItem(
-    "heyKarigarProfile"
-  );
-
-  localStorage.removeItem(
-    "heyKarigarToken"
-  );
-
-  localStorage.removeItem(
-    "heyKarigarRefreshToken"
-  );
+  localStorage.removeItem("heyKarigarProfile");
+  localStorage.removeItem("heyKarigarToken");
+  localStorage.removeItem("heyKarigarRefreshToken");
 
   location.reload();
 
 }
 
 
-/* SELECT SERVICE */
+/* =====================================================
+   SELECT SERVICE
+===================================================== */
 
 function selectService(button,service){
 
@@ -884,7 +869,9 @@ function selectService(button,service){
 }
 
 
-/* CREATE REQUEST */
+/* =====================================================
+   CREATE REQUEST
+===================================================== */
 
 async function createRequest(){
 
@@ -893,6 +880,18 @@ async function createRequest(){
     showMessage(
       "requestMessage",
       "Pehle login karein",
+      true
+    );
+
+    return;
+  }
+
+
+  if(!getToken()){
+
+    showMessage(
+      "requestMessage",
+      "Session expire ho gaya. Dobara login karein.",
       true
     );
 
@@ -950,18 +949,13 @@ async function createRequest(){
         {
           method:"POST",
 
-          headers:{
-            "Content-Type":"application/json"
-          },
+          headers:authHeaders(),
 
           body:JSON.stringify({
 
             customer_name:
               currentUser.name ||
               currentUser.full_name,
-
-            customer_id:
-              currentUser.id,
 
             phone:
               currentUser.phone,
@@ -1008,6 +1002,20 @@ async function createRequest(){
       .value="";
 
 
+    document
+      .getElementById("requestAddress")
+      .value="";
+
+
+    selectedService="";
+
+    document
+      .querySelectorAll(".service-btn")
+      .forEach(
+        btn=>btn.classList.remove("selected")
+      );
+
+
     loadCustomerRequests();
 
 
@@ -1026,7 +1034,9 @@ async function createRequest(){
 }
 
 
-/* CUSTOMER REQUESTS */
+/* =====================================================
+   CUSTOMER REQUESTS
+===================================================== */
 
 async function loadCustomerRequests(){
 
@@ -1041,7 +1051,11 @@ async function loadCustomerRequests(){
       await fetch(
         API_BASE+
         "/api/customer/requests/"+
-        currentUser.id
+        currentUser.id,
+        {
+          method:"GET",
+          headers:authHeaders()
+        }
       );
 
 
@@ -1053,6 +1067,15 @@ async function loadCustomerRequests(){
       document.getElementById(
         "customerRequests"
       );
+
+
+    if(response.status===401){
+
+      box.innerHTML=
+        "<p>Session expire ho gaya. Dobara login karein.</p>";
+
+      return;
+    }
 
 
     if(!data.success){
@@ -1137,15 +1160,26 @@ async function loadCustomerRequests(){
 }
 
 
-/* KARIGAR REQUESTS */
+/* =====================================================
+   KARIGAR REQUESTS
+===================================================== */
 
 async function loadRequests(){
+
+  if(!currentUser || currentUser.role!=="karigar"){
+    return;
+  }
+
 
   try{
 
     const response=
       await fetch(
-        API_BASE+"/api/requests"
+        API_BASE+"/api/requests",
+        {
+          method:"GET",
+          headers:authHeaders()
+        }
       );
 
 
@@ -1153,11 +1187,23 @@ async function loadRequests(){
       await response.json();
 
 
-    if(!data.success){
+    if(response.status===401){
 
       showMessage(
         "karigarMessage",
-        "Requests load nahi hui",
+        "Session expire ho gaya. Dobara login karein.",
+        true
+      );
+
+      return;
+    }
+
+
+    if(!response.ok || !data.success){
+
+      showMessage(
+        "karigarMessage",
+        data.message || "Requests load nahi hui",
         true
       );
 
@@ -1187,7 +1233,8 @@ async function loadRequests(){
       .getElementById("completedRequests")
       .textContent=
         requests.filter(
-          r=>r.status==="Completed"
+          r=>r.status==="Completed" &&
+          r.karigar_id===currentUser.id
         ).length;
 
 
@@ -1208,7 +1255,67 @@ async function loadRequests(){
 
     box.innerHTML=
       requests
-      .map(request=>`
+      .map(request=>{
+
+        let buttons="";
+
+        if(request.status==="New"){
+
+          buttons=`
+            <button
+              class="primary"
+              onclick="updateStatus(${request.id},'Accepted')"
+            >
+              Accept
+            </button>
+          `;
+
+        }else if(
+          request.karigar_id===currentUser.id &&
+          request.status==="Accepted"
+        ){
+
+          buttons=`
+            <button
+              class="warning"
+              onclick="updateStatus(${request.id},'On The Way')"
+            >
+              On The Way
+            </button>
+          `;
+
+        }else if(
+          request.karigar_id===currentUser.id &&
+          request.status==="On The Way"
+        ){
+
+          buttons=`
+            <button
+              class="secondary"
+              onclick="updateStatus(${request.id},'Working')"
+            >
+              Working
+            </button>
+          `;
+
+        }else if(
+          request.karigar_id===currentUser.id &&
+          request.status==="Working"
+        ){
+
+          buttons=`
+            <button
+              class="success"
+              onclick="updateStatus(${request.id},'Completed')"
+            >
+              Completed
+            </button>
+          `;
+
+        }
+
+
+        return `
 
         <div class="request">
 
@@ -1266,45 +1373,24 @@ async function loadRequests(){
             </span>
           </p>
 
+          ${request.karigar_id
+            ? `
+              <p style="font-size:13px;color:#666;">
+                🛠️ Request assigned
+              </p>
+            `
+            : ""
+          }
 
           <div>
-
-            <button
-              class="primary"
-              onclick="updateStatus(${request.id},'Accepted')"
-            >
-              Accept
-            </button>
-
-
-            <button
-              class="warning"
-              onclick="updateStatus(${request.id},'On The Way')"
-            >
-              On The Way
-            </button>
-
-
-            <button
-              class="secondary"
-              onclick="updateStatus(${request.id},'Working')"
-            >
-              Working
-            </button>
-
-
-            <button
-              class="success"
-              onclick="updateStatus(${request.id},'Completed')"
-            >
-              Completed
-            </button>
-
+            ${buttons}
           </div>
 
         </div>
 
-      `)
+        `;
+
+      })
       .join("");
 
 
@@ -1323,9 +1409,36 @@ async function loadRequests(){
 }
 
 
-/* UPDATE STATUS */
+/* =====================================================
+   UPDATE STATUS
+===================================================== */
 
 async function updateStatus(id,status){
+
+  if(!getToken()){
+
+    alert(
+      "Session expire ho gaya. Dobara login karein."
+    );
+
+    return;
+  }
+
+
+  /*
+    Frontend safety:
+    Cancel intentionally blocked.
+  */
+
+  if(status==="Cancelled"){
+
+    alert(
+      "❌ Karigar request Cancel nahi kar sakta."
+    );
+
+    return;
+  }
+
 
   try{
 
@@ -1338,9 +1451,7 @@ async function updateStatus(id,status){
         {
           method:"PUT",
 
-          headers:{
-            "Content-Type":"application/json"
-          },
+          headers:authHeaders(),
 
           body:JSON.stringify({
             status:status
@@ -1381,7 +1492,9 @@ async function updateStatus(id,status){
 }
 
 
-/* CURRENT LOCATION */
+/* =====================================================
+   CURRENT LOCATION
+===================================================== */
 
 function getCurrentLocation(){
 
@@ -1389,6 +1502,16 @@ function getCurrentLocation(){
 
     alert(
       "Aapke browser me location support nahi hai."
+    );
+
+    return;
+  }
+
+
+  if(!getToken()){
+
+    alert(
+      "Pehle login karein."
     );
 
     return;
@@ -1463,10 +1586,7 @@ function getCurrentLocation(){
               {
                 method:"PUT",
 
-                headers:{
-                  "Content-Type":
-                    "application/json"
-                },
+                headers:authHeaders(),
 
                 body:JSON.stringify({
 
@@ -1560,7 +1680,9 @@ function getCurrentLocation(){
 }
 
 
-/* ESCAPE HTML */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
 function escapeHtml(value){
 
@@ -1574,7 +1696,9 @@ function escapeHtml(value){
 }
 
 
-/* AUTO LOGIN */
+/* =====================================================
+   AUTO LOGIN
+===================================================== */
 
 try{
 
@@ -1583,12 +1707,16 @@ try{
       "heyKarigarProfile"
     );
 
+  const savedToken=
+    localStorage.getItem(
+      "heyKarigarToken"
+    );
 
-  if(savedProfile){
+
+  if(savedProfile && savedToken){
 
     currentUser=
       JSON.parse(savedProfile);
-
 
     showLoggedInUser();
 
@@ -1600,6 +1728,14 @@ try{
 
   localStorage.removeItem(
     "heyKarigarProfile"
+  );
+
+  localStorage.removeItem(
+    "heyKarigarToken"
+  );
+
+  localStorage.removeItem(
+    "heyKarigarRefreshToken"
   );
 
 }
