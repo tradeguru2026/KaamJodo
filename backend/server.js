@@ -9,7 +9,8 @@ app.use(cors());
 app.use(express.json());
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_SERVICE_ROLE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   console.error("❌ Supabase environment variables missing");
@@ -28,7 +29,9 @@ const supabase = createClient(
 app.use(express.static(path.join(__dirname, "..")));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "index.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "index.html")
+  );
 });
 
 /* =====================================================
@@ -39,7 +42,7 @@ app.get("/api", (req, res) => {
   res.json({
     app: "Hey Karigar API",
     status: "running",
-    version: "4.0.0"
+    version: "4.1.0"
   });
 });
 
@@ -68,7 +71,8 @@ function internalAuthEmail(phone) {
 
 async function authenticate(req, res, next) {
   try {
-    const authHeader = req.headers.authorization || "";
+    const authHeader =
+      req.headers.authorization || "";
 
     if (!authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
@@ -77,7 +81,8 @@ async function authenticate(req, res, next) {
       });
     }
 
-    const token = authHeader.substring(7).trim();
+    const token =
+      authHeader.substring(7).trim();
 
     if (!token) {
       return res.status(401).json({
@@ -89,23 +94,26 @@ async function authenticate(req, res, next) {
     const {
       data: { user },
       error: userError
-    } = await supabase.auth.getUser(token);
+    } =
+      await supabase.auth.getUser(token);
 
     if (userError || !user) {
       return res.status(401).json({
         success: false,
-        message: "Session expired. Please login again."
+        message:
+          "Session expired. Please login again."
       });
     }
 
     const {
       data: profile,
       error: profileError
-    } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
+    } =
+      await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
 
     if (profileError || !profile) {
       return res.status(403).json({
@@ -120,7 +128,11 @@ async function authenticate(req, res, next) {
     next();
 
   } catch (error) {
-    console.error("Authentication error:", error);
+
+    console.error(
+      "Authentication error:",
+      error
+    );
 
     return res.status(401).json({
       success: false,
@@ -135,10 +147,14 @@ async function authenticate(req, res, next) {
 
 function adminOnly(req, res, next) {
 
-  if (!req.profile || req.profile.role !== "admin") {
+  if (
+    !req.profile ||
+    req.profile.role !== "admin"
+  ) {
     return res.status(403).json({
       success: false,
-      message: "Sirf Admin access kar sakta hai"
+      message:
+        "Sirf Admin access kar sakta hai"
     });
   }
 
@@ -149,217 +165,479 @@ function adminOnly(req, res, next) {
    SIGNUP
 ===================================================== */
 
-app.post("/api/auth/signup", async (req, res) => {
-  try {
+app.post(
+  "/api/auth/signup",
+  async (req, res) => {
 
-    const {
-      name,
-      full_name,
-      phone,
-      email,
-      password,
-      role,
-      service,
-      location,
-      state,
-      latitude,
-      longitude
-    } = req.body;
+    try {
 
-    if (!phone || !password) {
-      return res.status(400).json({
+      const {
+        name,
+        full_name,
+        phone,
+        email,
+        password,
+        role,
+        service,
+        location,
+        state,
+        latitude,
+        longitude
+      } = req.body;
+
+      if (!phone || !password) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Mobile number aur password zaroori hain"
+        });
+      }
+
+      if (String(password).length < 6) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Password kam se kam 6 characters ka hona chahiye"
+        });
+      }
+
+      const normalizedPhone =
+        normalizePhone(phone);
+
+      if (normalizedPhone.length < 10) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Sahi mobile number enter karein"
+        });
+      }
+
+      /*
+        Public signup se sirf Customer
+        ya Karigar ban sakta hai.
+        Admin manually existing Auth/Profile
+        se use hoga.
+      */
+
+      const selectedRole =
+        role === "karigar"
+          ? "karigar"
+          : "customer";
+
+      const {
+        data: existingProfile
+      } =
+        await supabase
+          .from("profiles")
+          .select("id, phone")
+          .eq("phone", normalizedPhone)
+          .maybeSingle();
+
+      if (existingProfile) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Ye mobile number pehle se registered hai. Login karein."
+        });
+      }
+
+      const authEmail =
+        internalAuthEmail(normalizedPhone);
+
+      const {
+        data: userData,
+        error: userError
+      } =
+        await supabase.auth.admin.createUser({
+          email: authEmail,
+          password: String(password),
+          email_confirm: true
+        });
+
+      if (userError) {
+
+        console.error(
+          "Auth signup error:",
+          userError
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            userError.message ||
+            "Signup failed"
+        });
+      }
+
+      const userId =
+        userData.user.id;
+
+      const realEmail =
+        email &&
+        String(email).trim()
+          ? String(email)
+              .trim()
+              .toLowerCase()
+          : null;
+
+      const {
+        data: profile,
+        error: profileError
+      } =
+        await supabase
+          .from("profiles")
+          .insert([
+            {
+              id: userId,
+
+              name:
+                name ||
+                full_name ||
+                "",
+
+              full_name:
+                full_name ||
+                name ||
+                "",
+
+              phone:
+                normalizedPhone,
+
+              email:
+                realEmail,
+
+              role:
+                selectedRole,
+
+              service:
+                service ||
+                null,
+
+              location:
+                location ||
+                null,
+
+              state:
+                state ||
+                null,
+
+              latitude:
+                latitude ||
+                null,
+
+              longitude:
+                longitude ||
+                null
+            }
+          ])
+          .select()
+          .single();
+
+      if (profileError) {
+
+        await supabase.auth.admin.deleteUser(
+          userId
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            profileError.message ||
+            "Profile create nahi hua"
+        });
+      }
+
+      return res.json({
+        success: true,
+        message:
+          "Account successfully create ho gaya",
+        profile
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Signup error:",
+        error
+      );
+
+      return res.status(500).json({
         success: false,
-        message: "Mobile number aur password zaroori hain"
+        message: "Signup failed"
       });
     }
-
-    if (String(password).length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: "Password kam se kam 6 characters ka hona chahiye"
-      });
-    }
-
-    const normalizedPhone = normalizePhone(phone);
-
-    if (normalizedPhone.length < 10) {
-      return res.status(400).json({
-        success: false,
-        message: "Sahi mobile number enter karein"
-      });
-    }
-
-    /*
-      Public signup se sirf Customer ya Karigar ban sakta hai.
-      Admin manually database se banega.
-    */
-
-    const selectedRole =
-      role === "karigar" ? "karigar" : "customer";
-
-    const { data: existingProfile } =
-      await supabase
-        .from("profiles")
-        .select("id, phone")
-        .eq("phone", normalizedPhone)
-        .maybeSingle();
-
-    if (existingProfile) {
-      return res.status(400).json({
-        success: false,
-        message: "Ye mobile number pehle se registered hai. Login karein."
-      });
-    }
-
-    const authEmail = internalAuthEmail(normalizedPhone);
-
-    const { data: userData, error: userError } =
-      await supabase.auth.admin.createUser({
-        email: authEmail,
-        password: String(password),
-        email_confirm: true
-      });
-
-    if (userError) {
-      console.error("Auth signup error:", userError);
-
-      return res.status(400).json({
-        success: false,
-        message: userError.message || "Signup failed"
-      });
-    }
-
-    const userId = userData.user.id;
-
-    const realEmail =
-      email && String(email).trim()
-        ? String(email).trim().toLowerCase()
-        : null;
-
-    const { data: profile, error: profileError } =
-      await supabase
-        .from("profiles")
-        .insert([
-          {
-            id: userId,
-            name: name || full_name || "",
-            full_name: full_name || name || "",
-            phone: normalizedPhone,
-            email: realEmail,
-            role: selectedRole,
-            service: service || null,
-            location: location || null,
-            state: state || null,
-            latitude: latitude || null,
-            longitude: longitude || null
-          }
-        ])
-        .select()
-        .single();
-
-    if (profileError) {
-
-      await supabase.auth.admin.deleteUser(userId);
-
-      return res.status(400).json({
-        success: false,
-        message: profileError.message || "Profile create nahi hua"
-      });
-    }
-
-    return res.json({
-      success: true,
-      message: "Account successfully create ho gaya",
-      profile
-    });
-
-  } catch (error) {
-
-    console.error("Signup error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Signup failed"
-    });
   }
-});
+);
 
 /* =====================================================
    LOGIN
    Mobile OR Email supported
 ===================================================== */
 
-app.post("/api/auth/login", async (req, res) => {
-  try {
+app.post(
+  "/api/auth/login",
+  async (req, res) => {
 
-    const loginValue =
-      String(
-        req.body.phone ||
-        req.body.email ||
-        ""
-      ).trim();
+    try {
 
-    const password =
-      String(req.body.password || "");
+      const loginValue =
+        String(
+          req.body.phone ||
+          req.body.email ||
+          ""
+        ).trim();
 
-    if (!loginValue || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Mobile number/email aur password zaroori hain"
-      });
-    }
+      const password =
+        String(
+          req.body.password || ""
+        );
 
-    let authEmail = "";
-    let profile = null;
-
-    /*
-      Agar email diya gaya hai:
-      direct email se login.
-    */
-
-    if (loginValue.includes("@")) {
-
-      const { data: profileByEmail } =
-        await supabase
-          .from("profiles")
-          .select("*")
-          .eq("email", loginValue.toLowerCase())
-          .maybeSingle();
-
-      if (profileByEmail) {
-        profile = profileByEmail;
-      }
-
-      authEmail = loginValue.toLowerCase();
-
-    } else {
-
-      /*
-        Mobile se profile find karo.
-      */
-
-      const normalizedPhone =
-        normalizePhone(loginValue);
-
-      const { data: profileByPhone } =
-        await supabase
-          .from("profiles")
-          .select("*")
-          .eq("phone", normalizedPhone)
-          .maybeSingle();
-
-      if (!profileByPhone) {
-        return res.status(401).json({
+      if (!loginValue || !password) {
+        return res.status(400).json({
           success: false,
-          message: "Mobile number ya password galat hai"
+          message:
+            "Mobile number/email aur password zaroori hain"
         });
       }
 
-      profile = profileByPhone;
+      let authEmail = "";
+      let profile = null;
 
       /*
-        Existing Auth user ka actual email nikaalo.
-        Isse manually-created Admin user bhi login kar sakega.
+        Email se login
+      */
+
+      if (loginValue.includes("@")) {
+
+        const {
+          data: profileByEmail
+        } =
+          await supabase
+            .from("profiles")
+            .select("*")
+            .eq(
+              "email",
+              loginValue.toLowerCase()
+            )
+            .maybeSingle();
+
+        if (profileByEmail) {
+          profile =
+            profileByEmail;
+        }
+
+        authEmail =
+          loginValue.toLowerCase();
+
+      } else {
+
+        /*
+          Mobile se profile find karo
+        */
+
+        const normalizedPhone =
+          normalizePhone(loginValue);
+
+        const {
+          data: profileByPhone
+        } =
+          await supabase
+            .from("profiles")
+            .select("*")
+            .eq(
+              "phone",
+              normalizedPhone
+            )
+            .maybeSingle();
+
+        if (!profileByPhone) {
+          return res.status(401).json({
+            success: false,
+            message:
+              "Mobile number ya password galat hai"
+          });
+        }
+
+        profile =
+          profileByPhone;
+
+        /*
+          Auth user ka actual email
+        */
+
+        const {
+          data: authUserData,
+          error: authUserError
+        } =
+          await supabase.auth.admin.getUserById(
+            profile.id
+          );
+
+        if (
+          authUserError ||
+          !authUserData.user
+        ) {
+          return res.status(401).json({
+            success: false,
+            message:
+              "Login account nahi mila"
+          });
+        }
+
+        authEmail =
+          authUserData.user.email;
+      }
+
+      if (!authEmail) {
+        return res.status(401).json({
+          success: false,
+          message:
+            "Login account nahi mila"
+        });
+      }
+
+      const {
+        data,
+        error
+      } =
+        await supabase.auth.signInWithPassword({
+          email: authEmail,
+          password: password
+        });
+
+      if (error) {
+
+        console.error(
+          "Login error:",
+          error
+        );
+
+        return res.status(401).json({
+          success: false,
+          message:
+            "Mobile number/email ya password galat hai"
+        });
+      }
+
+      const user =
+        data.user;
+
+      const {
+        data: finalProfile,
+        error: finalProfileError
+      } =
+        await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+      if (
+        finalProfileError ||
+        !finalProfile
+      ) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Profile nahi mili"
+        });
+      }
+
+      return res.json({
+        success: true,
+        message:
+          "Login successful",
+
+        user: {
+          id: user.id
+        },
+
+        profile:
+          finalProfile,
+
+        access_token:
+          data.session.access_token,
+
+        refresh_token:
+          data.session.refresh_token
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Login error:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: "Login failed"
+      });
+    }
+  }
+);
+
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
+
+app.post(
+  "/api/auth/forgot-password",
+  async (req, res) => {
+
+    try {
+
+      const email =
+        String(
+          req.body.email || ""
+        )
+          .trim()
+          .toLowerCase();
+
+      if (!email) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Registered email zaroori hai"
+        });
+      }
+
+      if (!email.includes("@")) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Sahi email address enter karein"
+        });
+      }
+
+      /*
+        Profile mein registered email
+        check karo.
+      */
+
+      const {
+        data: profile,
+        error: profileError
+      } =
+        await supabase
+          .from("profiles")
+          .select("id, email, role")
+          .eq("email", email)
+          .maybeSingle();
+
+      if (
+        profileError ||
+        !profile
+      ) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Is email se koi account nahi mila"
+        });
+      }
+
+      /*
+        Supabase Auth user find karo.
       */
 
       const {
@@ -370,273 +648,486 @@ app.post("/api/auth/login", async (req, res) => {
           profile.id
         );
 
-      if (authUserError || !authUserData.user) {
-        return res.status(401).json({
+      if (
+        authUserError ||
+        !authUserData.user
+      ) {
+        return res.status(404).json({
           success: false,
-          message: "Login account nahi mila"
+          message:
+            "Auth account nahi mila"
         });
       }
 
-      authEmail =
+      const authEmail =
         authUserData.user.email;
 
-    }
+      if (!authEmail) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Account email available nahi hai"
+        });
+      }
 
-    if (!authEmail) {
-      return res.status(401).json({
+      /*
+        Live website ko recovery redirect
+        ke liye use karenge.
+      */
+
+      const publicAppUrl =
+        process.env.PUBLIC_APP_URL ||
+        `${req.protocol}://${req.get("host")}`;
+
+      const redirectTo =
+        `${publicAppUrl}/`;
+
+      const {
+        error: recoveryError
+      } =
+        await supabase.auth.resetPasswordForEmail(
+          authEmail,
+          {
+            redirectTo: redirectTo
+          }
+        );
+
+      if (recoveryError) {
+
+        console.error(
+          "Password recovery error:",
+          recoveryError
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            recoveryError.message ||
+            "Password recovery email nahi bheji ja saki"
+        });
+      }
+
+      return res.json({
+        success: true,
+        message:
+          "Password recovery email bhej di gayi hai"
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Forgot password error:",
+        error
+      );
+
+      return res.status(500).json({
         success: false,
-        message: "Login account nahi mila"
+        message:
+          "Password recovery failed"
       });
     }
-
-    const { data, error } =
-      await supabase.auth.signInWithPassword({
-        email: authEmail,
-        password: password
-      });
-
-    if (error) {
-
-      console.error("Login error:", error);
-
-      return res.status(401).json({
-        success: false,
-        message: "Mobile number/email ya password galat hai"
-      });
-    }
-
-    const user = data.user;
-
-    /*
-      Profile dobara user ID se load karte hain.
-    */
-
-    const { data: finalProfile, error: finalProfileError } =
-      await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
-
-    if (finalProfileError || !finalProfile) {
-      return res.status(404).json({
-        success: false,
-        message: "Profile nahi mili"
-      });
-    }
-
-    return res.json({
-      success: true,
-      message: "Login successful",
-      user: {
-        id: user.id
-      },
-      profile: finalProfile,
-      access_token: data.session.access_token,
-      refresh_token: data.session.refresh_token
-    });
-
-  } catch (error) {
-
-    console.error("Login error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Login failed"
-    });
   }
-});
+);
+
+/* =====================================================
+   RESET PASSWORD
+===================================================== */
+
+app.post(
+  "/api/auth/reset-password",
+  async (req, res) => {
+
+    try {
+
+      const token =
+        String(
+          req.body.token || ""
+        ).trim();
+
+      const password =
+        String(
+          req.body.password || ""
+        );
+
+      if (!token) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Recovery token missing hai"
+        });
+      }
+
+      if (!password) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Naya password zaroori hai"
+        });
+      }
+
+      if (password.length < 6) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Password kam se kam 6 characters ka hona chahiye"
+        });
+      }
+
+      /*
+        Recovery access token se
+        Supabase user verify karo.
+      */
+
+      const {
+        data: userData,
+        error: userError
+      } =
+        await supabase.auth.getUser(
+          token
+        );
+
+      if (
+        userError ||
+        !userData.user
+      ) {
+
+        console.error(
+          "Recovery token error:",
+          userError
+        );
+
+        return res.status(401).json({
+          success: false,
+          message:
+            "Recovery link invalid ya expire ho gaya"
+        });
+      }
+
+      const userId =
+        userData.user.id;
+
+      /*
+        Admin service role ke through
+        naya password set karo.
+      */
+
+      const {
+        data: updatedUser,
+        error: updateError
+      } =
+        await supabase.auth.admin.updateUserById(
+          userId,
+          {
+            password: password
+          }
+        );
+
+      if (updateError) {
+
+        console.error(
+          "Password update error:",
+          updateError
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            updateError.message ||
+            "Password update nahi hua"
+        });
+      }
+
+      return res.json({
+        success: true,
+        message:
+          "Password successfully change ho gaya"
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Reset password error:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Password reset failed"
+      });
+    }
+  }
+);
 
 /* =====================================================
    PROFILE
 ===================================================== */
 
-app.get("/api/profile/:id", authenticate, async (req, res) => {
+app.get(
+  "/api/profile/:id",
+  authenticate,
+  async (req, res) => {
 
-  if (req.params.id !== req.user.id) {
-    return res.status(403).json({
-      success: false,
-      message: "Aap sirf apni profile dekh sakte hain"
+    if (
+      req.params.id !==
+      req.user.id
+    ) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Aap sirf apni profile dekh sakte hain"
+      });
+    }
+
+    return res.json({
+      success: true,
+      profile: req.profile
     });
   }
-
-  return res.json({
-    success: true,
-    profile: req.profile
-  });
-});
+);
 
 /* =====================================================
    UPDATE LOCATION
 ===================================================== */
 
-app.put("/api/profile/:id/location", authenticate, async (req, res) => {
-  try {
+app.put(
+  "/api/profile/:id/location",
+  authenticate,
+  async (req, res) => {
 
-    if (req.params.id !== req.user.id) {
-      return res.status(403).json({
+    try {
+
+      if (
+        req.params.id !==
+        req.user.id
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Aap sirf apni location update kar sakte hain"
+        });
+      }
+
+      const {
+        latitude,
+        longitude,
+        location,
+        state
+      } = req.body;
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("profiles")
+          .update({
+            latitude:
+              latitude || null,
+
+            longitude:
+              longitude || null,
+
+            location:
+              location || null,
+
+            state:
+              state || null,
+
+            location_updated_at:
+              new Date().toISOString()
+          })
+          .eq(
+            "id",
+            req.user.id
+          )
+          .select()
+          .single();
+
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message:
+            error.message
+        });
+      }
+
+      return res.json({
+        success: true,
+        profile: data
+      });
+
+    } catch (error) {
+
+      return res.status(500).json({
         success: false,
-        message: "Aap sirf apni location update kar sakte hain"
+        message:
+          "Location update nahi hui"
       });
     }
-
-    const {
-      latitude,
-      longitude,
-      location,
-      state
-    } = req.body;
-
-    const { data, error } =
-      await supabase
-        .from("profiles")
-        .update({
-          latitude: latitude || null,
-          longitude: longitude || null,
-          location: location || null,
-          state: state || null,
-          location_updated_at:
-            new Date().toISOString()
-        })
-        .eq("id", req.user.id)
-        .select()
-        .single();
-
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: error.message
-      });
-    }
-
-    return res.json({
-      success: true,
-      profile: data
-    });
-
-  } catch (error) {
-
-    return res.status(500).json({
-      success: false,
-      message: "Location update nahi hui"
-    });
   }
-});
+);
 
 /* =====================================================
    CREATE REQUEST
 ===================================================== */
 
-app.post("/api/requests", authenticate, async (req, res) => {
-  try {
+app.post(
+  "/api/requests",
+  authenticate,
+  async (req, res) => {
 
-    if (req.profile.role !== "customer") {
-      return res.status(403).json({
-        success: false,
-        message: "Sirf customer request create kar sakta hai"
+    try {
+
+      if (
+        req.profile.role !==
+        "customer"
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Sirf customer request create kar sakta hai"
+        });
+      }
+
+      const {
+        customer_name,
+        phone,
+        service,
+        address,
+        description
+      } = req.body;
+
+      if (
+        !customer_name ||
+        !phone ||
+        !service ||
+        !address
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Name, mobile, service aur address zaroori hain"
+        });
+      }
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("service_requests")
+          .insert([
+            {
+              customer_name,
+              phone,
+              service,
+              address,
+              description:
+                description || null,
+
+              customer_id:
+                req.user.id,
+
+              status:
+                "New",
+
+              karigar_id:
+                null
+            }
+          ])
+          .select()
+          .single();
+
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message:
+            error.message
+        });
+      }
+
+      return res.json({
+        success: true,
+        message:
+          "Service request successfully create ho gayi",
+        request: data
       });
-    }
 
-    const {
-      customer_name,
-      phone,
-      service,
-      address,
-      description
-    } = req.body;
+    } catch (error) {
 
-    if (!customer_name || !phone || !service || !address) {
-      return res.status(400).json({
+      return res.status(500).json({
         success: false,
         message:
-          "Name, mobile, service aur address zaroori hain"
+          "Request create nahi hui"
       });
     }
-
-    const { data, error } =
-      await supabase
-        .from("service_requests")
-        .insert([
-          {
-            customer_name,
-            phone,
-            service,
-            address,
-            description: description || null,
-            customer_id: req.user.id,
-            status: "New",
-            karigar_id: null
-          }
-        ])
-        .select()
-        .single();
-
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: error.message
-      });
-    }
-
-    return res.json({
-      success: true,
-      message: "Service request successfully create ho gayi",
-      request: data
-    });
-
-  } catch (error) {
-
-    return res.status(500).json({
-      success: false,
-      message: "Request create nahi hui"
-    });
   }
-});
+);
 
 /* =====================================================
    KARIGAR REQUESTS
 ===================================================== */
 
-app.get("/api/requests", authenticate, async (req, res) => {
-  try {
+app.get(
+  "/api/requests",
+  authenticate,
+  async (req, res) => {
 
-    if (req.profile.role !== "karigar") {
-      return res.status(403).json({
+    try {
+
+      if (
+        req.profile.role !==
+        "karigar"
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Sirf Karigar requests dekh sakta hai"
+        });
+      }
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("service_requests")
+          .select("*")
+          .or(
+            `status.eq.New,karigar_id.eq.${req.user.id}`
+          )
+          .order(
+            "id",
+            {
+              ascending: false
+            }
+          );
+
+      if (error) {
+        return res.status(400).json({
+          success: false,
+          message:
+            error.message
+        });
+      }
+
+      return res.json({
+        success: true,
+        count: data.length,
+        requests: data
+      });
+
+    } catch (error) {
+
+      return res.status(500).json({
         success: false,
-        message: "Sirf Karigar requests dekh sakta hai"
+        message:
+          "Requests load nahi hui"
       });
     }
-
-    const { data, error } =
-      await supabase
-        .from("service_requests")
-        .select("*")
-        .or(
-          `status.eq.New,karigar_id.eq.${req.user.id}`
-        )
-        .order("id", { ascending: false });
-
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: error.message
-      });
-    }
-
-    return res.json({
-      success: true,
-      count: data.length,
-      requests: data
-    });
-
-  } catch (error) {
-
-    return res.status(500).json({
-      success: false,
-      message: "Requests load nahi hui"
-    });
   }
-});
+);
 
 /* =====================================================
    CUSTOMER REQUESTS
@@ -649,31 +1140,51 @@ app.get(
 
     try {
 
-      if (req.profile.role !== "customer") {
+      if (
+        req.profile.role !==
+        "customer"
+      ) {
         return res.status(403).json({
           success: false,
-          message: "Sirf customer apni requests dekh sakta hai"
+          message:
+            "Sirf customer apni requests dekh sakta hai"
         });
       }
 
-      if (req.params.customerId !== req.user.id) {
+      if (
+        req.params.customerId !==
+        req.user.id
+      ) {
         return res.status(403).json({
           success: false,
-          message: "Aap sirf apni requests dekh sakte hain"
+          message:
+            "Aap sirf apni requests dekh sakte hain"
         });
       }
 
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await supabase
           .from("service_requests")
           .select("*")
-          .eq("customer_id", req.user.id)
-          .order("id", { ascending: false });
+          .eq(
+            "customer_id",
+            req.user.id
+          )
+          .order(
+            "id",
+            {
+              ascending: false
+            }
+          );
 
       if (error) {
         return res.status(400).json({
           success: false,
-          message: error.message
+          message:
+            error.message
         });
       }
 
@@ -686,7 +1197,8 @@ app.get(
 
       return res.status(500).json({
         success: false,
-        message: "Customer requests load nahi hui"
+        message:
+          "Customer requests load nahi hui"
       });
     }
   }
@@ -696,37 +1208,48 @@ app.get(
    SINGLE REQUEST
 ===================================================== */
 
-app.get("/api/requests/:id", async (req, res) => {
+app.get(
+  "/api/requests/:id",
+  async (req, res) => {
 
-  try {
+    try {
 
-    const { data, error } =
-      await supabase
-        .from("service_requests")
-        .select("*")
-        .eq("id", req.params.id)
-        .single();
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("service_requests")
+          .select("*")
+          .eq(
+            "id",
+            req.params.id
+          )
+          .single();
 
-    if (error || !data) {
-      return res.status(404).json({
+      if (error || !data) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Request nahi mili"
+        });
+      }
+
+      return res.json({
+        success: true,
+        request: data
+      });
+
+    } catch (error) {
+
+      return res.status(500).json({
         success: false,
-        message: "Request nahi mili"
+        message:
+          "Request load nahi hui"
       });
     }
-
-    return res.json({
-      success: true,
-      request: data
-    });
-
-  } catch (error) {
-
-    return res.status(500).json({
-      success: false,
-      message: "Request load nahi hui"
-    });
   }
-});
+);
 
 /* =====================================================
    UPDATE STATUS
@@ -739,7 +1262,10 @@ app.put(
 
     try {
 
-      if (req.profile.role !== "karigar") {
+      if (
+        req.profile.role !==
+        "karigar"
+      ) {
         return res.status(403).json({
           success: false,
           message:
@@ -757,7 +1283,11 @@ app.put(
         "Completed"
       ];
 
-      if (!allowedStatuses.includes(requestedStatus)) {
+      if (
+        !allowedStatuses.includes(
+          requestedStatus
+        )
+      ) {
         return res.status(400).json({
           success: false,
           message:
@@ -765,23 +1295,39 @@ app.put(
         });
       }
 
-      const { data: request, error: requestError } =
+      const {
+        data: request,
+        error: requestError
+      } =
         await supabase
           .from("service_requests")
           .select("*")
-          .eq("id", req.params.id)
+          .eq(
+            "id",
+            req.params.id
+          )
           .single();
 
-      if (requestError || !request) {
+      if (
+        requestError ||
+        !request
+      ) {
         return res.status(404).json({
           success: false,
-          message: "Request nahi mili"
+          message:
+            "Request nahi mili"
         });
       }
 
-      if (requestedStatus === "Accepted") {
+      if (
+        requestedStatus ===
+        "Accepted"
+      ) {
 
-        if (request.status !== "New") {
+        if (
+          request.status !==
+          "New"
+        ) {
           return res.status(400).json({
             success: false,
             message:
@@ -797,20 +1343,38 @@ app.put(
           });
         }
 
-        const { data, error } =
+        const {
+          data,
+          error
+        } =
           await supabase
             .from("service_requests")
             .update({
-              status: "Accepted",
-              karigar_id: req.user.id
+              status:
+                "Accepted",
+
+              karigar_id:
+                req.user.id
             })
-            .eq("id", request.id)
-            .eq("status", "New")
-            .is("karigar_id", null)
+            .eq(
+              "id",
+              request.id
+            )
+            .eq(
+              "status",
+              "New"
+            )
+            .is(
+              "karigar_id",
+              null
+            )
             .select()
             .single();
 
-        if (error || !data) {
+        if (
+          error ||
+          !data
+        ) {
           return res.status(409).json({
             success: false,
             message:
@@ -820,12 +1384,16 @@ app.put(
 
         return res.json({
           success: true,
-          message: "Request accept ho gayi",
+          message:
+            "Request accept ho gayi",
           request: data
         });
       }
 
-      if (request.karigar_id !== req.user.id) {
+      if (
+        request.karigar_id !==
+        req.user.id
+      ) {
         return res.status(403).json({
           success: false,
           message:
@@ -834,13 +1402,20 @@ app.put(
       }
 
       const nextStatus = {
-        "Accepted": "On The Way",
-        "On The Way": "Working",
-        "Working": "Completed"
+        "Accepted":
+          "On The Way",
+
+        "On The Way":
+          "Working",
+
+        "Working":
+          "Completed"
       };
 
       if (
-        nextStatus[request.status] !==
+        nextStatus[
+          request.status
+        ] !==
         requestedStatus
       ) {
         return res.status(400).json({
@@ -850,28 +1425,46 @@ app.put(
         });
       }
 
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await supabase
           .from("service_requests")
           .update({
-            status: requestedStatus
+            status:
+              requestedStatus
           })
-          .eq("id", request.id)
-          .eq("karigar_id", req.user.id)
-          .eq("status", request.status)
+          .eq(
+            "id",
+            request.id
+          )
+          .eq(
+            "karigar_id",
+            req.user.id
+          )
+          .eq(
+            "status",
+            request.status
+          )
           .select()
           .single();
 
-      if (error || !data) {
+      if (
+        error ||
+        !data
+      ) {
         return res.status(400).json({
           success: false,
-          message: "Status update nahi hua"
+          message:
+            "Status update nahi hua"
         });
       }
 
       return res.json({
         success: true,
-        message: "Status update ho gaya",
+        message:
+          "Status update ho gaya",
         request: data
       });
 
@@ -879,7 +1472,8 @@ app.put(
 
       return res.status(500).json({
         success: false,
-        message: "Status update nahi hua"
+        message:
+          "Status update nahi hua"
       });
     }
   }
@@ -904,14 +1498,18 @@ app.get(
         await supabase
           .from("profiles")
           .select("*")
-          .order("created_at", {
-            ascending: false
-          });
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
 
       if (profilesError) {
         return res.status(400).json({
           success: false,
-          message: profilesError.message
+          message:
+            profilesError.message
         });
       }
 
@@ -922,42 +1520,65 @@ app.get(
         await supabase
           .from("service_requests")
           .select("*")
-          .order("id", {
-            ascending: false
-          });
+          .order(
+            "id",
+            {
+              ascending: false
+            }
+          );
 
       if (requestsError) {
         return res.status(400).json({
           success: false,
-          message: requestsError.message
+          message:
+            requestsError.message
         });
       }
 
       const customers =
         profiles.filter(
-          p => p.role === "customer"
+          p =>
+            p.role ===
+            "customer"
         );
 
       const karigars =
         profiles.filter(
-          p => p.role === "karigar"
+          p =>
+            p.role ===
+            "karigar"
         );
 
       return res.json({
+
         success: true,
 
         stats: {
-          totalUsers: profiles.length,
-          customers: customers.length,
-          karigars: karigars.length,
-          totalRequests: requests.length,
+
+          totalUsers:
+            profiles.length,
+
+          customers:
+            customers.length,
+
+          karigars:
+            karigars.length,
+
+          totalRequests:
+            requests.length,
+
           newRequests:
             requests.filter(
-              r => r.status === "New"
+              r =>
+                r.status ===
+                "New"
             ).length,
+
           completedRequests:
             requests.filter(
-              r => r.status === "Completed"
+              r =>
+                r.status ===
+                "Completed"
             ).length
         },
 
@@ -985,12 +1606,18 @@ app.get(
    UNKNOWN API
 ===================================================== */
 
-app.use("/api", (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "API route not found"
-  });
-});
+app.use(
+  "/api",
+  (req, res) => {
+
+    res.status(404).json({
+      success: false,
+      message:
+        "API route not found"
+    });
+
+  }
+);
 
 /* =====================================================
    START
@@ -999,8 +1626,13 @@ app.use("/api", (req, res) => {
 const PORT =
   process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(
-    `🚀 Hey Karigar server running on port ${PORT}`
-  );
-});
+app.listen(
+  PORT,
+  () => {
+
+    console.log(
+      `🚀 Hey Karigar server running on port ${PORT}`
+    );
+
+  }
+);
