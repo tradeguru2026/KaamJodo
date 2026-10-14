@@ -302,9 +302,7 @@ app.post("/api/auth/signup", async (req, res) => {
       message: "Signup failed"
     });
   }
-});
-
-/* =====================================================
+}); /* =====================================================
    LOGIN
    Mobile OR Email supported
 ===================================================== */
@@ -473,6 +471,13 @@ app.post("/api/auth/forgot-password", async (req, res) => {
       .maybeSingle();
 
     if (profileError || !profile) {
+      console.error(
+        "Forgot password lookup failed. Email:",
+        email,
+        "| Supabase error:",
+        profileError ? profileError.message : "none (row not found)"
+      );
+
       return res.status(404).json({
         success: false,
         message: "Is email se koi account nahi mila"
@@ -624,10 +629,7 @@ app.post("/api/auth/reset-password", async (req, res) => {
       success: false,
       message: "Password reset failed"
     });
-  }
-});
-
-/* =====================================================
+  } /* =====================================================
    PROFILE
 ===================================================== */
 
@@ -994,8 +996,7 @@ app.put("/api/requests/:id/status", authenticate, async (req, res) => {
     });
   }
 });
-
-/* =====================================================
+});/* =====================================================
    ADMIN DASHBOARD
 ===================================================== */
 
