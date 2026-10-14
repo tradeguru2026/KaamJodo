@@ -331,32 +331,26 @@ app.post("/api/auth/login", async (req, res) => {
         asli Auth email nikalo.
       */
 
+      const emailLower = loginValue.toLowerCase();
+
+      // Default: jo email likhi hai wahi Auth email maano (admin ke liye)
+      authEmail = emailLower;
+
       const { data: profileByEmail } = await supabase
         .from("profiles")
-        .select("*")
-        .eq("email", loginValue.toLowerCase())
+        .select("id")
+        .eq("email", emailLower)
         .maybeSingle();
 
-      if (!profileByEmail) {
-        return res.status(401).json({
-          success: false,
-          message: "Email ya password galat hai"
-        });
+      // Agar profile mein email mili, to uska asli Auth email use karo
+      if (profileByEmail) {
+        const { data: authUserData } =
+          await supabase.auth.admin.getUserById(profileByEmail.id);
+
+        if (authUserData && authUserData.user && authUserData.user.email) {
+          authEmail = authUserData.user.email;
+        }
       }
-
-      profile = profileByEmail;
-
-      const { data: authUserData, error: authUserError } =
-        await supabase.auth.admin.getUserById(profile.id);
-
-      if (authUserError || !authUserData.user) {
-        return res.status(401).json({
-          success: false,
-          message: "Login account nahi mila"
-        });
-      }
-
-      authEmail = authUserData.user.email;
     } else {
       /*
         Mobile se profile find karo
