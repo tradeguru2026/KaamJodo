@@ -122,6 +122,14 @@ app.get("/icon-512.png", (req, res) => {
   res.type("image/png").send(ICON_512);
 });
 
+app.get("/manifest.json", (req, res) => {
+  res.sendFile(path.join(__dirname, "manifest.json"));
+});
+
+app.get("/sw.js", (req, res) => {
+  res.sendFile(path.join(__dirname, "sw.js"));
+});
+
 /* =====================================================
    PHONE HELPER
 ===================================================== */
