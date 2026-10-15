@@ -38,7 +38,8 @@ app.get("/api", (req, res) => {
     status: "running",
     version: "4.2.0"
   });
-}); 
+});
+
 /* =====================================================
    APP ICONS (server khud banata hai, image file nahi chahiye)
 ===================================================== */
@@ -375,15 +376,8 @@ app.post("/api/auth/signup", async (req, res) => {
       message: "Account successfully create ho gaya",
       profile
     });
-  } catch (error) {
-    console.error("Signup error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Signup failed"
-    });
-  }
-}); /* =====================================================
+    
+    /* =====================================================
    LOGIN
    Mobile OR Email supported
 ===================================================== */
@@ -710,7 +704,19 @@ app.post("/api/auth/reset-password", async (req, res) => {
       success: false,
       message: "Password reset failed"
     });
-  } /* =====================================================
+  }
+});
+  } catch (error) {
+    console.error("Signup error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Signup failed"
+    });
+  }
+});
+
+/* =====================================================
    PROFILE
 ===================================================== */
 
@@ -1077,7 +1083,8 @@ app.put("/api/requests/:id/status", authenticate, async (req, res) => {
     });
   }
 });
-});/* =====================================================
+
+/* =====================================================
    ADMIN DASHBOARD
 ===================================================== */
 
