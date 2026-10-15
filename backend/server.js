@@ -38,6 +38,87 @@ app.get("/api", (req, res) => {
     status: "running",
     version: "4.2.0"
   });
+}); 
+/* =====================================================
+   APP ICONS (server khud banata hai, image file nahi chahiye)
+===================================================== */
+
+const zlib = require("zlib");
+
+const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
+  let c = n;
+  for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+  return c >>> 0;
+});
+
+function crc32(buf) {
+  let c = 0xffffffff;
+  for (const b of buf) c = CRC_TABLE[(c ^ b) & 255] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+}
+
+function pngChunk(type, data) {
+  const len = Buffer.alloc(4);
+  len.writeUInt32BE(data.length);
+  const body = Buffer.concat([Buffer.from(type), data]);
+  const crc = Buffer.alloc(4);
+  crc.writeUInt32BE(crc32(body));
+  return Buffer.concat([len, body, crc]);
+}
+
+function makeIcon(size) {
+  const GREEN = [8, 127, 91];
+  const WHITE = [255, 255, 255];
+  const c = size / 2;
+  const r = size * 0.31;
+  const hw = size * 0.13;
+  const hh = size * 0.15;
+  const t = size * 0.055;
+  const raw = Buffer.alloc((size * 3 + 1) * size);
+  let p = 0;
+
+  for (let y = 0; y < size; y++) {
+    raw[p++] = 0;
+    for (let x = 0; x < size; x++) {
+      const dx = x - c;
+      const dy = y - c;
+      let col = GREEN;
+      if (dx * dx + dy * dy <= r * r) {
+        col = WHITE;
+        const inside = Math.abs(dy) <= hh && Math.abs(dx) <= hw;
+        const side = Math.abs(dx) >= hw - t;
+        const middle = Math.abs(dy) <= t / 2;
+        if (inside && (side || middle)) col = GREEN;
+      }
+      raw[p++] = col[0];
+      raw[p++] = col[1];
+      raw[p++] = col[2];
+    }
+  }
+
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(size, 0);
+  ihdr.writeUInt32BE(size, 4);
+  ihdr[8] = 8;
+  ihdr[9] = 2;
+
+  return Buffer.concat([
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    pngChunk("IHDR", ihdr),
+    pngChunk("IDAT", zlib.deflateSync(raw)),
+    pngChunk("IEND", Buffer.alloc(0))
+  ]);
+}
+
+const ICON_192 = makeIcon(192);
+const ICON_512 = makeIcon(512);
+
+app.get("/icon-192.png", (req, res) => {
+  res.type("image/png").send(ICON_192);
+});
+
+app.get("/icon-512.png", (req, res) => {
+  res.type("image/png").send(ICON_512);
 });
 
 /* =====================================================
