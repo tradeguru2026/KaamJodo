@@ -1154,12 +1154,13 @@ app.get("/api/admin/dashboard", authenticate, adminOnly, async (req, res) => {
 ===================================================== */
 
 app.use("/api", (req, res) => {
+  console.error("API route not found:", req.method, req.originalUrl);
+
   res.status(404).json({
     success: false,
-    message: "API route not found"
+    message: "API route not found: " + req.method + " " + req.originalUrl
   });
 });
-
 /* =====================================================
    START
 ===================================================== */
