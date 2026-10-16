@@ -384,8 +384,17 @@ app.post("/api/auth/signup", async (req, res) => {
       message: "Account successfully create ho gaya",
       profile
     });
-    
-    /* =====================================================
+  } catch (error) {
+    console.error("Signup error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Signup failed"
+    });
+  }
+});
+
+/* =====================================================
    LOGIN
    Mobile OR Email supported
 ===================================================== */
@@ -711,15 +720,6 @@ app.post("/api/auth/reset-password", async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Password reset failed"
-    });
-  }
-});
-  } catch (error) {
-    console.error("Signup error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Signup failed"
     });
   }
 });
@@ -1161,6 +1161,7 @@ app.use("/api", (req, res) => {
     message: "API route not found: " + req.method + " " + req.originalUrl
   });
 });
+
 /* =====================================================
    START
 ===================================================== */
