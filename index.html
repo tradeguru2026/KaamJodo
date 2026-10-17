@@ -66,7 +66,7 @@ footer{text-align:center;color:#6b7771;font-size:13px;padding:20px 10px}
 <option value="admin">Admin</option>
 </select>
 <div id="serviceField" class="hidden">
-<input id="service" type="text" placeholder="Aap kaun sa kaam karte hain? e.g. Plumber">
+<select id="service"></select>
 </div>
 <button onclick="signup()">📝 Signup</button>
 <button class="secondary" onclick="login()">🔑 Login</button>
@@ -112,25 +112,9 @@ footer{text-align:center;color:#6b7771;font-size:13px;padding:20px 10px}
 <div class="card">
 <h2>🛠️ Service Request</h2>
 <p style="font-size:14px;margin-bottom:12px">Aapko kis kaam ke liye Karigar chahiye?</p>
-<div class="service-grid">
-<button class="service-btn" onclick="selectService(this,'Plumber')">🔧 Plumber</button>
-<button class="service-btn" onclick="selectService(this,'Electrician')">⚡ Electrician</button>
-<button class="service-btn" onclick="selectService(this,'Carpenter')">🪚 Carpenter</button>
-<button class="service-btn" onclick="selectService(this,'Painter')">🎨 Painter</button>
-<button class="service-btn" onclick="selectService(this,'AC Repair')">❄️ AC Repair</button>
-<button class="service-btn" onclick="selectService(this,'Washing Machine Repair')">🧺 Washing Machine</button>
-<button class="service-btn" onclick="selectService(this,'TV Repair')">📺 TV Repair</button>
-<button class="service-btn" onclick="selectService(this,'Gardener/Mali')">🌱 Gardener/Mali</button>
-<button class="service-btn" onclick="selectService(this,'Generator Mechanic')">⚙️ Generator Mechanic</button>
-<button class="service-btn" onclick="selectService(this,'Puncture/Tyre Replacement')">🛞 Puncture/Tyre</button>
-<button class="service-btn" onclick="selectService(this,'Barber')">✂️ Barber</button>
-<button class="service-btn" onclick="selectService(this,'Physiotherapist')">🩺 Physiotherapist</button>
-<button class="service-btn" onclick="selectService(this,'Mehndi Artist')">🌿 Mehndi Artist</button>
-<button class="service-btn" onclick="selectService(this,'Carpet Cleaning')">🧹 Carpet Cleaning</button>
-<button class="service-btn" onclick="selectService(this,'Gutter Cleaning')">🧽 Gutter Cleaning</button>
-<button class="service-btn" onclick="selectService(this,'Home Cleaning')">🏠 Home Cleaning</button>
-<button class="service-btn" onclick="selectService(this,'Other')">➕ Other</button>
-</div>
+<input id="serviceSearch" type="text" placeholder="🔍 Kaam dhoondhein (jaise: nal, bijli, AC, mali)" oninput="renderServices()">
+<p id="serviceSearchMsg" style="font-size:13px;color:#c62828;margin-bottom:8px"></p>
+<div class="service-grid" id="serviceGrid"></div>
 <br>
 <input id="requestAddress" type="text" placeholder="Kaam ki jagah ka Address">
 <button class="secondary" onclick="getRequestLocation()">📍 Current Location Address</button>
@@ -158,6 +142,7 @@ footer{text-align:center;color:#6b7771;font-size:13px;padding:20px 10px}
 </div>
 <div class="card">
 <h2>📋 Service Requests</h2>
+<button class="secondary" id="toggleAllBtn" onclick="toggleAllRequests()">🔄 Dusre kaam ki requests bhi dikhao</button>
 <div id="karigarRequests">Loading...</div>
 </div>
 </div>
@@ -202,6 +187,7 @@ const API_BASE = window.location.origin;
 let currentUser = null;
 let selectedService = "";
 let recoveryToken = null;
+let showAllRequests = false;
 
 /* ================= HELPERS ================= */
 
@@ -344,7 +330,8 @@ async function login() {
   } catch (error) {
     showMessage("authMessage", "Server se connection nahi ho pa raha.", true);
   }
-} /* ================= SHOW USER ================= */
+}
+  /* ================= SHOW USER ================= */
 
 function showLoggedInUser() {
   if (!currentUser) return;
@@ -628,7 +615,7 @@ async function loadRequests() {
   box.innerHTML = "Loading...";
 
   try {
-    const response = await fetch(API_BASE + "/api/requests", { headers: authHeaders() });
+    const response = await fetch(API_BASE + "/api/requests" + (showAllRequests ? "?all=1" : ""), { headers: authHeaders() });
     const data = await response.json();
 
     if (!response.ok || !data.success) {
@@ -665,6 +652,14 @@ async function loadRequests() {
   }
 }
 
+function toggleAllRequests() {
+  showAllRequests = !showAllRequests;
+  $("toggleAllBtn").textContent = showAllRequests
+    ? "✅ Sirf mere kaam ki requests dikhao"
+    : "🔄 Dusre kaam ki requests bhi dikhao";
+  loadRequests();
+}
+
 /* ================= UPDATE STATUS ================= */
 
 async function updateStatus(id, status) {
@@ -685,7 +680,9 @@ async function updateStatus(id, status) {
   } catch (error) {
     alert("Server se connection nahi ho pa raha.");
   }
-  } /* ================= ADMIN DASHBOARD ================= */
+  }
+  
+  /* ================= ADMIN DASHBOARD ================= */
 
 async function loadAdminDashboard() {
   try {
@@ -862,6 +859,129 @@ function autoLogin() {
   }
 }
 
+/* ================= SERVICES (CATEGORIES + SEARCH) ================= */
+
+const SERVICES = [
+  { name: "Plumber", icon: "🔧", words: "nal pipe paani tonti leakage bathroom tap nalka" },
+  { name: "Electrician", icon: "⚡", words: "bijli wiring switch light fan board meter" },
+  { name: "Carpenter", icon: "🪚", words: "badhai lakdi furniture darwaza almari khidki" },
+  { name: "Painter", icon: "🎨", words: "rang paint putai whitewash pop" },
+  { name: "AC Repair", icon: "❄️", words: "ac air conditioner cooling gas service" },
+  { name: "Washing Machine Repair", icon: "🧺", words: "washing machine kapde dhone ki machine" },
+  { name: "TV Repair", icon: "📺", words: "tv television led display" },
+  { name: "Gardener/Mali", icon: "🌱", words: "mali bagiya garden paudhe ghaas lawn" },
+  { name: "Generator Mechanic", icon: "⚙️", words: "generator genset inverter mechanic" },
+  { name: "Puncture/Tyre Replacement", icon: "🛞", words: "puncture tyre tire pahiya gaadi" },
+  { name: "Barber", icon: "✂️", words: "naai baal haircut shave salon daadhi" },
+  { name: "Physiotherapist", icon: "🩺", words: "physio massage dard exercise therapy" },
+  { name: "Mehndi Artist", icon: "🌿", words: "mehndi henna shaadi" },
+  { name: "Carpet Cleaning", icon: "🧹", words: "carpet qaleen dari safai" },
+  { name: "Gutter Cleaning", icon: "🧽", words: "gutter nali naali drain safai" },
+  { name: "Home Cleaning", icon: "🏠", words: "ghar safai cleaning jhadu pocha deep clean" },
+  { name: "Raj Mistri / Mason", icon: "🧱", words: "mistri mason raj ghar banana deewar plaster marammat eent" },
+  { name: "Fridge Repair", icon: "🧊", words: "fridge refrigerator freezer thanda" },
+  { name: "RO / Water Purifier Service", icon: "💧", words: "ro water purifier filter paani saaf" },
+  { name: "Mobile Repair", icon: "📱", words: "mobile phone screen battery charging" },
+  { name: "Bike / Scooter Mechanic", icon: "🏍️", words: "bike scooter motorcycle mechanic two wheeler" },
+  { name: "Welder", icon: "🔩", words: "welding welder gate grill shed lohe" },
+  { name: "Lock / Chabi Maker", icon: "🔑", words: "lock chabi taala key duplicate" },
+  { name: "Pest Control", icon: "🐜", words: "pest deemak cockroach machhar keede keeda" },
+  { name: "Beautician (Ghar Par)", icon: "💄", words: "beautician parlour facial makeup bridal threading" },
+  { name: "Tailor / Darzi", icon: "🧵", words: "tailor darzi silai kapde blouse suit" },
+  { name: "Tile / Marble Worker", icon: "🔲", words: "tile marble granite floor flooring" },
+  { name: "POP / False Ceiling", icon: "🏛️", words: "pop false ceiling gypsum chhat design" },
+  { name: "Aluminium / Glass Work", icon: "🪟", words: "aluminium glass sheesha window shutter" },
+  { name: "Waterproofing", icon: "☔", words: "waterproofing seepage chhat tapakna leakage" },
+  { name: "Geyser Repair", icon: "🚿", words: "geyser water heater garam paani" },
+  { name: "Cooler / Fan Repair", icon: "🌀", words: "cooler fan pankha motor" },
+  { name: "Inverter / Battery Repair", icon: "🔋", words: "inverter battery ups" },
+  { name: "Water Tank Cleaning", icon: "🛢️", words: "tanki tank water tank safai" },
+  { name: "Sofa / Mattress Cleaning", icon: "🛋️", words: "sofa mattress gadda safai" },
+  { name: "CCTV Installation", icon: "📹", words: "cctv camera security installation" },
+  { name: "Solar Panel", icon: "☀️", words: "solar panel suraj bijli" },
+  { name: "Hand Pump / Borewell Mechanic", icon: "🚰", words: "hand pump handpump borewell bore motor" },
+  { name: "Car Mechanic", icon: "🚗", words: "car gaadi mechanic service garage" },
+  { name: "Car Wash", icon: "🧼", words: "car wash dhulai gaadi safai" },
+  { name: "Driver", icon: "🚖", words: "driver chalak gaadi chalane wala" },
+  { name: "Auto Electrician", icon: "🔌", words: "auto electrician gaadi wiring battery" },
+  { name: "Cook / Khana Banane Wala", icon: "🍳", words: "cook khana rasoiya chef khana banana" },
+  { name: "Maid / Bai", icon: "🧹", words: "maid bai kaam wali jhadu pocha bartan" },
+  { name: "Majdoor / Labour", icon: "👷", words: "majdoor labour mazdoor helper" },
+  { name: "Packers & Movers", icon: "📦", words: "packers movers shifting saman transport" },
+  { name: "Laptop / Computer Repair", icon: "💻", words: "laptop computer pc repair software" },
+  { name: "Photographer", icon: "📷", words: "photographer photo video shaadi shoot" },
+  { name: "Decorator / Tent", icon: "🎪", words: "decorator tent shamiyana decoration party" },
+  { name: "Nurse / Caretaker", icon: "🏥", words: "nurse caretaker bimar dekhbhal patient" },
+  { name: "Tutor", icon: "📚", words: "tutor teacher tuition padhai coaching" },
+  { name: "Other", icon: "➕", words: "dusra alag koi aur other" }
+];
+
+function renderServices() {
+  const grid = $("serviceGrid");
+  if (!grid) return;
+
+  const q = ($("serviceSearch").value || "").toLowerCase().trim();
+  const other = SERVICES.find((s) => s.name === "Other");
+
+  const matches = SERVICES.filter((s) => {
+    if (s.name === "Other") return false;
+    if (!q) return true;
+    const text = (s.name + " " + s.words).toLowerCase();
+    // Chhota text (1-2 letters) sirf shabd ke shuru se milao, warna kuch bhi mil jayega
+    return q.length < 3
+      ? text.split(/[^a-z0-9]+/).some((w) => w.startsWith(q))
+      : text.includes(q);
+  });
+
+  const list = matches.slice();
+
+  // Chuna hua kaam hamesha dikhta rahe
+  const chosen = SERVICES.find((s) => s.name === selectedService);
+  if (chosen && chosen.name !== "Other" && !list.includes(chosen)) {
+    list.unshift(chosen);
+  }
+
+  list.push(other);
+
+  grid.innerHTML = "";
+  list.forEach((s) => {
+    const btn = document.createElement("button");
+    btn.className = "service-btn" + (s.name === selectedService ? " selected" : "");
+    btn.textContent = s.icon + " " + s.name;
+    btn.onclick = () => selectService(btn, s.name);
+    grid.appendChild(btn);
+  });
+
+  const msg = $("serviceSearchMsg");
+  if (msg) {
+    msg.textContent =
+      q && matches.length === 0
+        ? "Is naam se koi kaam nahi mila. Neeche 'Other' chuno aur problem mein likh do."
+        : "";
+  }
+}
+
+function fillServiceSelect() {
+  const sel = $("service");
+  if (!sel || sel.tagName !== "SELECT") return;
+
+  sel.innerHTML = '<option value="">Aap kaun sa kaam karte hain? (chuno)</option>';
+  SERVICES.filter((s) => s.name !== "Other").forEach((s) => {
+    const o = document.createElement("option");
+    o.value = s.name;
+    o.textContent = s.icon + " " + s.name;
+    sel.appendChild(o);
+  });
+}
+
+// Purani 17 buttons wali list hata do, nayi search wali list dikhao
+const oldServiceGrid = document.querySelector(".service-grid:not(#serviceGrid)");
+if (oldServiceGrid) oldServiceGrid.remove()
+  if (oldServiceGrid) oldServiceGrid.remove();
+
+renderServices();
+fillServiceSelect();
+
 /* ================= START APP ================= */
 
 toggleServiceField();
@@ -876,3 +996,4 @@ if ("serviceWorker" in navigator) {
 
 </body>
 </html>
+  
