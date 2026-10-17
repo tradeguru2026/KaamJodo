@@ -267,16 +267,12 @@ function adminOnly(req, res, next) {
 
 app.post("/api/auth/signup", async (req, res) => {
   try {
-    const {
-      name,
-      full_name,
+const {
+      customer_name,
       phone,
-      email,
-      password,
-      role,
       service,
-      location,
-      state,
+      address,
+      description,
       latitude,
       longitude
     } = req.body;
@@ -821,6 +817,8 @@ app.post("/api/requests", authenticate, async (req, res) => {
           service,
           address,
           description: description || null,
+          latitude: latitude || null,
+          longitude: longitude || null,
           customer_id: req.user.id,
           status: "New",
           karigar_id: null
