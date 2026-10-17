@@ -982,6 +982,266 @@ if (oldServiceGrid) oldServiceGrid.remove()
 renderServices();
 fillServiceSelect();
 
+  /* ================= LOCATION UPGRADE (area + doori) ================= */
+/* Neeche ke function purane versions ki jagah kaam karte hain (aakhri wala jeet'ta hai). */
+
+let requestCoords = null;
+
+function distanceKm(lat1, lon1, lat2, lon2) {
+  const toRad = (d) => (d * Math.PI) / 180;
+  const R = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
+function areaFromGeo(geoData) {
+  const a = (geoData && geoData.address) || {};
+  const area =
+    a.suburb || a.neighbourhood || a.residential || a.city_district ||
+    a.quarter || a.road || a.village || "";
+  const city = a.city || a.town || a.county || a.state_district || "";
+  const text = [area, city]
+    .filter((v, i, arr) => v && arr.indexOf(v) === i)
+    .join(", ");
+  return text || (geoData && geoData.display_name) || "Location found";
+}
+
+function getCurrentLocation() {
+  if (!navigator.geolocation) {
+    alert("Aapke phone/browser mein location available nahi hai.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async function (position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      try {
+        const geoResponse = await fetch(
+          "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+            latitude + "&lon=" + longitude + "&zoom=17&addressdetails=1",
+          { headers: { "Accept": "application/json" } }
+        );
+        const geoData = await geoResponse.json();
+        const state = (geoData.address && geoData.address.state) || "";
+        const locationText = areaFromGeo(geoData);
+
+        const response = await fetch(
+          API_BASE + "/api/profile/" + currentUser.id + "/location",
+          {
+            method: "PUT",
+            headers: authHeaders(),
+            body: JSON.stringify({
+              latitude: latitude,
+              longitude: longitude,
+              location: locationText,
+              state: state
+            })
+          }
+        );
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          alert(data.message || "Location update nahi hui.");
+          return;
+        }
+
+        currentUser = data.profile;
+        localStorage.setItem("heyKarigarProfile", JSON.stringify(currentUser));
+
+        $("locationText").textContent =
+          `${currentUser.location || ""}${currentUser.state ? ", " + currentUser.state : ""}`;
+
+        alert("✅ Location successfully update ho gayi.");
+
+        if (currentUser.role === "karigar") loadRequests();
+      } catch (error) {
+        alert("Location save nahi ho paayi.");
+      }
+    },
+    function () {
+      alert("Location permission allow karein, phir dobara try karein.");
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
+}
+
+function getRequestLocation() {
+  if (!navigator.geolocation) {
+    alert("Location available nahi hai.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async function (position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      requestCoords = { latitude: latitude, longitude: longitude };
+      $("requestAddress").value = latitude.toFixed(5) + ", " + longitude.toFixed(5);
+      showMessage("requestMessage", "✅ Aapki location mil gayi. Address check kar lein, chaho to thoda likh bhi sakte ho (jaise gali ya landmark).");
+
+      try {
+        const response = await fetch(
+          "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+            latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1",
+          { headers: { "Accept": "application/json" } }
+        );
+        const data = await response.json();
+        $("requestAddress").value = data.display_name || `${latitude}, ${longitude}`;
+      } catch (error) {
+        $("requestAddress").value = `${latitude}, ${longitude}`;
+      }
+    },
+    function () {
+      alert("Location permission allow karein.");
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
+}
+
+async function createRequest() {
+  if (!currentUser) {
+    showMessage("requestMessage", "Pehle login karein.", true);
+    return;
+  }
+  if (!selectedService) {
+    showMessage("requestMessage", "Pehle service select karein.", true);
+    return;
+  }
+
+  const address = $("requestAddress").value.trim();
+  const description = $("requestDescription").value.trim();
+
+  if (!address) {
+    showMessage("requestMessage", "Kaam ki jagah ka address zaroori hai.", true);
+    return;
+  }
+
+  try {
+    const response = await fetch(API_BASE + "/api/requests", {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({
+        customer_name: currentUser.name || currentUser.full_name || "",
+        phone: currentUser.phone,
+        service: selectedService,
+        address: address,
+        description: description,
+        latitude: requestCoords ? requestCoords.latitude : null,
+        longitude: requestCoords ? requestCoords.longitude : null
+      })
+    });
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      showMessage("requestMessage", data.message || "Request create nahi hui.", true);
+      return;
+    }
+
+    showMessage("requestMessage", "✅ Service request successfully bhej di gayi.");
+    $("requestAddress").value = "";
+    $("requestDescription").value = "";
+    document.querySelectorAll(".service-btn").forEach((btn) => btn.classList.remove("selected"));
+    selectedService = "";
+    requestCoords = null;
+    loadCustomerRequests();
+  } catch (error) {
+    showMessage("requestMessage", "Server se connection nahi ho pa raha.", true);
+  }
+}
+
+async function loadRequests() {
+  const box = $("karigarRequests");
+  box.innerHTML = "Loading...";
+
+  try {
+    const response = await fetch(API_BASE + "/api/requests" + (showAllRequests ? "?all=1" : ""), { headers: authHeaders() });
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      box.innerHTML = `<div class="message error">${escapeHtml(data.message || "Requests load nahi hui")}</div>`;
+      return;
+    }
+
+    const requests = data.requests || [];
+    const count = (s) => requests.filter((r) => r.status === s).length;
+
+    $("karigarTotal").textContent = requests.length;
+    $("karigarNew").textContent = count("New");
+    $("karigarAccepted").textContent = count("Accepted");
+    $("karigarCompleted").textContent = count("Completed");
+
+    const myLat = Number(currentUser.latitude);
+    const myLon = Number(currentUser.longitude);
+    const hasMine =
+      currentUser.latitude != null && currentUser.longitude != null &&
+      !isNaN(myLat) && !isNaN(myLon);
+
+    requests.forEach((r) => {
+      r._km =
+        hasMine && r.latitude != null && r.longitude != null
+          ? distanceKm(myLat, myLon, Number(r.latitude), Number(r.longitude))
+          : null;
+    });
+
+    // Pehle meri chalti hui requests, phir sabse paas wali
+    const rank = (r) =>
+      r.karigar_id === currentUser.id && r.status !== "Completed" ? 0 : 1;
+
+    requests.sort((a, b) => {
+      if (rank(a) !== rank(b)) return rank(a) - rank(b);
+      if (a._km === null && b._km === null) return 0;
+      if (a._km === null) return 1;
+      if (b._km === null) return -1;
+      return a._km - b._km;
+    });
+
+    const hint = hasMine
+      ? ""
+      : `<div class="message">📍 Apni location set karein (My Account mein "Current Location Set Karein"), taaki har request ki doori dikhe aur paas ki request sabse upar aaye.</div>`;
+
+    if (requests.length === 0) {
+      box.innerHTML = hint + `<div class="message">Abhi koi request available nahi hai.</div>`;
+      return;
+    }
+
+    box.innerHTML = hint + requests.map((r) => {
+      const distLine =
+        r._km === null
+          ? ""
+          : `<p><strong>Doori:</strong> 📏 lagbhag ${
+              r._km < 1 ? Math.round(r._km * 1000) + " meter" : r._km.toFixed(1) + " km"
+            }</p>`;
+
+      const mapLink =
+        r.latitude != null && r.longitude != null && r.karigar_id === currentUser.id
+          ? `<p><a href="https://www.google.com/maps?q=${Number(r.latitude)},${Number(r.longitude)}" target="_blank" rel="noopener">🗺️ Map mein dekho</a></p>`
+          : "";
+
+      return `
+      <div class="request-item">
+        <h3>🛠️ ${escapeHtml(r.service || "Service")}</h3>
+        ${field("Customer", r.customer_name)}
+        ${field("Mobile", r.phone)}
+        ${field("Location", r.address)}
+        ${distLine}
+        ${mapLink}
+        ${field("Problem", r.description)}
+        ${statusBadge(r)}
+        <div style="margin-top:8px">${karigarAction(r)}</div>
+      </div>
+    `;
+    }).join("");
+  } catch (error) {
+    box.innerHTML = `<div class="message error">Requests load nahi hui.</div>`;
+  }
+  }
 /* ================= START APP ================= */
 
 toggleServiceField();
