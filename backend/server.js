@@ -817,8 +817,8 @@ app.post("/api/requests", authenticate, async (req, res) => {
           service,
           address,
           description: description || null,
-          latitude: latitude || null,
-          longitude: longitude || null,
+          latitude: req.body.latitude || null,
+          longitude: req.body.longitude || null,
           customer_id: req.user.id,
           status: "New",
           karigar_id: null
