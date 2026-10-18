@@ -267,12 +267,16 @@ function adminOnly(req, res, next) {
 
 app.post("/api/auth/signup", async (req, res) => {
   try {
-const {
-      customer_name,
+    const {
+      name,
+      full_name,
       phone,
+      email,
+      password,
+      role,
       service,
-      address,
-      description,
+      location,
+      state,
       latitude,
       longitude
     } = req.body;
