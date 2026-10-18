@@ -1242,6 +1242,96 @@ async function loadRequests() {
     box.innerHTML = `<div class="message error">Requests load nahi hui.</div>`;
   }
   }
+  /* ================= LOCATION FIX 2 (area ka naam + sahi-pan) ================= */
+
+function areaFromGeo(geoData) {
+  const a = (geoData && geoData.address) || {};
+  const locality =
+    a.neighbourhood || a.suburb || a.residential || a.quarter ||
+    a.city_district || a.hamlet || a.village || "";
+  const city = a.city || a.town || a.county || a.state_district || "";
+  let parts = [a.road || "", locality, city].filter(Boolean);
+
+  // Sirf shehar mila ho to poore address ke pehle 3 hisse le lo
+  if (parts.length < 2 && geoData && geoData.display_name) {
+    parts = geoData.display_name
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean)
+      .slice(0, 3);
+  }
+
+  const unique = parts.filter((v, i, arr) => arr.indexOf(v) === i);
+  return unique.join(", ") || "Location found";
+}
+
+function getCurrentLocation() {
+  if (!navigator.geolocation) {
+    alert("Aapke phone/browser mein location available nahi hai.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async function (position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const accuracy = Math.round(position.coords.accuracy || 0);
+
+      try {
+        const geoResponse = await fetch(
+          "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+            latitude + "&lon=" + longitude + "&zoom=18&addressdetails=1",
+          { headers: { "Accept": "application/json" } }
+        );
+        const geoData = await geoResponse.json();
+        const state = (geoData.address && geoData.address.state) || "";
+        const locationText = areaFromGeo(geoData);
+
+        const response = await fetch(
+          API_BASE + "/api/profile/" + currentUser.id + "/location",
+          {
+            method: "PUT",
+            headers: authHeaders(),
+            body: JSON.stringify({
+              latitude: latitude,
+              longitude: longitude,
+              location: locationText,
+              state: state
+            })
+          }
+        );
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          alert(data.message || "Location update nahi hui.");
+          return;
+        }
+
+        currentUser = data.profile;
+        localStorage.setItem("heyKarigarProfile", JSON.stringify(currentUser));
+
+        $("locationText").textContent =
+          `${currentUser.location || ""}${currentUser.state ? ", " + currentUser.state : ""}`;
+
+        let msg = "✅ Location update ho gayi: " + locationText;
+        if (accuracy) msg += "\n(sahi-pan lagbhag " + accuracy + " meter)";
+        if (accuracy > 500) {
+          msg += "\n\n⚠️ Location ka sahi-pan kam hai. Phone mein Location ko Precise / High accuracy karo aur GPS on rakho, phir dobara dabao.";
+        }
+        alert(msg);
+
+        if (currentUser.role === "karigar") loadRequests();
+      } catch (error) {
+        alert("Location save nahi ho paayi.");
+      }
+    },
+    function () {
+      alert("Location permission allow karein, phir dobara try karein.");
+    },
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
+  );
+}
+  
 /* ================= START APP ================= */
 
 toggleServiceField();
