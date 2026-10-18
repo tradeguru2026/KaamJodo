@@ -1331,7 +1331,110 @@ function getCurrentLocation() {
     { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
   );
 }
-  
+  /* ================= ADMIN: kaun sa karigar kis customer ke ghar ja raha hai ================= */
+
+async function loadAdminDashboard() {
+  try {
+    const response = await fetch(API_BASE + "/api/admin/dashboard", { headers: authHeaders() });
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      alert(data.message || "Admin dashboard load nahi hua.");
+      return;
+    }
+
+    const stats = data.stats || {};
+    $("adminUsers").textContent = stats.totalUsers || 0;
+    $("adminCustomers").textContent = stats.customers || 0;
+    $("adminKarigars").textContent = stats.karigars || 0;
+    $("adminRequests").textContent = stats.totalRequests || 0;
+    $("adminNew").textContent = stats.newRequests || 0;
+    $("adminCompleted").textContent = stats.completedRequests || 0;
+
+    const profiles = data.profiles || [];
+    const customers = profiles.filter((p) => p.role === "customer");
+    const karigars = profiles.filter((p) => p.role === "karigar");
+    const requests = data.requests || [];
+
+    const byId = {};
+    profiles.forEach((p) => { byId[p.id] = p; });
+
+    const nameOf = (p, fallback) => (p && (p.name || p.full_name)) || fallback;
+    const liveStatuses = ["Accepted", "On The Way", "Working"];
+
+    // Har karigar ke chalte hue kaam
+    const liveCount = {};
+    requests.forEach((r) => {
+      if (r.karigar_id && liveStatuses.includes(r.status)) {
+        liveCount[r.karigar_id] = (liveCount[r.karigar_id] || 0) + 1;
+      }
+    });
+
+    $("adminCustomersList").innerHTML = customers.length
+      ? customers.map((p) => `
+        <div class="request-item">
+          <h3>👤 ${escapeHtml(nameOf(p, "Customer"))}</h3>
+          ${field("Mobile", p.phone)}
+          ${field("Email", p.email)}
+          ${field("Location", p.location || "Not set")}
+        </div>
+      `).join("")
+      : `<div class="message">No customers.</div>`;
+
+    $("adminKarigarsList").innerHTML = karigars.length
+      ? karigars.map((p) => `
+        <div class="request-item">
+          <h3>🛠️ ${escapeHtml(nameOf(p, "Karigar"))}</h3>
+          ${field("Mobile", p.phone)}
+          ${field("Email", p.email)}
+          ${field("Service", p.service)}
+          ${field("Location", p.location || "Not set")}
+          <p><strong>Abhi chal rahe kaam:</strong> ${liveCount[p.id] || 0}</p>
+        </div>
+      `).join("")
+      : `<div class="message">No Karigars.</div>`;
+
+    // Upar ek chhota saar: abhi kaun karigar kahan ja raha hai
+    const live = requests.filter((r) => r.karigar_id && liveStatuses.includes(r.status));
+    const liveBox = live.length
+      ? `<div class="message" style="margin-bottom:12px">
+          <strong>🚗 Abhi chal rahe kaam (${live.length})</strong>
+          ${live.map((r) => {
+            const k = byId[r.karigar_id];
+            return `<p style="margin-top:6px">👷 ${escapeHtml(nameOf(k, "Karigar"))}${k && k.phone ? " (" + escapeHtml(k.phone) + ")" : ""}
+              → 👤 ${escapeHtml(r.customer_name || "Customer")}${r.phone ? " (" + escapeHtml(r.phone) + ")" : ""},
+              ${escapeHtml(r.address || "address nahi")}
+              <span class="status">${escapeHtml(r.status)}</span></p>`;
+          }).join("")}
+        </div>`
+      : "";
+
+    $("adminRequestsList").innerHTML = requests.length
+      ? liveBox + requests.map((r) => {
+          const k = r.karigar_id ? byId[r.karigar_id] : null;
+          const karigarBlock = r.karigar_id
+            ? `<p><strong>Karigar:</strong> 👷 ${escapeHtml(nameOf(k, "Karigar"))}${k && k.phone ? " (" + escapeHtml(k.phone) + ")" : ""}</p>
+               ${k ? field("Karigar ka kaam", k.service) : ""}
+               ${k ? field("Karigar ki location", k.location) : ""}`
+            : `<p><strong>Karigar:</strong> abhi kisi ne accept nahi kiya</p>`;
+
+          return `
+        <div class="request-item">
+          <h3>🛠️ ${escapeHtml(r.service || "Service")}</h3>
+          ${field("Customer", r.customer_name)}
+          ${field("Mobile", r.phone)}
+          ${field("Address", r.address)}
+          ${karigarBlock}
+          ${field("Problem", r.description)}
+          ${statusBadge(r)}
+        </div>
+      `;
+        }).join("")
+      : `<div class="message">No service requests.</div>`;
+  } catch (error) {
+    alert("Admin dashboard load nahi hua.");
+  }
+}
 /* ================= START APP ================= */
 
 toggleServiceField();
